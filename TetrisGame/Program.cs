@@ -8,10 +8,11 @@ namespace Tetris
         {
             Board board = new Board(10, 25);
             board.AddTileAt(new Block(), new Point(1, 2));
+            BoardOperator boardOperator = new BoardOperator(board);
             Console.WriteLine(board.Print());
-            board.Fall();
-            board.Fall();
-            board.Fall();
+            boardOperator.Fall();
+            boardOperator.Fall();
+            boardOperator.Fall();
             Console.WriteLine(board.Print());
         }
     }
