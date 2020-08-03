@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Tetris.Tests
@@ -6,6 +7,14 @@ namespace Tetris.Tests
     public class BoardTests
     {
         private readonly Board _board;
+
+        private void fillBoardRowAt(int rowAt)
+        {
+            for (int x = 0;  x < _board.width; x++ )
+            {
+                _board.AddTileAt(new Block(), new Point(x, rowAt));
+            }
+        }
 
         public BoardTests()
         {
@@ -35,19 +44,19 @@ namespace Tetris.Tests
         }
 
         [Fact]
-        public void PlaceTile_SpotEmpty_PlaceTile()
+        public void AddTileAt_SpotEmpty_AddTile()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
 
             _board.AddTileAt(block, point);
 
-            ITile tile = _board.TileAt(point);
-            Assert.Equal(tile, block);
+            Assert.Equal(_board.TileAt(point), block);
+            Assert.Equal(_board.TilePoint(block), point);
         }
 
         [Fact]
-        public void PlaceTile_SpotTaken_DontPlaceTile()
+        public void AddTileAt_SpotTaken_DontAddTile()
         {
             Point point = new Point(1, 2);
             Block firstBlock = new Block();
@@ -58,6 +67,54 @@ namespace Tetris.Tests
 
             ITile tile = _board.TileAt(point);
             Assert.Equal(tile, firstBlock);
+        }
+
+        [Fact]
+        public void RemoveTileAt_SpotTaken_RemoveTile()
+        {
+            Point point = new Point(1, 2);
+            Block block = new Block();
+            _board.AddTileAt(block, point);
+
+            _board.RemoveTileAt(point);
+
+            Assert.Null(_board.TileAt(point));
+            Assert.Null(_board.TilePoint(block));
+        }
+
+        [Fact]
+        public void RemoveTileAt_SpotEmpty_DoNothing()
+        {
+            Point point = new Point(1, 2);
+            Block block = new Block();
+
+            _board.RemoveTileAt(point);
+
+            Assert.Null(_board.TileAt(point));
+            Assert.Null(_board.TilePoint(block));
+        }
+
+        [Fact]
+        public void RemoveTile_TilePlaced_RemoveTile()
+        {
+            Point point = new Point(1, 2);
+            Block block = new Block();
+            _board.AddTileAt(block, point);
+
+            _board.RemoveTile(block);
+
+            Assert.Null(_board.TileAt(point));
+            Assert.Null(_board.TilePoint(block));
+        }
+
+        [Fact]
+        public void RemoveTile_TileUnplaced_DoNothing()
+        {
+            Block block = new Block();
+
+            _board.RemoveTile(block);
+
+            Assert.Null(_board.TilePoint(block));
         }
 
         [Theory]
@@ -116,6 +173,46 @@ namespace Tetris.Tests
 
             Point endPoint = Point.AddPoints(startPoint, byPoint);
             Assert.Equal(_board.TileAt(startPoint), block);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public void TilesInRows_ThereAreRows_returnRowList(int numberOfRows)
+        {
+            for (int y = 0; y < numberOfRows; y++)
+            {
+                fillBoardRowAt(y);
+            }
+
+            List<ITile[]> tileRows = _board.TilesInRows();
+
+            Assert.Equal(tileRows.Count, numberOfRows);
+        }
+
+        [Fact]
+        public void TilesInRows_ThereIsRow_RowHasTiles()
+        {
+            fillBoardRowAt(0);
+
+            ITile[] tileRow = _board.TilesInRows()[0];
+
+            for (int x = 0;  x < _board.width; x++ )
+            {
+                Assert.True(tileRow[x] is ITile);
+            }
+        }
+
+        [Fact]
+        public void TilesInRows_NoRows_returnEmptyRowList()
+        {
+            fillBoardRowAt(0);
+            _board.RemoveTileAt(new Point(4, 0));
+
+            List<ITile[]> tileRows = _board.TilesInRows();
+
+            Assert.Empty(tileRows);
         }
     }
 }
