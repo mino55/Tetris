@@ -1,3 +1,5 @@
+using System;
+
 namespace Tetris
 {
   public class Point
@@ -16,6 +18,21 @@ namespace Tetris
     {
       x = atX;
       y = atY;
+    }
+
+    public override bool Equals(Object obj)
+    {
+        if (obj == null) return false;
+
+        if (!this.GetType().Equals(obj.GetType())) return false;
+
+        Point point = (Point) obj;
+        return (x == point.x) && (y == point.y);
+    }
+
+    public override int GetHashCode()
+    {
+        return int.Parse($"{x}{y}");
     }
   }
 }

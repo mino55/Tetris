@@ -179,7 +179,7 @@ namespace Tetris.Tests
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public void TilesInRows_ThereAreRows_returnRowList(int numberOfRows)
+        public void TilesInRows_ThereAreRows_ReturnRowList(int numberOfRows)
         {
             for (int y = 0; y < numberOfRows; y++)
             {
@@ -205,7 +205,7 @@ namespace Tetris.Tests
         }
 
         [Fact]
-        public void TilesInRows_NoRows_returnEmptyRowList()
+        public void TilesInRows_NoRows_ReturnEmptyRowList()
         {
             fillBoardRowAt(0);
             _board.RemoveTileAt(new Point(4, 0));
@@ -213,6 +213,56 @@ namespace Tetris.Tests
             List<ITile[]> tileRows = _board.TilesInRows();
 
             Assert.Empty(tileRows);
+        }
+
+        [Fact]
+        public void IsEmptyBelowTile_SpotBelowEmpty_ReturnTrue()
+        {
+            Point point = new Point(0, 0);
+            Block block = new Block();
+            _board.AddTileAt(block, point);
+
+            bool result = _board.IsEmptyBelowTile(block);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsEmptyBelowTile_SpotBelowTaken_ReturnFalse()
+        {
+            Point point = new Point(0, 0);
+            Block block = new Block();
+            _board.AddTileAt(block, point);
+            Point otherPoint = new Point(0, 1);
+            Block otherBlock = new Block();
+            _board.AddTileAt(otherBlock, otherPoint);
+
+            bool result = _board.IsEmptyBelowTile(block);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void IsEmptyBelowTile_AtBoundary_ReturnFalse()
+        {
+            Point point = new Point(0, 4);
+            Block block = new Block();
+            _board.AddTileAt(block, point);
+
+            bool result = _board.IsEmptyBelowTile(block);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void IsEmptyBelowTile_UnplacedTile_ThrowsError()
+        {
+            Point point = new Point(0, 0);
+            Block block = new Block();
+
+            Assert.Throws<Tetris.Exceptions.TileNotPlacedException>(
+                () => _board.IsEmptyBelowTile(block)
+            );
         }
     }
 }

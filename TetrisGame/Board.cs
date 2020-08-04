@@ -84,6 +84,15 @@ namespace Tetris
         return rows;
     }
 
+    public bool IsEmptyBelowTile(ITile tile)
+    {
+        ValidateTilePlacement(tile);
+
+        Point tilePoint = TilePoint(tile);
+        Point pointBelow = Point.AddPoints(tilePoint, new Point(0, 1));
+        return IsInsideBoard(pointBelow) && IsEmptySpot(pointBelow);
+    }
+
     private bool HasRow(int atY)
     {
         for (int x = 0; x < width; x++)
@@ -136,6 +145,15 @@ namespace Tetris
         if (_allTiles.Contains(tile) && _tilePoints[tile] != null) return true;
 
         return false;
+    }
+
+    private void ValidateTilePlacement(ITile tile)
+    {
+        if (TilePoint(tile) == null)
+        {
+            string msg = "The referenced tile has not been placed on board.";
+            throw new Tetris.Exceptions.TileNotPlacedException(msg);
+        }
     }
 
     public string Print()
