@@ -12,7 +12,7 @@ namespace Tetris.Tests
         {
             for (int x = 0;  x < _board.width; x++ )
             {
-                _board.AddTileAt(new Block(), new Point(x, rowAt));
+                _board.AddBlockAt(new Block(), new Point(x, rowAt));
             }
         }
 
@@ -88,8 +88,8 @@ namespace Tetris.Tests
             _boardOperator.DropCurrentBlock();
 
             Point endPoint = new Point(3, 1);
-            Assert.Null(_board.TileAt(startPoint));
-            Assert.Equal(currentBlock, _board.TileAt(endPoint));
+            Assert.Null(_board.BlockAt(startPoint));
+            Assert.Equal(currentBlock, _board.BlockAt(endPoint));
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace Tetris.Tests
             _boardOperator.DropCurrentBlock();
 
             Point endPoint = new Point(1, 4);
-            Assert.Equal(currentBlock, _board.TileAt(endPoint));
+            Assert.Equal(currentBlock, _board.BlockAt(endPoint));
         }
 
         [Fact]
@@ -139,26 +139,26 @@ namespace Tetris.Tests
             _boardOperator.SlamCurrentBlock();
 
             Point endPoint = new Point(0, 4);
-            Assert.Null( _board.TileAt(startPoint));
-            Assert.Equal(currentBlock, _board.TileAt(endPoint));
+            Assert.Null( _board.BlockAt(startPoint));
+            Assert.Equal(currentBlock, _board.BlockAt(endPoint));
         }
 
         [Fact]
-        public void SlamCurrentBlock_OnOtherTile_MoveBlockOnTop()
+        public void SlamCurrentBlock_OnOtherBlock_MoveBlockOnTop()
         {
             Block currentBlock = new Block();
             Point startPoint = new Point(0, 0);
             _boardOperator.NewCurrentBlock(currentBlock, startPoint);
             Block otherBlock = new Block();
             Point otherPoint = new Point(0, 4);
-            _board.AddTileAt(otherBlock, otherPoint);
+            _board.AddBlockAt(otherBlock, otherPoint);
 
             _boardOperator.SlamCurrentBlock();
 
             Point endPoint = new Point(0, 3);
-            Assert.Null( _board.TileAt(startPoint));
-            Assert.Equal(currentBlock, _board.TileAt(endPoint));
-            Assert.Equal(otherBlock, _board.TileAt(otherPoint));
+            Assert.Null( _board.BlockAt(startPoint));
+            Assert.Equal(currentBlock, _board.BlockAt(endPoint));
+            Assert.Equal(otherBlock, _board.BlockAt(otherPoint));
         }
 
         [Theory]
@@ -181,7 +181,7 @@ namespace Tetris.Tests
         public void Rows_NoRows_returnZero()
         {
             fillBoardRowAt(0);
-            _board.RemoveTileAt(new Point(4, 0));
+            _board.RemoveBlockAt(new Point(4, 0));
             Assert.Equal(0, _boardOperator.Rows());
         }
 
@@ -197,13 +197,13 @@ namespace Tetris.Tests
             }
             Block nonRowBlock = new Block();
             Point atPoint = new Point(4, 4);
-            _board.AddTileAt(nonRowBlock, atPoint);
+            _board.AddBlockAt(nonRowBlock, atPoint);
 
             _boardOperator.CleanRows();
 
             Assert.Equal(0, _boardOperator.Rows());
-            Assert.Single(_board.AllTiles());
-            Assert.Equal(nonRowBlock, _board.TileAt(atPoint));
+            Assert.Single(_board.AllBlocks());
+            Assert.Equal(nonRowBlock, _board.BlockAt(atPoint));
         }
 
         [Fact]
@@ -211,32 +211,32 @@ namespace Tetris.Tests
         {
             Block nonRowBlock = new Block();
             Point atPoint = new Point(4, 4);
-            _board.AddTileAt(nonRowBlock, atPoint);
+            _board.AddBlockAt(nonRowBlock, atPoint);
 
             _boardOperator.CleanRows();
 
             Assert.Equal(0, _boardOperator.Rows());
-            Assert.Single(_board.AllTiles());
-            Assert.Equal(nonRowBlock, _board.TileAt(atPoint));
+            Assert.Single(_board.AllBlocks());
+            Assert.Equal(nonRowBlock, _board.BlockAt(atPoint));
         }
 
         [Fact]
         public void CleanRows_WithRows_FillGaps()
         {
             Block blockFarAboveGap = new Block();
-            _board.AddTileAt(blockFarAboveGap, new Point(0, 0));
+            _board.AddBlockAt(blockFarAboveGap, new Point(0, 0));
             Block blockAboveGap = new Block();
-            _board.AddTileAt(blockAboveGap, new Point(4, 1));
+            _board.AddBlockAt(blockAboveGap, new Point(4, 1));
             Block blockBelowGap = new Block();
             fillBoardRowAt(2);
             fillBoardRowAt(3);
-            _board.AddTileAt(blockBelowGap, new Point(0, 4));
+            _board.AddBlockAt(blockBelowGap, new Point(0, 4));
 
             _boardOperator.CleanRows();
 
-            Assert.Equal(new Point(0, 2), _board.TilePoint(blockFarAboveGap));
-            Assert.Equal(new Point(4, 3), _board.TilePoint(blockAboveGap));
-            Assert.Equal(new Point(0, 4), _board.TilePoint(blockBelowGap));
+            Assert.Equal(new Point(0, 2), _board.BlockPoint(blockFarAboveGap));
+            Assert.Equal(new Point(4, 3), _board.BlockPoint(blockAboveGap));
+            Assert.Equal(new Point(0, 4), _board.BlockPoint(blockBelowGap));
         }
     }
 }

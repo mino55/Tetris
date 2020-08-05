@@ -12,7 +12,7 @@ namespace Tetris.Tests
         {
             for (int x = 0;  x < _board.width; x++ )
             {
-                _board.AddTileAt(new Block(), new Point(x, rowAt));
+                _board.AddBlockAt(new Block(), new Point(x, rowAt));
             }
         }
 
@@ -22,99 +22,99 @@ namespace Tetris.Tests
         }
 
         [Fact]
-        public void Tile_WhenSpotEmpty_ReturnNull()
+        public void BlockAt_WhenSpotEmpty_ReturnNull()
         {
             Point point = new Point(1, 2);
 
-            Block result = _board.TileAt(point);
+            Block result = _board.BlockAt(point);
 
             Assert.Null(result);
         }
 
         [Fact]
-        public void Tile_WhenSpotTaken_ReturnTile()
+        public void BlockAt_WhenSpotTaken_ReturnBlock()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
 
-            Block tile = _board.TileAt(point);
+            Block result = _board.BlockAt(point);
 
-            Assert.Equal(tile, block);
+            Assert.Equal(result, block);
         }
 
         [Fact]
-        public void AddTileAt_SpotEmpty_AddTile()
+        public void AddBlockAt_SpotEmpty_AddBlock()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
 
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
 
-            Assert.Equal(_board.TileAt(point), block);
-            Assert.Equal(_board.TilePoint(block), point);
+            Assert.Equal(_board.BlockAt(point), block);
+            Assert.Equal(_board.BlockPoint(block), point);
         }
 
         [Fact]
-        public void AddTileAt_SpotTaken_DontAddTile()
+        public void AddBlockAt_SpotTaken_DontAddBlock()
         {
             Point point = new Point(1, 2);
             Block firstBlock = new Block();
-            _board.AddTileAt(firstBlock, point);
+            _board.AddBlockAt(firstBlock, point);
 
             Block secondBlock = new Block();
-            _board.AddTileAt(secondBlock, point);
+            _board.AddBlockAt(secondBlock, point);
 
-            Block tile = _board.TileAt(point);
-            Assert.Equal(tile, firstBlock);
+            Block block = _board.BlockAt(point);
+            Assert.Equal(block, firstBlock);
         }
 
         [Fact]
-        public void RemoveTileAt_SpotTaken_RemoveTile()
+        public void RemoveBlockAt_SpotTaken_RemoveBlock()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
 
-            _board.RemoveTileAt(point);
+            _board.RemoveBlockAt(point);
 
-            Assert.Null(_board.TileAt(point));
-            Assert.Null(_board.TilePoint(block));
+            Assert.Null(_board.BlockAt(point));
+            Assert.Null(_board.BlockPoint(block));
         }
 
         [Fact]
-        public void RemoveTileAt_SpotEmpty_DoNothing()
+        public void RemoveBlockAt_SpotEmpty_DoNothing()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
 
-            _board.RemoveTileAt(point);
+            _board.RemoveBlockAt(point);
 
-            Assert.Null(_board.TileAt(point));
-            Assert.Null(_board.TilePoint(block));
+            Assert.Null(_board.BlockAt(point));
+            Assert.Null(_board.BlockPoint(block));
         }
 
         [Fact]
-        public void RemoveTile_TilePlaced_RemoveTile()
+        public void RemoveBlock_BlockPlaced_RemoveBlock()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
 
-            _board.RemoveTile(block);
+            _board.RemoveBlock(block);
 
-            Assert.Null(_board.TileAt(point));
-            Assert.Null(_board.TilePoint(block));
+            Assert.Null(_board.BlockAt(point));
+            Assert.Null(_board.BlockPoint(block));
         }
 
         [Fact]
-        public void RemoveTile_TileUnplaced_DoNothing()
+        public void RemoveBlock_BlockUnplaced_DoNothing()
         {
             Block block = new Block();
 
-            _board.RemoveTile(block);
+            _board.RemoveBlock(block);
 
-            Assert.Null(_board.TilePoint(block));
+            Assert.Null(_board.BlockPoint(block));
         }
 
         [Theory]
@@ -122,18 +122,18 @@ namespace Tetris.Tests
         [InlineData(1, 0)]
         [InlineData(0, -1)]
         [InlineData(-1, 0)]
-        public void MoveTile_WithoutHindrance_MoveTile(int move_x, int move_y)
+        public void MoveBlock_WithoutHindrance_MoveBlock(int move_x, int move_y)
         {
             Point startPoint = new Point(1, 2);
             Block block = new Block();
-            _board.AddTileAt(block, startPoint);
+            _board.AddBlockAt(block, startPoint);
 
             Point byPoint = new Point(move_x, move_y);
-            _board.MoveTile(block, byPoint);
+            _board.MoveBlock(block, byPoint);
 
             Point endPoint = Point.AddPoints(startPoint, byPoint);
-            Assert.Null(_board.TileAt(startPoint));
-            Assert.Equal(_board.TileAt(endPoint), block);
+            Assert.Null(_board.BlockAt(startPoint));
+            Assert.Equal(_board.BlockAt(endPoint), block);
         }
 
         [Theory]
@@ -141,20 +141,20 @@ namespace Tetris.Tests
         [InlineData(1, 0)]
         [InlineData(0, -1)]
         [InlineData(-1, 0)]
-        public void MoveTile_AgainstOtherTile_DontMoveTile(int move_x, int move_y)
+        public void MoveBlock_AgainstOtherBlock_DontMoveBlock(int move_x, int move_y)
         {
             Point startPoint = new Point(1, 2);
             Block block = new Block();
-            _board.AddTileAt(block, startPoint);
+            _board.AddBlockAt(block, startPoint);
 
             Point byPoint = new Point(move_x, move_y);
             Point endPoint = Point.AddPoints(startPoint, byPoint);
             Block blockInTheWay = new Block();
-            _board.AddTileAt(blockInTheWay, endPoint);
-            _board.MoveTile(block, byPoint);
+            _board.AddBlockAt(blockInTheWay, endPoint);
+            _board.MoveBlock(block, byPoint);
 
-            Assert.Equal(_board.TileAt(startPoint), block);
-            Assert.Equal(_board.TileAt(endPoint), blockInTheWay);
+            Assert.Equal(_board.BlockAt(startPoint), block);
+            Assert.Equal(_board.BlockAt(endPoint), blockInTheWay);
         }
 
         [Theory]
@@ -162,106 +162,106 @@ namespace Tetris.Tests
         [InlineData(4, 0, 1, 0)]
         [InlineData(0, 0, 0, -1)]
         [InlineData(0, 0, -1, 0)]
-        public void MoveTile_AgainstBoundary_DontMoveTile(int start_x, int start_y, int move_x, int move_y)
+        public void MoveBlock_AgainstBoundary_DontMoveBlock(int start_x, int start_y, int move_x, int move_y)
         {
             Point startPoint = new Point(start_x, start_y);
             Block block = new Block();
-            _board.AddTileAt(block, startPoint);
+            _board.AddBlockAt(block, startPoint);
 
             Point byPoint = new Point(move_x, move_y);
-            _board.MoveTile(block, byPoint);
+            _board.MoveBlock(block, byPoint);
 
             Point endPoint = Point.AddPoints(startPoint, byPoint);
-            Assert.Equal(_board.TileAt(startPoint), block);
+            Assert.Equal(_board.BlockAt(startPoint), block);
         }
 
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public void TilesInRows_ThereAreRows_ReturnRowList(int numberOfRows)
+        public void BlocksInRows_ThereAreRows_ReturnRowList(int numberOfRows)
         {
             for (int y = 0; y < numberOfRows; y++)
             {
                 fillBoardRowAt(y);
             }
 
-            List<Block[]> tileRows = _board.TilesInRows();
+            List<Block[]> blockRows = _board.BlocksInRows();
 
-            Assert.Equal(tileRows.Count, numberOfRows);
+            Assert.Equal(blockRows.Count, numberOfRows);
         }
 
         [Fact]
-        public void TilesInRows_ThereIsRow_RowHasTiles()
+        public void BlocksInRows_ThereIsRow_RowHasBlocks()
         {
             fillBoardRowAt(0);
 
-            Block[] tileRow = _board.TilesInRows()[0];
+            Block[] blockRow = _board.BlocksInRows()[0];
 
             for (int x = 0;  x < _board.width; x++ )
             {
-                Assert.True(tileRow[x] is Block);
+                Assert.True(blockRow[x] is Block);
             }
         }
 
         [Fact]
-        public void TilesInRows_NoRows_ReturnEmptyRowList()
+        public void BlocksInRows_NoRows_ReturnEmptyRowList()
         {
             fillBoardRowAt(0);
-            _board.RemoveTileAt(new Point(4, 0));
+            _board.RemoveBlockAt(new Point(4, 0));
 
-            List<Block[]> tileRows = _board.TilesInRows();
+            List<Block[]> blockRows = _board.BlocksInRows();
 
-            Assert.Empty(tileRows);
+            Assert.Empty(blockRows);
         }
 
         [Fact]
-        public void IsEmptyBelowTile_SpotBelowEmpty_ReturnTrue()
+        public void IsEmptyBelowBlock_SpotBelowEmpty_ReturnTrue()
         {
             Point point = new Point(0, 0);
             Block block = new Block();
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
 
-            bool result = _board.IsEmptyBelowTile(block);
+            bool result = _board.IsEmptyBelowBlock(block);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void IsEmptyBelowTile_SpotBelowTaken_ReturnFalse()
+        public void IsEmptyBelowBlock_SpotBelowTaken_ReturnFalse()
         {
             Point point = new Point(0, 0);
             Block block = new Block();
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
             Point otherPoint = new Point(0, 1);
             Block otherBlock = new Block();
-            _board.AddTileAt(otherBlock, otherPoint);
+            _board.AddBlockAt(otherBlock, otherPoint);
 
-            bool result = _board.IsEmptyBelowTile(block);
+            bool result = _board.IsEmptyBelowBlock(block);
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsEmptyBelowTile_AtBoundary_ReturnFalse()
+        public void IsEmptyBelowBlock_AtBoundary_ReturnFalse()
         {
             Point point = new Point(0, 4);
             Block block = new Block();
-            _board.AddTileAt(block, point);
+            _board.AddBlockAt(block, point);
 
-            bool result = _board.IsEmptyBelowTile(block);
+            bool result = _board.IsEmptyBelowBlock(block);
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsEmptyBelowTile_UnplacedTile_ThrowsError()
+        public void IsEmptyBelowBlock_UnplacedBlock_ThrowsError()
         {
             Point point = new Point(0, 0);
             Block block = new Block();
 
-            Assert.Throws<Tetris.Exceptions.TileNotPlacedException>(
-                () => _board.IsEmptyBelowTile(block)
+            Assert.Throws<Tetris.Exceptions.BlockNotPlacedException>(
+                () => _board.IsEmptyBelowBlock(block)
             );
         }
     }

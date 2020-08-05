@@ -21,7 +21,7 @@ namespace Tetris
             ValidateCurrentBlockOverwrite();
 
             currentBlock = block;
-            _board.AddTileAt(block, startPoint);
+            _board.AddBlockAt(block, startPoint);
             currentBlockIsLocked = false;
         }
 
@@ -47,9 +47,9 @@ namespace Tetris
         {
             ValidateCurrentBlockMissing();
 
-            if (_board.IsEmptyBelowTile(currentBlock))
+            if (_board.IsEmptyBelowBlock(currentBlock))
             {
-                _board.MoveTile(currentBlock, new Point(0, 1));
+                _board.MoveBlock(currentBlock, new Point(0, 1));
             }
             else currentBlockIsLocked = true;
         }
@@ -58,14 +58,14 @@ namespace Tetris
         {
             ValidateCurrentBlockMissing();
 
-            _board.MoveTile(currentBlock, new Point(1, 0));
+            _board.MoveBlock(currentBlock, new Point(1, 0));
         }
 
         public void MoveCurrentBlockLeft()
         {
             ValidateCurrentBlockMissing();
 
-            _board.MoveTile(currentBlock, new Point(-1, 0));
+            _board.MoveBlock(currentBlock, new Point(-1, 0));
         }
 
         public void RorateCurrentBlock() {}
@@ -82,14 +82,14 @@ namespace Tetris
 
         public int Rows()
         {
-            return _board.TilesInRows().Count;
+            return _board.BlocksInRows().Count;
         }
 
         public void CleanRows()
         {
-            foreach (Block[] row in _board.TilesInRows())
+            foreach (Block[] row in _board.BlocksInRows())
             {
-                int at_y = _board.TilePoint(row[0]).y;
+                int at_y = _board.BlockPoint(row[0]).y;
                 ClearRow(row);
                 FillRowGapAt(at_y);
             }
@@ -99,7 +99,7 @@ namespace Tetris
         {
             foreach (Block tile in row)
             {
-                _board.RemoveTile(tile);
+                _board.RemoveBlock(tile);
             }
         }
 
@@ -111,10 +111,10 @@ namespace Tetris
 
                 for (int x = 0; x < _board.width; x++)
                 {
-                    Block block = _board.TileAt(new Point(x, y));
+                    Block block = _board.BlockAt(new Point(x, y));
                     if (block == null) continue;
 
-                    _board.MoveTile(block, new Point(0, 1));
+                    _board.MoveBlock(block, new Point(0, 1));
                 }
             }
         }

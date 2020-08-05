@@ -59,7 +59,7 @@ namespace Tetris
                 {
                     ResolveRows();
 
-                    if (_board.TileAt(_centerPoint) != null) {
+                    if (_board.BlockAt(_centerPoint) != null) {
                         GameOver();
                         break;
                     }
