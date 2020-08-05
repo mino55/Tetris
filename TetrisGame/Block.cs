@@ -1,6 +1,6 @@
 namespace Tetris
 {
-  public class Block : ITile
+  public class Block
   {
     public string Print()
     {

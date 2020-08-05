@@ -26,7 +26,7 @@ namespace Tetris.Tests
         {
             Point point = new Point(1, 2);
 
-            ITile result = _board.TileAt(point);
+            Block result = _board.TileAt(point);
 
             Assert.Null(result);
         }
@@ -38,7 +38,7 @@ namespace Tetris.Tests
             Block block = new Block();
             _board.AddTileAt(block, point);
 
-            ITile tile = _board.TileAt(point);
+            Block tile = _board.TileAt(point);
 
             Assert.Equal(tile, block);
         }
@@ -65,7 +65,7 @@ namespace Tetris.Tests
             Block secondBlock = new Block();
             _board.AddTileAt(secondBlock, point);
 
-            ITile tile = _board.TileAt(point);
+            Block tile = _board.TileAt(point);
             Assert.Equal(tile, firstBlock);
         }
 
@@ -186,7 +186,7 @@ namespace Tetris.Tests
                 fillBoardRowAt(y);
             }
 
-            List<ITile[]> tileRows = _board.TilesInRows();
+            List<Block[]> tileRows = _board.TilesInRows();
 
             Assert.Equal(tileRows.Count, numberOfRows);
         }
@@ -196,11 +196,11 @@ namespace Tetris.Tests
         {
             fillBoardRowAt(0);
 
-            ITile[] tileRow = _board.TilesInRows()[0];
+            Block[] tileRow = _board.TilesInRows()[0];
 
             for (int x = 0;  x < _board.width; x++ )
             {
-                Assert.True(tileRow[x] is ITile);
+                Assert.True(tileRow[x] is Block);
             }
         }
 
@@ -210,7 +210,7 @@ namespace Tetris.Tests
             fillBoardRowAt(0);
             _board.RemoveTileAt(new Point(4, 0));
 
-            List<ITile[]> tileRows = _board.TilesInRows();
+            List<Block[]> tileRows = _board.TilesInRows();
 
             Assert.Empty(tileRows);
         }

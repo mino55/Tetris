@@ -5,8 +5,8 @@ namespace Tetris
     public class BoardOperator
     {
         public Board _board;
-        public ITile currentBlock { get; private set; }
-        private ITile _nextBlock;
+        public Block currentBlock { get; private set; }
+        private Block _nextBlock;
         private Point _nextBlockStartPoint;
 
         public bool currentBlockIsLocked { get; private set; }
@@ -16,7 +16,7 @@ namespace Tetris
             _board = board;
         }
 
-        public void NewCurrentBlock(ITile block, Point startPoint)
+        public void NewCurrentBlock(Block block, Point startPoint)
         {
             ValidateCurrentBlockOverwrite();
 
@@ -25,7 +25,7 @@ namespace Tetris
             currentBlockIsLocked = false;
         }
 
-        public void NewNextBlock(ITile block, Point startPoint)
+        public void NewNextBlock(Block block, Point startPoint)
         {
             ValidateNextBlockOverwrite();
 
@@ -87,7 +87,7 @@ namespace Tetris
 
         public void CleanRows()
         {
-            foreach (ITile[] row in _board.TilesInRows())
+            foreach (Block[] row in _board.TilesInRows())
             {
                 int at_y = _board.TilePoint(row[0]).y;
                 ClearRow(row);
@@ -95,9 +95,9 @@ namespace Tetris
             }
         }
 
-        private void ClearRow(ITile[] row)
+        private void ClearRow(Block[] row)
         {
-            foreach (ITile tile in row)
+            foreach (Block tile in row)
             {
                 _board.RemoveTile(tile);
             }
@@ -111,7 +111,7 @@ namespace Tetris
 
                 for (int x = 0; x < _board.width; x++)
                 {
-                    ITile block = _board.TileAt(new Point(x, y));
+                    Block block = _board.TileAt(new Point(x, y));
                     if (block == null) continue;
 
                     _board.MoveTile(block, new Point(0, 1));

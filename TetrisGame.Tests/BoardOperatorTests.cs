@@ -25,7 +25,7 @@ namespace Tetris.Tests
         [Fact]
         public void NewCurrentBlock_NoCurrentBlock_setCurrentBlock()
         {
-            ITile block = new Block();
+            Block block = new Block();
             Point point = new Point(0, 0);
 
             _boardOperator.NewCurrentBlock(block, point);
@@ -36,7 +36,7 @@ namespace Tetris.Tests
         [Fact]
         public void NewCurrentBlock_AlreadyCurrentBlock_ThrowException()
         {
-            ITile block = new Block();
+            Block block = new Block();
             Point point = new Point(0, 0);
             _boardOperator.NewCurrentBlock(block, point);
 
@@ -46,7 +46,7 @@ namespace Tetris.Tests
         [Fact]
         public void NewNextBlock_AlreadyNextBlock_ThrowException()
         {
-            ITile block = new Block();
+            Block block = new Block();
             Point point = new Point(0, 0);
             _boardOperator.NewNextBlock(block, point);
 
@@ -57,10 +57,10 @@ namespace Tetris.Tests
         public void NextCurrentBlock_NextBlockSet_NextBlockBecomesCurrent()
         {
             Point pointA = new Point(0, 0);
-            ITile currentBlock = new Block();
+            Block currentBlock = new Block();
             _boardOperator.NewCurrentBlock(currentBlock, pointA);
             Point pointB = new Point(0, 1);
-            ITile nextBlock = new Block();
+            Block nextBlock = new Block();
             _boardOperator.NewNextBlock(nextBlock, pointB);
 
             _boardOperator.NextCurrentBlock();
@@ -72,7 +72,7 @@ namespace Tetris.Tests
         public void NextCurrentBlock_MissingNextBlock_ThrowException()
         {
             Point pointA = new Point(0, 0);
-            ITile currentBlock = new Block();
+            Block currentBlock = new Block();
             _boardOperator.NewCurrentBlock(currentBlock, pointA);
 
             Assert.Throws<Exceptions.MissingBlockException>(() => _boardOperator.NextCurrentBlock());

@@ -8,26 +8,26 @@ namespace Tetris
     public int width { get; private set; }
     public int height { get; private set; }
 
-    private ITile[,] _tiles;
-    public Dictionary<ITile, Point> _tilePoints;
-    public List<ITile> _allTiles;
+    private Block[,] _tiles;
+    public Dictionary<Block, Point> _tilePoints;
+    public List<Block> _allTiles;
     public Board(int boardWidth, int boardHeight)
     {
-        _allTiles = new List<ITile>();
+        _allTiles = new List<Block>();
         width = boardWidth;
         height = boardHeight;
 
-        _tiles = new ITile[height, width];
-        _tilePoints = new Dictionary<ITile, Point>();
+        _tiles = new Block[height, width];
+        _tilePoints = new Dictionary<Block, Point>();
     }
 
-    public ITile TileAt(Point point) { return _tiles[point.y, point.x]; }
+    public Block TileAt(Point point) { return _tiles[point.y, point.x]; }
 
-    public ITile[] AllTiles() {
+    public Block[] AllTiles() {
         return _allTiles.ToArray();
     }
 
-    public void AddTileAt(ITile tile, Point atPoint)
+    public void AddTileAt(Block tile, Point atPoint)
     {
         if (IsInsideBoard(atPoint) && IsEmptySpot(atPoint))
         {
@@ -40,13 +40,13 @@ namespace Tetris
     {
         if (IsInsideBoard(atPoint) && !IsEmptySpot(atPoint))
         {
-            ITile tile = TileAt(atPoint);
+            Block tile = TileAt(atPoint);
             UnplaceTileAt(tile, atPoint);
             _allTiles.Remove(tile);
         }
     }
 
-    public void RemoveTile(ITile tile)
+    public void RemoveTile(Block tile)
     {
         if (IsPlaced(tile))
         {
@@ -56,14 +56,14 @@ namespace Tetris
         }
     }
 
-    public Point TilePoint(ITile tile)
+    public Point TilePoint(Block tile)
     {
         if (IsPlaced(tile)) return _tilePoints[tile];
 
         return null;
     }
 
-    public void MoveTile(ITile tile, Point byPoint)
+    public void MoveTile(Block tile, Point byPoint)
     {
         Point atPoint = TilePoint(tile);
         Point toPoint = Point.AddPoints(atPoint, byPoint);
@@ -74,9 +74,9 @@ namespace Tetris
         }
     }
 
-    public List<ITile[]> TilesInRows()
+    public List<Block[]> TilesInRows()
     {
-        List<ITile[]> rows = new List<ITile[]>();
+        List<Block[]> rows = new List<Block[]>();
         for (int y = 0; y < height; y++)
         {
             if (HasRow(y)) rows.Add(Row(y));
@@ -84,7 +84,7 @@ namespace Tetris
         return rows;
     }
 
-    public bool IsEmptyBelowTile(ITile tile)
+    public bool IsEmptyBelowTile(Block tile)
     {
         ValidateTilePlacement(tile);
 
@@ -103,9 +103,9 @@ namespace Tetris
         return true;
     }
 
-    private ITile[] Row(int atY)
+    private Block[] Row(int atY)
     {
-        ITile[] row = new ITile[width];
+        Block[] row = new Block[width];
         for (int x = 0; x < width; x++)
         {
             Point atPoint = new Point(x, atY);
@@ -114,13 +114,13 @@ namespace Tetris
         return row;
     }
 
-    private void PlaceTileAt(ITile tile, Point atPoint)
+    private void PlaceTileAt(Block tile, Point atPoint)
     {
         _tiles[atPoint.y, atPoint.x] = tile;
         _tilePoints[tile] = atPoint;
     }
 
-    private void UnplaceTileAt(ITile tile, Point atPoint)
+    private void UnplaceTileAt(Block tile, Point atPoint)
     {
         _tiles[atPoint.y, atPoint.x] = null;
         _tilePoints[tile] = null;
@@ -140,14 +140,14 @@ namespace Tetris
         return false;
     }
 
-    private bool IsPlaced(ITile tile)
+    private bool IsPlaced(Block tile)
     {
         if (_allTiles.Contains(tile) && _tilePoints[tile] != null) return true;
 
         return false;
     }
 
-    private void ValidateTilePlacement(ITile tile)
+    private void ValidateTilePlacement(Block tile)
     {
         if (TilePoint(tile) == null)
         {
