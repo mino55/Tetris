@@ -9,7 +9,7 @@ namespace Tetris
     public int height { get; private set; }
 
     private Block[,] _tiles;
-    public Dictionary<Block, Point> _blockPoints;
+    private Dictionary<Block, Point> _blockPoints;
     public List<Block> _allBlocks;
     public Board(int boardWidth, int boardHeight)
     {
@@ -29,21 +29,22 @@ namespace Tetris
 
     public void AddBlockAt(Block block, Point atPoint)
     {
-        if (IsInsideBoard(atPoint) && IsEmptySpot(atPoint))
-        {
-            PlaceBlockAt(block, atPoint);
-            _allBlocks.Add(block);
-        }
+        if (!IsInsideBoard(atPoint)) throw new Exceptions.BlockOutsideBoardException();
+        if (!IsEmptySpot(atPoint)) throw new Exceptions.NoOverwriteBlockException();
+
+        PlaceBlockAt(block, atPoint);
+        _allBlocks.Add(block);
+
     }
 
     public void RemoveBlockAt(Point atPoint)
     {
-        if (IsInsideBoard(atPoint) && !IsEmptySpot(atPoint))
-        {
-            Block block = BlockAt(atPoint);
-            UnplaceBlockAt(block, atPoint);
-            _allBlocks.Remove(block);
-        }
+        if (!IsInsideBoard(atPoint)) throw new Exceptions.BlockOutsideBoardException();
+        if (IsEmptySpot(atPoint)) throw new Exceptions.MissingBlockException();
+
+        Block block = BlockAt(atPoint);
+        UnplaceBlockAt(block, atPoint);
+        _allBlocks.Remove(block);
     }
 
     public void RemoveBlock(Block block)
@@ -114,13 +115,13 @@ namespace Tetris
         return row;
     }
 
-    private void PlaceBlockAt(Block block, Point atPoint)
+    protected void PlaceBlockAt(Block block, Point atPoint)
     {
         _tiles[atPoint.y, atPoint.x] = block;
         _blockPoints[block] = atPoint;
     }
 
-    private void UnplaceBlockAt(Block block, Point atPoint)
+    protected void UnplaceBlockAt(Block block, Point atPoint)
     {
         _tiles[atPoint.y, atPoint.x] = null;
         _blockPoints[block] = null;

@@ -56,17 +56,32 @@ namespace Tetris.Tests
         }
 
         [Fact]
-        public void AddBlockAt_SpotTaken_DontAddBlock()
+        public void AddBlockAt_SpotTaken_ThrowException()
         {
             Point point = new Point(1, 2);
             Block firstBlock = new Block();
             _board.AddBlockAt(firstBlock, point);
 
             Block secondBlock = new Block();
-            _board.AddBlockAt(secondBlock, point);
 
-            Block block = _board.BlockAt(point);
-            Assert.Equal(block, firstBlock);
+            Assert.Throws<Tetris.Exceptions.NoOverwriteBlockException>(
+               () => _board.AddBlockAt(secondBlock, point)
+            );
+        }
+
+        [Theory]
+        [InlineData(-1, 0)]
+        [InlineData(0, -1)]
+        [InlineData(5, 0)]
+        [InlineData(0, 5)]
+        public void AddBlockAt_OutsideBoard_ThrowException(int x, int y)
+        {
+            Point point = new Point(x, y);
+            Block block = new Block();
+
+            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+               () => _board.AddBlockAt(block, point)
+            );
         }
 
         [Fact]
@@ -83,15 +98,28 @@ namespace Tetris.Tests
         }
 
         [Fact]
-        public void RemoveBlockAt_SpotEmpty_DoNothing()
+        public void RemoveBlockAt_SpotEmpty_ThrowException()
         {
             Point point = new Point(1, 2);
             Block block = new Block();
 
-            _board.RemoveBlockAt(point);
+            Assert.Throws<Tetris.Exceptions.MissingBlockException>(
+               () => _board.RemoveBlockAt(point)
+            );
+        }
 
-            Assert.Null(_board.BlockAt(point));
-            Assert.Null(_board.BlockPoint(block));
+        [Theory]
+        [InlineData(-1, 0)]
+        [InlineData(0, -1)]
+        [InlineData(5, 0)]
+        [InlineData(0, 5)]
+        public void RemoveBlockAt_OutsideBoard_ThrowException(int x, int y)
+        {
+            Point point = new Point(x, y);
+
+            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+               () => _board.RemoveBlockAt(point)
+            );
         }
 
         [Fact]
