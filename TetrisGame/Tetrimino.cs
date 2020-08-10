@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Tetris
 {
     public class Tetrimino
@@ -93,9 +96,28 @@ namespace Tetris
             this.direction = direction;
         }
 
-        public int[,] Shape()
+        public Block ShapeBlockAt(Point shapePoint, Direction dir)
         {
-            return Shape(direction);
+            int[,] shape = Shape(dir);
+            int blockIndex = (shape[shapePoint.y, shapePoint.x] - 1);
+            if (blockIndex == -1) return null;
+
+            return blocks[blockIndex];
+        }
+
+        public Point[] ShapePoints(Direction dir)
+        {
+            List<Point> shapePoints = new List<Point>();
+            int[,] shape = Shape(dir);
+            for (int y = 0; y < shape.GetLength(0); y++)
+            {
+                for (int x = 0; x < shape.GetLength(1); x++)
+                {
+                    shapePoints.Add(new Point(x, y));
+                }
+            }
+
+            return shapePoints.ToArray();
         }
 
         public int[,] Shape(Direction dir)
@@ -118,6 +140,13 @@ namespace Tetris
         public virtual Point ShapeCenterOffset()
         {
           return new Point(1, 1);
+        }
+
+        public bool ContainsBlock(Block block)
+        {
+            foreach (Block b in blocks) { if (block == b) return true; }
+
+            return false;
         }
 
         protected virtual int[,] ShapeDirectionUp()

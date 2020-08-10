@@ -11,6 +11,13 @@ namespace Tetris
         return new Point(sumX, sumY);
     }
 
+    public static Point SubtractPoints(Point a, Point b)
+    {
+        int diffX = a.x - b.x;
+        int diffY = a.y - b.y;
+        return new Point(diffX, diffY);
+    }
+
     public int x { get; private set; }
     public int y { get; private set; }
 

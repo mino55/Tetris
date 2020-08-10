@@ -34,7 +34,6 @@ namespace Tetris
 
         PlaceBlockAt(block, atPoint);
         _allBlocks.Add(block);
-
     }
 
     public void RemoveBlockAt(Point atPoint)
@@ -127,14 +126,14 @@ namespace Tetris
         _blockPoints[block] = null;
     }
 
-    private bool IsInsideBoard(Point atPoint)
+    protected bool IsInsideBoard(Point atPoint)
     {
         bool inside_x = atPoint.x < width && atPoint.x >= 0;
         bool inside_y = atPoint.y < height && atPoint.y >= 0;
         return inside_x && inside_y;
     }
 
-    private bool IsEmptySpot(Point atPoint)
+    protected bool IsEmptySpot(Point atPoint)
     {
         if (BlockAt(atPoint) == null) return true;
 
