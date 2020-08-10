@@ -101,6 +101,136 @@ namespace Tetris
         }
 
         [Theory]
+        [InlineData(0, -1)]
+        [InlineData(1, 0)]
+        [InlineData(0, 1)]
+        [InlineData(-1, 0)]
+        public void CanMoveTetrimino_WithSpace_ReturnTrue(int byX, int byY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+            _tetrisBoard.AddTetriminoAt(tetrimino, new Point (2, 2));
+
+            bool result = _tetrisBoard.CanMoveTetrimino(tetrimino, new Point(byX, byY));
+
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData(0, -1, 2, 0)]
+        [InlineData(1, 0, 3, 2)]
+        [InlineData(0, 1, 2, 3 )]
+        [InlineData(-1, 0, 1, 2)]
+        public void CanMoveTetrimino_BlockInTheWay_ReturnFalse(int byX,
+                                                               int byY,
+                                                               int blockX,
+                                                               int blockY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+            _tetrisBoard.AddTetriminoAt(tetrimino, new Point(2, 2));
+            _tetrisBoard.AddBlockAt(new Block(), new Point(blockX, blockY));
+
+            bool result = _tetrisBoard.CanMoveTetrimino(tetrimino, new Point(byX, byY));
+
+            Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData(0, -1, 2, 1)]
+        [InlineData(1, 0, 4, 2)]
+        [InlineData(0, 1, 2, 4 )]
+        [InlineData(-1, 0, 0, 2)]
+        public void CanMoveTetrimino_BoundaryInTheWay_ReturnFalse(int byX,
+                                                                  int byY,
+                                                                  int startX,
+                                                                  int startY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+            _tetrisBoard.AddTetriminoAt(tetrimino, new Point(startX, startY));
+
+            bool result = _tetrisBoard.CanMoveTetrimino(tetrimino, new Point(byX, byY));
+
+            Assert.False(result);
+        }
+
+
+        [Theory]
+        [InlineData(0, -1)]
+        [InlineData(1, 0)]
+        [InlineData(0, 1)]
+        [InlineData(-1, 0)]
+        public void MoveTetrimino_WithSpace_ReplaceBlocks(int byX, int byY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+            _tetrisBoard.AddTetriminoAt(tetrimino, new Point(2, 2));
+
+            Point byPoint = new Point(byX, byY);
+            _tetrisBoard.MoveTetrimino(tetrimino, byPoint);
+
+            Point blockPoint1 = Point.AddPoints(new Point(2, 1), byPoint);
+            Point blockPoint2 = Point.AddPoints(new Point(2, 2), byPoint);
+            Assert.Equal(blocks[0], _tetrisBoard.BlockAt(blockPoint1));
+            Assert.Equal(blocks[1], _tetrisBoard.BlockAt(blockPoint2));
+        }
+
+        [Theory]
+        [InlineData(0, -1, 2, 0)]
+        [InlineData(1, 0, 3, 2)]
+        [InlineData(0, 1, 2, 3 )]
+        [InlineData(-1, 0, 1, 2)]
+        public void MoveTetrimino_BlockInTheWay_ThrowException(int byX,
+                                                               int byY,
+                                                               int blockX,
+                                                               int blockY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+            _tetrisBoard.AddTetriminoAt(tetrimino, new Point(2, 2));
+            _tetrisBoard.AddBlockAt(new Block(), new Point(blockX, blockY));
+
+            Assert.Throws<Tetris.Exceptions.NoOverwriteBlockException>(
+               () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
+            );
+        }
+
+        [Theory]
+        [InlineData(0, -1, 2, 1)]
+        [InlineData(1, 0, 4, 2)]
+        [InlineData(0, 1, 2, 4 )]
+        [InlineData(-1, 0, 0, 2)]
+        public void MoveTetrimino_BoundaryInTheWay_ThrowException(int byX,
+                                                                  int byY,
+                                                                  int startX,
+                                                                  int startY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+            _tetrisBoard.AddTetriminoAt(tetrimino, new Point(startX, startY));
+
+            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+               () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
+            );
+        }
+
+        [Theory]
+        [InlineData(0, -1)]
+        [InlineData(1, 0)]
+        [InlineData(0, 1)]
+        [InlineData(-1, 0)]
+        public void MoveTetrimino_UnplacedTetrimino_ThrowException(int byX, int byY)
+        {
+            Block[] blocks = { new Block(), new Block() };
+            Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
+
+            Assert.Throws<Tetris.Exceptions.MissingTetrinoException>(
+               () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
+            );
+        }
+
+        [Theory]
         [InlineData(Rotation.CLOCKWISE)]
         [InlineData(Rotation.REVERSE)]
         [InlineData(Rotation.FLIP)]

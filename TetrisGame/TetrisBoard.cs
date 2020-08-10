@@ -48,6 +48,23 @@ namespace Tetris
             return _tetriminoPoints[tetrimino];
         }
 
+        public bool CanMoveTetrimino(Tetrimino tetrimino, Point byPoint)
+        {
+            Point atPoint = TetriminoPoint(tetrimino);
+            Point toPoint = Point.AddPoints(atPoint, byPoint);
+            return TetriminoFitsAt(tetrimino, toPoint, tetrimino.direction);
+        }
+
+        public void MoveTetrimino(Tetrimino tetrimino, Point byPoint)
+        {
+            ValidateTetriminoAdded(tetrimino);
+
+            Point atPoint = TetriminoPoint(tetrimino);
+            Point toPoint = Point.AddPoints(atPoint, byPoint);
+            UnplaceTetrimino(tetrimino);
+            PlaceTetriminoAt(tetrimino, toPoint);
+        }
+
         public bool CanRotate(Tetrimino tetrimino, Rotation rotation)
         {
             switch(rotation)
