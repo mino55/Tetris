@@ -11,8 +11,8 @@ namespace Tetris
 
         private static Point _centerPoint = null;
 
-        private static Board _board = null;
-        private static BoardOperator _boardOperator = null;
+        private static TetrisBoard _tetrisBoard = null;
+        private static TetrisBoardOperator _tetrisBoardOperator = null;
 
         static void Main(string[] args)
         {
@@ -24,6 +24,13 @@ namespace Tetris
 
                 GameLoop();
             }
+        }
+
+        private static Tetrimino CreateTetrimino()
+        {
+            Block[] blocks = new Block[Tetrimino.Size<Tetrimino>()];
+            for(int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(); }
+            return new Tetrimino(Direction.UP, blocks);
         }
 
         private static void Menu()
@@ -41,12 +48,14 @@ namespace Tetris
             _level = 0;
             _blocks = 1;
 
-            _board = new Board(5, 5);
-            _centerPoint = new Point(_board.width / 2, 0);
+            _tetrisBoard = new TetrisBoard(5, 5);
+            // TODO: base the center position below on the spawn point
+            _centerPoint = new Point(_tetrisBoard.width / 2, 1);
 
-            _boardOperator = new BoardOperator(_board);
-            _boardOperator.NewCurrentBlock(new Block(), _centerPoint);
-            _boardOperator.NewNextBlock(new Block(), _centerPoint);
+            _tetrisBoardOperator = new TetrisBoardOperator(_tetrisBoard);
+
+            _tetrisBoardOperator.NewCurrentTetrimino(CreateTetrimino(), _centerPoint);
+            _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
         }
 
         private static void GameLoop()
@@ -55,11 +64,11 @@ namespace Tetris
             {
                 DrawGame();
 
-                if (_boardOperator.currentBlockIsLocked)
+                if (_tetrisBoardOperator.currentTetriminoIsLocked)
                 {
                     ResolveRows();
 
-                    if (_board.BlockAt(_centerPoint) != null) {
+                    if (_tetrisBoard.BlockAt(_centerPoint) != null) {
                         GameOver();
                         break;
                     }
@@ -79,7 +88,7 @@ namespace Tetris
             Console.Clear();
             Console.WriteLine($"Score: {_score}, Blocks: {_blocks}, Level: {_level}");
             Console.WriteLine("");
-            Console.WriteLine(_board.Print());
+            Console.WriteLine(_tetrisBoard.Print());
         }
 
         private static void GameOver()
@@ -95,17 +104,17 @@ namespace Tetris
 
         private static void ResolveRows()
         {
-            if (_boardOperator.Rows() > 0)
+            if (_tetrisBoardOperator.Rows() > 0)
             {
-                _score += (_boardOperator.Rows() * 100);
-                _boardOperator.CleanRows();
+                _score += (_tetrisBoardOperator.Rows() * 100);
+                _tetrisBoardOperator.CleanRows();
             }
         }
 
         private static void NextBlock()
         {
-            _boardOperator.NextCurrentBlock();
-            _boardOperator.NewNextBlock(new Block(), _centerPoint);
+            _tetrisBoardOperator.NextCurrentTetrimino();
+            _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
             _blocks++;
         }
 
@@ -122,19 +131,19 @@ namespace Tetris
             switch (input)
             {
                 case "":
-                    _boardOperator.DropCurrentBlock();
+                    _tetrisBoardOperator.DropCurrentTetrimino();
                     break;
                 case "a":
-                    _boardOperator.MoveCurrentBlockLeft();
+                    _tetrisBoardOperator.MoveCurrentTetriminoLeft();
                     break;
                 case "d":
-                    _boardOperator.MoveCurrentBlockRight();
+                    _tetrisBoardOperator.MoveCurrentTetriminoRight();
                     break;
                 case "w":
-                    // _boardOperator.RotateCurrentBlock();
+                    _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.CLOCKWISE);
                     break;
                 case "s":
-                    _boardOperator.SlamCurrentBlock();
+                    _tetrisBoardOperator.SlamCurrentTetrimino();
                     break;
                 default:
                     break;
