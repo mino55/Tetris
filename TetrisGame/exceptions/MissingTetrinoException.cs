@@ -3,13 +3,13 @@ using System;
 namespace Tetris.Exceptions
 {
     [Serializable()]
-    public class MissingTetrinoException : System.Exception
+    public class MissingTetriminoException : System.Exception
     {
-        public MissingTetrinoException() : base() { }
-        public MissingTetrinoException(string message) : base(message) { }
-        public MissingTetrinoException(string message, System.Exception inner) : base(message, inner) { }
+        public MissingTetriminoException() : base() { }
+        public MissingTetriminoException(string message) : base(message) { }
+        public MissingTetriminoException(string message, System.Exception inner) : base(message, inner) { }
 
-        protected MissingTetrinoException(System.Runtime.Serialization.SerializationInfo info,
+        protected MissingTetriminoException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

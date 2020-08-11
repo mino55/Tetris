@@ -187,7 +187,7 @@ namespace Tetris
             if (!_allTetriminos.Contains(tetrimino))
             {
                 string msg = "The target Tetrimino has not been added to the board";
-                throw new Exceptions.MissingTetrinoException(msg);
+                throw new Exceptions.MissingTetriminoException(msg);
             }
         }
     }

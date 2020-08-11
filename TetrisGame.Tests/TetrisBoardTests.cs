@@ -79,7 +79,7 @@ namespace Tetris
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
             Point point = new Point(2, 2);
 
-            Assert.Throws<Tetris.Exceptions.MissingTetrinoException>(
+            Assert.Throws<Tetris.Exceptions.MissingTetriminoException>(
                 () => _tetrisBoard.RemoveTetrimino(tetrimino)
             );
         }
@@ -225,7 +225,7 @@ namespace Tetris
             Block[] blocks = { new Block(), new Block() };
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
 
-            Assert.Throws<Tetris.Exceptions.MissingTetrinoException>(
+            Assert.Throws<Tetris.Exceptions.MissingTetriminoException>(
                () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
             );
         }
@@ -333,7 +333,7 @@ namespace Tetris
             Block[] blocks = { new Block(), new Block() };
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
 
-            Assert.Throws<Tetris.Exceptions.MissingTetrinoException>(
+            Assert.Throws<Tetris.Exceptions.MissingTetriminoException>(
                () => _tetrisBoard.Rotate(tetrimino, rotation)
             );
         }
