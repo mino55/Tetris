@@ -158,18 +158,36 @@ namespace Tetris
 
     public string Print()
     {
+        // Framed with:
+        // ┌───────────────────────┐
+        // │	                   │
+        // └───────────────────────┘
         string tilesStr = "";
+        tilesStr += $"┌{DrawLine(width * 3)}┐\n";
         for (int y = 0; y <= (height - 1); y++)
             {
+            tilesStr += "│";
             for (int x = 0; x <= (width - 1); x++)
             {
                 Point atPoint = new Point(x, y);
-                if (BlockAt(atPoint) == null) tilesStr += " _ ";
+                if (BlockAt(atPoint) == null)
+                {
+                    if (x % 2 == 0) tilesStr += " . ";
+                    else tilesStr += "   ";
+                }
                 else tilesStr += BlockAt(atPoint).Print();
             }
-            tilesStr += "\n";
+            tilesStr += "│\n";
             }
+        tilesStr += $"└{DrawLine(width * 3)}┘\n";
         return tilesStr;
         }
-  }
+
+        private string DrawLine(int length)
+        {
+            string line = "";
+            for(int i = 0; i < length; i++) { line += "─"; }
+            return line;
+        }
+    }
 }
