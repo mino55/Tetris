@@ -37,9 +37,7 @@ namespace Tetris
 
         private static Tetrimino CreateTetrimino()
         {
-            Block[] blocks = new Block[Tetrimino.Size<Tetrimino>()];
-            for(int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(); }
-            return new Tetrimino(Direction.UP, blocks);
+            return new Tetriminos.Factory().Random();
         }
 
         private static void Menu()
@@ -57,7 +55,7 @@ namespace Tetris
             _level = 0;
             _blocks = 1;
 
-            _tetrisBoard = new TetrisBoard(5, 6);
+            _tetrisBoard = new TetrisBoard(10, 20);
             int spawnX = (_tetrisBoard.width / 2);
             int spawnY = 1;
             _centerPoint = new Point(spawnX, spawnY);
