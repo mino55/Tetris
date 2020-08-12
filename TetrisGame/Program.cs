@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Tetris;
 
 namespace Tetris
@@ -14,8 +15,15 @@ namespace Tetris
         private static TetrisBoard _tetrisBoard = null;
         private static TetrisBoardOperator _tetrisBoardOperator = null;
 
+        private static KeyReceiver _keyReceiver = null;
+
+        private static int _dropTimer = 0;
+
         static void Main(string[] args)
         {
+            _keyReceiver = new KeyReceiver();
+            _keyReceiver.startListening();
+
             while (true)
             {
                 Menu();
@@ -63,6 +71,8 @@ namespace Tetris
         {
             while (true)
             {
+                int dTime = (1000 / 30);
+
                 DrawGame();
 
                 if (_tetrisBoardOperator.currentTetriminoIsLocked)
@@ -75,7 +85,9 @@ namespace Tetris
                         break;
                     }
                 }
-                else MoveBlock();
+                else MoveBlock(dTime);
+
+                Thread.Sleep(dTime);
             }
         }
 
@@ -87,10 +99,10 @@ namespace Tetris
             Console.WriteLine(_tetrisBoard.Print());
         }
 
-        private static void MoveBlock()
+        private static void MoveBlock(int dTime)
         {
-            string input = PromptInput();
-            ProcessInput(input);
+            ProcessInput();
+            DropTimer(dTime);
         }
 
         private static void ResolveRows()
@@ -120,36 +132,50 @@ namespace Tetris
             _blocks++;
         }
 
-        private static string PromptInput()
+        private static void ProcessInput()
         {
-            // (left/right/rotate/slam)
-            Console.WriteLine("(a/d/w/s):");
-            string input = Console.ReadLine();
-            return input;
-        }
-
-        private static void ProcessInput(String input)
-        {
-            switch (input)
+            string key = null;
+            if (_keyReceiver.isNewKey)
             {
-                case "":
-                    _tetrisBoardOperator.DropCurrentTetrimino();
-                    break;
-                case "a":
+                ConsoleKeyInfo keyInput = _keyReceiver.Key();
+                key = keyInput.Key.ToString();
+            }
+
+            switch (key)
+            {
+                case "A":
                     _tetrisBoardOperator.MoveCurrentTetriminoLeft();
                     break;
-                case "d":
+                case "D":
                     _tetrisBoardOperator.MoveCurrentTetriminoRight();
                     break;
-                case "w":
+                case "W":
+                    _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.FLIP);
+                    break;
+                case "Q":
+                    _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.REVERSE);
+                    break;
+                case "E":
                     _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.CLOCKWISE);
                     break;
-                case "s":
+                case "S":
                     _tetrisBoardOperator.SlamCurrentTetrimino();
                     break;
                 default:
                     break;
             }
         }
+
+        private static void DropTimer(int dTime)
+        {
+            _dropTimer -= dTime;
+            if (_dropTimer <= 0)
+            {
+                 _tetrisBoardOperator.DropCurrentTetrimino();
+                 _dropTimer = 1000;
+            }
+        }
+
+        private static void AcceptInput() {}
     }
 }
