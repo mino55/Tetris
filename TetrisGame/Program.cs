@@ -38,7 +38,7 @@ namespace Tetris
             Console.Clear();
             Console.WriteLine("__________________");
             Console.WriteLine("_____ TETRIS _____");
-            Console.WriteLine("Press enter to start paying...");
+            Console.WriteLine("Press enter to start playing...");
             Console.ReadLine();
         }
 
@@ -48,9 +48,10 @@ namespace Tetris
             _level = 0;
             _blocks = 1;
 
-            _tetrisBoard = new TetrisBoard(5, 5);
-            // TODO: base the center position below on the spawn point
-            _centerPoint = new Point(_tetrisBoard.width / 2, 1);
+            _tetrisBoard = new TetrisBoard(5, 6);
+            int spawnX = (_tetrisBoard.width / 2);
+            int spawnY = 1;
+            _centerPoint = new Point(spawnX, spawnY);
 
             _tetrisBoardOperator = new TetrisBoardOperator(_tetrisBoard);
 
@@ -67,19 +68,14 @@ namespace Tetris
                 if (_tetrisBoardOperator.currentTetriminoIsLocked)
                 {
                     ResolveRows();
-
-                    if (_tetrisBoard.BlockAt(_centerPoint) != null) {
-                        GameOver();
+                    try { NextBlock(); }
+                    catch (Exceptions.NoOverwriteBlockException)
+                    {
+                        DrawGameOver();
                         break;
                     }
-
-                    NextBlock();
                 }
-                else
-                {
-                    string input = PromptInput();
-                    ProcessInput(input);
-                }
+                else MoveBlock();
             }
         }
 
@@ -91,15 +87,10 @@ namespace Tetris
             Console.WriteLine(_tetrisBoard.Print());
         }
 
-        private static void GameOver()
+        private static void MoveBlock()
         {
-            Console.Clear();
-            Console.WriteLine("GAME OVER");
-            Console.WriteLine("Score: " + _score);
-            Console.WriteLine("Level: " + _level);
-            Console.WriteLine("Blocks: " + _blocks);
-            Console.WriteLine("Press enter to restart game...");
-            Console.ReadLine();
+            string input = PromptInput();
+            ProcessInput(input);
         }
 
         private static void ResolveRows()
@@ -109,6 +100,17 @@ namespace Tetris
                 _score += (_tetrisBoardOperator.Rows() * 100);
                 _tetrisBoardOperator.CleanRows();
             }
+        }
+
+        private static void DrawGameOver()
+        {
+            Console.Clear();
+            Console.WriteLine("GAME OVER");
+            Console.WriteLine("Score: " + _score);
+            Console.WriteLine("Level: " + _level);
+            Console.WriteLine("Blocks: " + _blocks);
+            Console.WriteLine("Press enter to restart game...");
+            Console.ReadLine();
         }
 
         private static void NextBlock()

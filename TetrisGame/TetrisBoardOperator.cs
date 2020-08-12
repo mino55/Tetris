@@ -138,7 +138,7 @@ namespace Tetris
             if (currentTetrimino == null)
             {
                 string msg = "Desired operation requires a 'current block' to be set.";
-                throw new Tetris.Exceptions.MissingTetriminoException(msg);
+                throw new Exceptions.MissingTetriminoException(msg);
             }
         }
 
@@ -147,7 +147,7 @@ namespace Tetris
             if (_nextTetrimino == null)
             {
                 string msg = "Desired operation requires a 'next Tetrimino' to be set.";
-                throw new Tetris.Exceptions.MissingTetriminoException(msg);
+                throw new Exceptions.MissingTetriminoException(msg);
             }
         }
 
@@ -156,7 +156,7 @@ namespace Tetris
             if (currentTetrimino != null)
             {
                 string msg = "Trying to overwrite 'current Tetrimino': not allowed.";
-                throw new Tetris.Exceptions.NoOverwriteTetriminoException(msg);
+                throw new Exceptions.NoOverwriteTetriminoException(msg);
             }
         }
 
@@ -165,7 +165,7 @@ namespace Tetris
             if (_nextTetrimino != null)
             {
                 string msg = "Trying to overwrite 'next Tetrimino': not allowed.";
-                throw new Tetris.Exceptions.NoOverwriteTetriminoException(msg);
+                throw new Exceptions.NoOverwriteTetriminoException(msg);
             }
         }
     }
