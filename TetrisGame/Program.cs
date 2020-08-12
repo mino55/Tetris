@@ -6,6 +6,7 @@ namespace Tetris
 {
     class Program
     {
+        private static int _FPS = 60;
         private static int _score = 0;
         private static int _level = 0;
         private static int _blocks = 0;
@@ -71,7 +72,7 @@ namespace Tetris
         {
             while (true)
             {
-                int dTime = (1000 / 30);
+                int dTime = (1000 / _FPS);
 
                 DrawGame();
 
@@ -159,6 +160,9 @@ namespace Tetris
                     _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.CLOCKWISE);
                     break;
                 case "S":
+                    _tetrisBoardOperator.DropCurrentTetrimino();
+                    break;
+                case "Spacebar":
                     _tetrisBoardOperator.SlamCurrentTetrimino();
                     break;
                 default:
@@ -168,11 +172,13 @@ namespace Tetris
 
         private static void DropTimer(int dTime)
         {
+            int dropTime = 1000 - (100 * _level);
+
             _dropTimer -= dTime;
             if (_dropTimer <= 0)
             {
                  _tetrisBoardOperator.DropCurrentTetrimino();
-                 _dropTimer = 1000;
+                 _dropTimer = dropTime;
             }
         }
 
