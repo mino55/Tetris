@@ -4,6 +4,13 @@ namespace Tetris.Tetriminos
 {
     class Factory
     {
+        private ColorHelper _colorHelper = null;
+
+        public Factory(ColorHelper colorHelper)
+        {
+            _colorHelper = colorHelper;
+        }
+
         public Tetrimino Random()
         {
             Array types = Enum.GetValues(typeof(Type));
@@ -18,43 +25,44 @@ namespace Tetris.Tetriminos
             switch(type)
             {
                 case Type.ShapeI:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeI>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" I "); }
+                    blocks = createBlocks(" I ", Color.TEAL, Tetrimino.Size<Tetriminos.ShapeI>());
                     return new Tetriminos.ShapeI(Direction.UP, blocks);
 
                 case Type.ShapeJ:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeJ>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" J "); }
+                    blocks = createBlocks(" J ", Color.BLUE, Tetrimino.Size<Tetriminos.ShapeJ>());
                     return new Tetriminos.ShapeJ(Direction.UP, blocks);
 
                 case Type.ShapeL:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeL>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" L "); }
+                    blocks = createBlocks(" L ", Color.ORANGE, Tetrimino.Size<Tetriminos.ShapeL>());
                     return new Tetriminos.ShapeL(Direction.UP, blocks);
 
                 case Type.ShapeO:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeO>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" O "); }
+                    blocks = createBlocks(" O ", Color.WHITE, Tetrimino.Size<Tetriminos.ShapeO>());
                     return new Tetriminos.ShapeO(Direction.UP, blocks);
 
                 case Type.ShapeS:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeS>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" S "); }
+                    blocks = createBlocks(" S ", Color.GREEN, Tetrimino.Size<Tetriminos.ShapeS>());
                     return new Tetriminos.ShapeS(Direction.UP, blocks);
 
                 case Type.ShapeT:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeT>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" T "); }
+                    blocks = createBlocks(" T ", Color.PURPLE, Tetrimino.Size<Tetriminos.ShapeT>());
                     return new Tetriminos.ShapeT(Direction.UP, blocks);
 
                 case Type.ShapeZ:
-                    blocks = new Block[Tetrimino.Size<Tetriminos.ShapeZ>()];
-                    for (int i = 0; i < blocks.Length; i++) { blocks[i] = new Block(" Z "); }
+                    blocks = createBlocks(" Z ", Color.RED, Tetrimino.Size<Tetriminos.ShapeZ>());
                     return new Tetriminos.ShapeZ(Direction.UP, blocks);
 
                 default:
                     return null;
             }
+        }
+
+        private Block[] createBlocks(String print, Color color, int number)
+        {
+            String coloredPrint = _colorHelper.ColorString(print, color);
+            Block[] blocks = new Block[number];
+            for (int i = 0; i < number; i++) { blocks[i] = new Block(coloredPrint); }
+            return blocks;
         }
     }
 }

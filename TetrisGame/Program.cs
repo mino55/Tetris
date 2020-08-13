@@ -18,6 +18,8 @@ namespace Tetris
 
         private static KeyReceiver _keyReceiver = null;
 
+        private static Tetriminos.Factory _tetriminoFactory = null;
+
         private static int _dropTimer = 0;
 
         static void Main(string[] args)
@@ -37,11 +39,16 @@ namespace Tetris
 
         private static Tetrimino CreateTetrimino()
         {
-            return new Tetriminos.Factory().Random();
+            return _tetriminoFactory.Random();
         }
 
         private static void Menu()
         {
+            ColorHelper colorHelper = new ColorHelper(){
+                defaultColor = Color.WHITE
+            };
+            _tetriminoFactory = new Tetriminos.Factory(colorHelper);
+
             Console.Clear();
             Console.WriteLine("__________________");
             Console.WriteLine("_____ TETRIS _____");
