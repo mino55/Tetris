@@ -22,6 +22,8 @@ namespace Tetris
 
         private static int _dropTimer = 0;
 
+        private static int LastChange = 0;
+
         static void Main(string[] args)
         {
             _keyReceiver = new KeyReceiver();
@@ -99,10 +101,14 @@ namespace Tetris
 
         private static void DrawGame()
         {
-            Console.Clear();
-            Console.WriteLine($"Score: {_score}, Blocks: {_blocks}, Level: {_level}");
-            Console.WriteLine("");
-            Console.WriteLine(_tetrisBoard.Print());
+            if (LastChange != _tetrisBoard.ChangeCount)
+            {
+                Console.Clear();
+                Console.WriteLine($"Score: {_score}, Blocks: {_blocks}, Level: {_level}");
+                Console.WriteLine("");
+                Console.WriteLine(_tetrisBoard.Print());
+                LastChange = _tetrisBoard.ChangeCount;
+            }
         }
 
         private static void MoveBlock(int dTime)

@@ -292,5 +292,41 @@ namespace Tetris.Tests
                 () => _board.IsEmptyBelowBlock(block)
             );
         }
+
+        [Fact]
+        public void ChangeCount_1BlockAdded_IncrementBy1()
+        {
+            int beforeChange = _board.ChangeCount;
+
+            _board.AddBlockAt(new Block(), new Point(0, 0));
+            int afterChange = _board.ChangeCount;
+
+            Assert.Equal(afterChange, (beforeChange + 1));
+        }
+
+        [Fact]
+        public void ChangeCount_1BlockRemoved_IncrementBy1()
+        {
+            _board.AddBlockAt(new Block(), new Point(0, 0));
+            int beforeChange = _board.ChangeCount;
+
+            _board.RemoveBlockAt(new Point(0, 0));
+            int afterChange = _board.ChangeCount;
+
+            Assert.Equal(afterChange, (beforeChange + 1));
+        }
+
+        [Fact]
+        public void ChangeCount_1BlockMoved_IncrementBy2()
+        {
+            Block block = new Block();
+            _board.AddBlockAt(block, new Point(0, 0));
+            int beforeChange = _board.ChangeCount;
+
+            _board.MoveBlock(block, new Point(1, 0));
+            int afterChange = _board.ChangeCount;
+
+            Assert.Equal(afterChange, (beforeChange + 2));
+        }
     }
 }

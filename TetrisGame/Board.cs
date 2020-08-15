@@ -11,6 +11,7 @@ namespace Tetris
     private Block[,] _tiles;
     private Dictionary<Block, Point> _blockPoints;
     public List<Block> _allBlocks;
+    public int ChangeCount { get; private set; }
     public Board(int boardWidth, int boardHeight)
     {
         _allBlocks = new List<Block>();
@@ -19,6 +20,7 @@ namespace Tetris
 
         _tiles = new Block[height, width];
         _blockPoints = new Dictionary<Block, Point>();
+        ChangeCount = 0;
     }
 
     public Block BlockAt(Point point) { return _tiles[point.y, point.x]; }
@@ -118,12 +120,14 @@ namespace Tetris
     {
         _tiles[atPoint.y, atPoint.x] = block;
         _blockPoints[block] = atPoint;
+        ChangeCount++;
     }
 
     protected void UnplaceBlockAt(Block block, Point atPoint)
     {
         _tiles[atPoint.y, atPoint.x] = null;
         _blockPoints[block] = null;
+        ChangeCount++;
     }
 
     protected bool IsInsideBoard(Point atPoint)
