@@ -24,31 +24,31 @@ namespace Tetris.Tetriminos
             Block[] blocks = null;
             switch(type)
             {
-                case Type.ShapeI:
+                case Type.SHAPE_I:
                     blocks = createBlocks(" I ", Color.TEAL, Tetrimino.Size<Tetriminos.ShapeI>());
                     return new Tetriminos.ShapeI(Direction.UP, blocks);
 
-                case Type.ShapeJ:
+                case Type.SHAPE_J:
                     blocks = createBlocks(" J ", Color.BLUE, Tetrimino.Size<Tetriminos.ShapeJ>());
                     return new Tetriminos.ShapeJ(Direction.UP, blocks);
 
-                case Type.ShapeL:
+                case Type.SHAPE_L:
                     blocks = createBlocks(" L ", Color.ORANGE, Tetrimino.Size<Tetriminos.ShapeL>());
                     return new Tetriminos.ShapeL(Direction.UP, blocks);
 
-                case Type.ShapeO:
+                case Type.SHAPE_O:
                     blocks = createBlocks(" O ", Color.WHITE, Tetrimino.Size<Tetriminos.ShapeO>());
                     return new Tetriminos.ShapeO(Direction.UP, blocks);
 
-                case Type.ShapeS:
+                case Type.SHAPE_S:
                     blocks = createBlocks(" S ", Color.GREEN, Tetrimino.Size<Tetriminos.ShapeS>());
                     return new Tetriminos.ShapeS(Direction.UP, blocks);
 
-                case Type.ShapeT:
+                case Type.SHAPE_T:
                     blocks = createBlocks(" T ", Color.PURPLE, Tetrimino.Size<Tetriminos.ShapeT>());
                     return new Tetriminos.ShapeT(Direction.UP, blocks);
 
-                case Type.ShapeZ:
+                case Type.SHAPE_Z:
                     blocks = createBlocks(" Z ", Color.RED, Tetrimino.Size<Tetriminos.ShapeZ>());
                     return new Tetriminos.ShapeZ(Direction.UP, blocks);
 

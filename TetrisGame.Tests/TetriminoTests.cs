@@ -3,8 +3,6 @@ using Xunit;
 
 namespace Tetris.Tests
 {
-
-
     public class TetriminoTests
     {
         private readonly Tetrimino _tetrimino;
@@ -12,7 +10,6 @@ namespace Tetris.Tests
         public TetriminoTests()
         {
             Block[] blocks = new Block[Tetrimino.Size<Tetrimino>()];
-            // for (int i = 0; i < blocks.Length; i++ ) { blocks[i] = new Block(); }
             _tetrimino = new Tetrimino(Direction.UP, new Block[] { new Block(), new Block()});
         }
 

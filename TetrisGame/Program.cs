@@ -7,9 +7,6 @@ namespace Tetris
     class Program
     {
         private static int _FPS = 60;
-        private static int _score = 0;
-        private static int _level = 0;
-        private static int _blocks = 0;
 
         private static Point _centerPoint = null;
 
@@ -19,6 +16,8 @@ namespace Tetris
         private static KeyReceiver _keyReceiver = null;
 
         private static Tetriminos.Factory _tetriminoFactory = null;
+
+        private static GameStats _gameStats;
 
         private static int _dropTimer = 0;
 
@@ -60,9 +59,10 @@ namespace Tetris
 
         private static void StartGame()
         {
-            _score = 0;
-            _level = 0;
-            _blocks = 1;
+            _gameStats = new GameStats(startLevel: 0,
+                                       linesPerLevel: 10,
+                                       effectLevelLimit: 10,
+                                       speedIncreasePerEffectLevel: 90);
 
             _tetrisBoard = new TetrisBoard(10, 20);
             int spawnX = (_tetrisBoard.width / 2);
@@ -104,7 +104,7 @@ namespace Tetris
             if (LastChange != _tetrisBoard.ChangeCount)
             {
                 Console.Clear();
-                Console.WriteLine($"Score: {_score}, Blocks: {_blocks}, Level: {_level}");
+                Console.WriteLine($"Score: {_gameStats.Score}, Lines: {_gameStats.Lines}, Blocks: {_gameStats.Shapes}, Level: {_gameStats.Level}");
                 Console.WriteLine("");
                 Console.WriteLine(_tetrisBoard.Print());
                 LastChange = _tetrisBoard.ChangeCount;
@@ -121,7 +121,8 @@ namespace Tetris
         {
             if (_tetrisBoardOperator.Rows() > 0)
             {
-                _score += (_tetrisBoardOperator.Rows() * 100);
+                int lines = _tetrisBoardOperator.Rows();
+                _gameStats.ScoreLines(lines);
                 _tetrisBoardOperator.CleanRows();
             }
         }
@@ -130,9 +131,10 @@ namespace Tetris
         {
             Console.Clear();
             Console.WriteLine("GAME OVER");
-            Console.WriteLine("Score: " + _score);
-            Console.WriteLine("Level: " + _level);
-            Console.WriteLine("Blocks: " + _blocks);
+            Console.WriteLine("Score: " + _gameStats.Score);
+            Console.WriteLine("Lines: " + _gameStats.Lines);
+            Console.WriteLine("Level: " + _gameStats.Level);
+            Console.WriteLine("Blocks: " + _gameStats.Shapes);
             Console.WriteLine("Press enter to restart game...");
             Console.ReadLine();
         }
@@ -141,7 +143,7 @@ namespace Tetris
         {
             _tetrisBoardOperator.NextCurrentTetrimino();
             _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
-            _blocks++;
+            _gameStats.RegisterTetrimino(_tetrisBoardOperator.currentTetrimino.Type());
         }
 
         private static void ProcessInput()
@@ -183,7 +185,7 @@ namespace Tetris
 
         private static void DropTimer(int dTime)
         {
-            int dropTime = 1000 - (100 * _level);
+            int dropTime = 1000 - (100 * _gameStats.Level);
 
             _dropTimer -= dTime;
             if (_dropTimer <= 0)

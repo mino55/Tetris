@@ -45,5 +45,10 @@ namespace Tetris.Tetriminos
             { 0, 2, 0 }
           };
         }
+
+        public override Tetriminos.Type Type()
+        {
+            return Tetriminos.Type.SHAPE_T;
+        }
       }
 }

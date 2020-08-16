@@ -184,5 +184,11 @@ namespace Tetris
             { 0, 0, 0 }
           };
         }
+
+        public virtual Tetriminos.Type Type()
+        {
+            string msg = "Provided tetrimino type is invalid";
+            throw new Exceptions.MissingTetriminoException(msg);
+        }
     }
 }
