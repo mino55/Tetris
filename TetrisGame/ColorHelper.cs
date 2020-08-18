@@ -1,6 +1,6 @@
 namespace Tetris
 {
-    class ColorHelper
+    public class ColorHelper
     {
         public Color defaultColor = Color.WHITE;
 

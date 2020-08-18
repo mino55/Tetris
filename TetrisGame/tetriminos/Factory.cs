@@ -2,7 +2,7 @@ using System;
 
 namespace Tetris.Tetriminos
 {
-    class Factory
+    public class Factory
     {
         private ColorHelper _colorHelper = null;
 

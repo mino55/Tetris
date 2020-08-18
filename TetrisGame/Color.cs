@@ -1,6 +1,6 @@
 namespace Tetris
 {
-    enum Color
+    public enum Color
     {
 
         WHITE,

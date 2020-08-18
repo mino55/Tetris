@@ -19,6 +19,8 @@ namespace Tetris
 
         private static GameStats _gameStats;
 
+        private static PrintHelper _printHelper;
+
         private static int _dropTimer = 0;
 
         private static int LastChange = 0;
@@ -27,6 +29,8 @@ namespace Tetris
         {
             _keyReceiver = new KeyReceiver();
             _keyReceiver.startListening();
+
+            _printHelper = new PrintHelper();
 
             while (true)
             {
@@ -45,9 +49,7 @@ namespace Tetris
 
         private static void Menu()
         {
-            ColorHelper colorHelper = new ColorHelper(){
-                defaultColor = Color.WHITE
-            };
+            ColorHelper colorHelper = new ColorHelper();
             _tetriminoFactory = new Tetriminos.Factory(colorHelper);
 
             Console.Clear();
@@ -106,7 +108,14 @@ namespace Tetris
                 Console.Clear();
                 Console.WriteLine($"Score: {_gameStats.Score}, Lines: {_gameStats.Lines}, Blocks: {_gameStats.Shapes}, Level: {_gameStats.Level}");
                 Console.WriteLine("");
-                Console.WriteLine(_tetrisBoard.Print());
+
+                string boardPrint = _printHelper.PrintBoard(_tetrisBoard);
+
+                int charsPerBoardTile = 3;
+                int boardCharWidth = (_tetrisBoard.width * charsPerBoardTile);
+                string framedBoardPrint = _printHelper.PrintWithFrame(boardPrint, boardCharWidth);
+
+                Console.WriteLine(framedBoardPrint);
                 LastChange = _tetrisBoard.ChangeCount;
             }
         }
