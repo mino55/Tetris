@@ -2,7 +2,7 @@ namespace Tetris
 {
     public class PrintHelper
     {
-        public string PrintBoard(Board board)
+        public string BoardPrint(Board board)
         {
             int width = board.width;
             int height = board.height;

@@ -39,7 +39,7 @@ namespace Tetris.Tests
 
             _tetrisBoardOperator.NewCurrentTetrimino(tetrimino, point);
 
-            Assert.Equal(tetrimino, _tetrisBoardOperator.currentTetrimino);
+            Assert.Equal(tetrimino, _tetrisBoardOperator.CurrentTetrimino);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace Tetris.Tests
 
             _tetrisBoardOperator.NextCurrentTetrimino();
 
-            Assert.Equal(nextTetrimino, _tetrisBoardOperator.currentTetrimino);
+            Assert.Equal(nextTetrimino, _tetrisBoardOperator.CurrentTetrimino);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Tetris.Tests
 
             _tetrisBoardOperator.DropCurrentTetrimino();
 
-            Assert.False(_tetrisBoardOperator.currentTetriminoIsLocked);
+            Assert.False(_tetrisBoardOperator.CurrentTetriminoIsLocked);
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace Tetris.Tests
 
             _tetrisBoardOperator.DropCurrentTetrimino();
 
-            Assert.True(_tetrisBoardOperator.currentTetriminoIsLocked);
+            Assert.True(_tetrisBoardOperator.CurrentTetriminoIsLocked);
         }
 
         [Fact]

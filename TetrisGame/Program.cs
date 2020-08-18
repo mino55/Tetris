@@ -11,6 +11,7 @@ namespace Tetris
         private static Point _centerPoint = null;
 
         private static TetrisBoard _tetrisBoard = null;
+        private static TetrisBoard _nextTetrimino = null;
         private static TetrisBoardOperator _tetrisBoardOperator = null;
 
         private static KeyReceiver _keyReceiver = null;
@@ -75,6 +76,7 @@ namespace Tetris
 
             _tetrisBoardOperator.NewCurrentTetrimino(CreateTetrimino(), _centerPoint);
             _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
+            UpdateNextTetrmino();
         }
 
         private static void GameLoop()
@@ -85,7 +87,7 @@ namespace Tetris
 
                 DrawGame();
 
-                if (_tetrisBoardOperator.currentTetriminoIsLocked)
+                if (_tetrisBoardOperator.CurrentTetriminoIsLocked)
                 {
                     ResolveRows();
                     try { NextBlock(); }
@@ -94,6 +96,7 @@ namespace Tetris
                         DrawGameOver();
                         break;
                     }
+                    UpdateNextTetrmino();
                 }
                 else MoveBlock(dTime);
 
@@ -106,18 +109,39 @@ namespace Tetris
             if (LastChange != _tetrisBoard.ChangeCount)
             {
                 Console.Clear();
-                Console.WriteLine($"Score: {_gameStats.Score}, Lines: {_gameStats.Lines}, Blocks: {_gameStats.Shapes}, Level: {_gameStats.Level}");
-                Console.WriteLine("");
 
-                string boardPrint = _printHelper.PrintBoard(_tetrisBoard);
+                PrintStats();
 
-                int charsPerBoardTile = 3;
-                int boardCharWidth = (_tetrisBoard.width * charsPerBoardTile);
-                string framedBoardPrint = _printHelper.PrintWithFrame(boardPrint, boardCharWidth);
+                PrintBoard();
 
-                Console.WriteLine(framedBoardPrint);
+                PrintNextTetrimino();
+
                 LastChange = _tetrisBoard.ChangeCount;
             }
+        }
+
+        private static void PrintStats()
+        {
+            Console.WriteLine($"Score: {_gameStats.Score}, Lines: {_gameStats.Lines}, Blocks: {_gameStats.Shapes}, Level: {_gameStats.Level}");
+            Console.WriteLine("");
+        }
+
+        private static void PrintBoard()
+        {
+            string boardPrint = _printHelper.BoardPrint(_tetrisBoard);
+            int charsPerBoardTile = 3;
+            int boardCharWidth = (_tetrisBoard.width * charsPerBoardTile);
+            string framedBoardPrint = _printHelper.PrintWithFrame(boardPrint, boardCharWidth);
+            Console.WriteLine(framedBoardPrint);
+        }
+
+        private static void PrintNextTetrimino()
+        {
+            string nextTetriminoPrint = _printHelper.BoardPrint(_nextTetrimino);
+            int charsPerBoardTile = 3;
+            int boardCharWidth = (_nextTetrimino.width * charsPerBoardTile);
+            string framedNextTetriminoPrint = _printHelper.PrintWithFrame(nextTetriminoPrint, boardCharWidth);
+            Console.WriteLine(framedNextTetriminoPrint);
         }
 
         private static void MoveBlock(int dTime)
@@ -152,7 +176,14 @@ namespace Tetris
         {
             _tetrisBoardOperator.NextCurrentTetrimino();
             _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
-            _gameStats.RegisterTetrimino(_tetrisBoardOperator.currentTetrimino.Type());
+            _gameStats.RegisterTetrimino(_tetrisBoardOperator.CurrentTetrimino.Type());
+        }
+
+        private static void UpdateNextTetrmino()
+        {
+            Tetrimino current = _tetrisBoardOperator.NextTetrimino;
+            _nextTetrimino = new TetrisBoard(4, 4);
+            _nextTetrimino.AddTetriminoAt(current, new Point(1, 2));
         }
 
         private static void ProcessInput()

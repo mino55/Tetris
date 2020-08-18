@@ -5,11 +5,11 @@ namespace Tetris
     public class TetrisBoardOperator
     {
         public TetrisBoard _tetrisBoard;
-        public Tetrimino currentTetrimino { get; private set; }
-        private Tetrimino _nextTetrimino;
+        public Tetrimino CurrentTetrimino { get; private set; }
+        public Tetrimino NextTetrimino { get; private set; }
         private Point _nextTetriminoStartPoint;
 
-        public bool currentTetriminoIsLocked { get; private set; }
+        public bool CurrentTetriminoIsLocked { get; private set; }
 
         public TetrisBoardOperator(TetrisBoard tetrisBoard)
         {
@@ -20,16 +20,16 @@ namespace Tetris
         {
             ValidateCurrentTetriminoOverwrite();
 
-            currentTetrimino = tetrimino;
+            CurrentTetrimino = tetrimino;
             _tetrisBoard.AddTetriminoAt(tetrimino, startPoint);
-            currentTetriminoIsLocked = false;
+            CurrentTetriminoIsLocked = false;
         }
 
         public void NewNextTetrimino(Tetrimino tetrimino, Point startPoint)
         {
             ValidateNextTetriminoOverwrite();
 
-            _nextTetrimino = tetrimino;
+            NextTetrimino = tetrimino;
             _nextTetriminoStartPoint = startPoint;
         }
 
@@ -37,9 +37,9 @@ namespace Tetris
         {
             ValidateNextTetriminoMissing();
 
-            currentTetrimino = null;
-            NewCurrentTetrimino(_nextTetrimino, _nextTetriminoStartPoint);
-            _nextTetrimino = null;
+            CurrentTetrimino = null;
+            NewCurrentTetrimino(NextTetrimino, _nextTetriminoStartPoint);
+            NextTetrimino = null;
             _nextTetriminoStartPoint = null;
         }
 
@@ -47,20 +47,20 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanMoveTetrimino(currentTetrimino, new Point(0, 1)))
+            if (_tetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(0, 1)))
             {
-                _tetrisBoard.MoveTetrimino(currentTetrimino, new Point(0, 1));
+                _tetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(0, 1));
             }
-            else currentTetriminoIsLocked = true;
+            else CurrentTetriminoIsLocked = true;
         }
 
         public void MoveCurrentTetriminoRight()
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanMoveTetrimino(currentTetrimino, new Point(1, 0)))
+            if (_tetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(1, 0)))
             {
-                _tetrisBoard.MoveTetrimino(currentTetrimino, new Point(1, 0));
+                _tetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(1, 0));
             }
         }
 
@@ -68,9 +68,9 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanMoveTetrimino(currentTetrimino, new Point(-1, 0)))
+            if (_tetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(-1, 0)))
             {
-                _tetrisBoard.MoveTetrimino(currentTetrimino, new Point(-1, 0));
+                _tetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(-1, 0));
             }
         }
 
@@ -78,9 +78,9 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanRotate(currentTetrimino, rotation))
+            if (_tetrisBoard.CanRotate(CurrentTetrimino, rotation))
             {
-                _tetrisBoard.Rotate(currentTetrimino, rotation);
+                _tetrisBoard.Rotate(CurrentTetrimino, rotation);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            while (!currentTetriminoIsLocked)
+            while (!CurrentTetriminoIsLocked)
             {
                 DropCurrentTetrimino();
             }
@@ -135,7 +135,7 @@ namespace Tetris
 
         private void ValidateCurrentTetriminoMissing()
         {
-            if (currentTetrimino == null)
+            if (CurrentTetrimino == null)
             {
                 string msg = "Desired operation requires a 'current block' to be set.";
                 throw new Exceptions.MissingTetriminoException(msg);
@@ -144,7 +144,7 @@ namespace Tetris
 
         private void ValidateNextTetriminoMissing()
         {
-            if (_nextTetrimino == null)
+            if (NextTetrimino == null)
             {
                 string msg = "Desired operation requires a 'next Tetrimino' to be set.";
                 throw new Exceptions.MissingTetriminoException(msg);
@@ -153,7 +153,7 @@ namespace Tetris
 
         private void ValidateCurrentTetriminoOverwrite()
         {
-            if (currentTetrimino != null)
+            if (CurrentTetrimino != null)
             {
                 string msg = "Trying to overwrite 'current Tetrimino': not allowed.";
                 throw new Exceptions.NoOverwriteTetriminoException(msg);
@@ -162,7 +162,7 @@ namespace Tetris
 
         private void ValidateNextTetriminoOverwrite()
         {
-            if (_nextTetrimino != null)
+            if (NextTetrimino != null)
             {
                 string msg = "Trying to overwrite 'next Tetrimino': not allowed.";
                 throw new Exceptions.NoOverwriteTetriminoException(msg);
