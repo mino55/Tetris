@@ -112,9 +112,10 @@ namespace Tetris
 
                 PrintStats();
 
-                PrintBoard();
-
-                PrintNextTetrimino();
+                string boardPrint = BoardPrint();
+                string tetriminoPrint = NextTetriminoPrint();
+                string gameBoard = _printHelper.VerticalPrintCombine(boardPrint, tetriminoPrint, 1);
+                Console.WriteLine(gameBoard);
 
                 LastChange = _tetrisBoard.ChangeCount;
             }
@@ -126,22 +127,23 @@ namespace Tetris
             Console.WriteLine("");
         }
 
-        private static void PrintBoard()
+        private static string BoardPrint()
         {
             string boardPrint = _printHelper.BoardPrint(_tetrisBoard);
             int charsPerBoardTile = 3;
             int boardCharWidth = (_tetrisBoard.width * charsPerBoardTile);
             string framedBoardPrint = _printHelper.PrintWithFrame(boardPrint, boardCharWidth);
-            Console.WriteLine(framedBoardPrint);
+            return framedBoardPrint;
+
         }
 
-        private static void PrintNextTetrimino()
+        private static string NextTetriminoPrint()
         {
             string nextTetriminoPrint = _printHelper.BoardPrint(_nextTetrimino);
             int charsPerBoardTile = 3;
             int boardCharWidth = (_nextTetrimino.width * charsPerBoardTile);
             string framedNextTetriminoPrint = _printHelper.PrintWithFrame(nextTetriminoPrint, boardCharWidth);
-            Console.WriteLine(framedNextTetriminoPrint);
+            return framedNextTetriminoPrint;
         }
 
         private static void MoveBlock(int dTime)
