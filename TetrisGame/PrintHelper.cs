@@ -43,7 +43,7 @@ namespace Tetris
         {
             string[] leftRows = leftPrint.Split("\n");
             string[] rightRows = rightPrint.Split("\n");
-            string[] longerArray = LongerArrayOfTwoArrays(rightRows, leftRows);
+            string[] longerArray = Utils.LongerArrayOfTwoArrays<string>(rightRows, leftRows);
 
             string[] combinedRows = new string[longerArray.Length];
             for (int i = 0; i < longerArray.Length; i++)
@@ -64,12 +64,6 @@ namespace Tetris
             }
 
             return StrArrToStr(combinedRows);
-        }
-
-        private string[] LongerArrayOfTwoArrays(string[] arrA, string[] arrB)
-        {
-            if (arrA.Length >= arrB.Length) return arrA;
-            return arrB;
         }
 
         private string RepeatingString(string str, int repeats)
