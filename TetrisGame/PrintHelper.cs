@@ -39,51 +39,37 @@ namespace Tetris
             return framedPrint;
         }
 
-        public string VerticalPrintCombine(string leftPrint, string rightPrint, int spaces)
+        public string HorizontalPrintConnect(string leftPrint, string rightPrint, int spaces)
         {
             string[] leftRows = leftPrint.Split("\n");
             string[] rightRows = rightPrint.Split("\n");
-
-            string[] shorterArray = ShorterArrayOfTwoArrays(leftRows, rightRows);
             string[] longerArray = LongerArrayOfTwoArrays(rightRows, leftRows);
-
-            string[] shorterArrayPadded = PadOutArrayLength(shorterArray, longerArray.Length);
-
-            for (int i = (shorterArray.Length - 1); i < shorterArrayPadded.Length; i++)
-            {
-                shorterArrayPadded[i] = RepeatingString(" ", shorterArray[0].Length);
-            }
 
             string[] combinedRows = new string[longerArray.Length];
             for (int i = 0; i < longerArray.Length; i++)
             {
+                string leftEntry;
+                string rightEntry;
+
+                bool hasLeftEntry = (i < leftRows.Length && leftRows[i].Length > 0);
+                if (hasLeftEntry) leftEntry = leftRows[i];
+                else leftEntry = RepeatingString(" ", leftRows[0].Length);
+
+                bool hasRightEntry = (i < rightRows.Length && rightRows[i].Length > 0);
+                if (hasRightEntry) rightEntry = rightRows[i];
+                else rightEntry = RepeatingString(" ", rightRows[0].Length);
+
                 string space = RepeatingString(" ", spaces);
-                combinedRows[i] = $"{shorterArrayPadded[i]}{space}{longerArray[i]}";
+                combinedRows[i] = $"{leftEntry}{space}{rightEntry}";
             }
 
             return StrArrToStr(combinedRows);
-        }
-
-        private string[] ShorterArrayOfTwoArrays(string[] arrA, string[] arrB)
-        {
-            if (arrA.Length <= arrB.Length) return arrA;
-            return arrB;
         }
 
         private string[] LongerArrayOfTwoArrays(string[] arrA, string[] arrB)
         {
             if (arrA.Length >= arrB.Length) return arrA;
             return arrB;
-        }
-
-        private string[] PadOutArrayLength(string[] array, int toLength)
-        {
-            string[] paddedOutArray = new string[toLength];
-            for (int i = 0; i < array.Length; i++)
-            {
-                paddedOutArray[i] = array[i];
-            }
-            return paddedOutArray;
         }
 
         private string RepeatingString(string str, int repeats)

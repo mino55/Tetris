@@ -114,7 +114,7 @@ namespace Tetris
 
                 string boardPrint = BoardPrint();
                 string tetriminoPrint = NextTetriminoPrint();
-                string gameBoard = _printHelper.VerticalPrintCombine(boardPrint, tetriminoPrint, 1);
+                string gameBoard = _printHelper.HorizontalPrintConnect(tetriminoPrint, boardPrint, 1);
                 Console.WriteLine(gameBoard);
 
                 LastChange = _tetrisBoard.ChangeCount;
