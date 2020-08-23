@@ -8,7 +8,7 @@ namespace Tetris
             int height = board.height;
             string boardPrint = "";
 
-            for (int y = 0; y <= (height - 1); y++)
+            for (int y = 0; y < height; y++)
             {
                 string row = "";
                 for (int x = 0; x <= (width - 1); x++)
@@ -21,7 +21,8 @@ namespace Tetris
                     }
                     else row += board.BlockAt(atPoint).Print();
                 }
-                boardPrint += $"{row}\n";
+                boardPrint += $"{row}";
+                if (y < (height - 1)) boardPrint += "\n";
             }
 
             return boardPrint;
@@ -32,14 +33,20 @@ namespace Tetris
             string framedPrint = "";
             string[] printRows = print.Split("\n");
             framedPrint += $"┌{PrintLine(printWidth)}┐\n";
-            foreach(string row in printRows) {
-                if (row.Length > 0) framedPrint += $"│{row}│\n";
+            for (int i = 0; i < printRows.Length; i++) {
+                // if (row.Length == 0) continue;
+                string row = printRows[i];
+                if (row.Length < printWidth)
+                {
+                    row += RepeatingString(" ", (printWidth - row.Length));
+                }
+                framedPrint += $"│{row}│\n";
             }
             framedPrint += $"└{PrintLine(printWidth)}┘\n";
             return framedPrint;
         }
 
-        public string HorizontalPrintConnect(string leftPrint, string rightPrint, int spaces)
+        public string ConnectPrintsHorizontally(string leftPrint, string rightPrint, int spaceBetween)
         {
             string[] leftRows = leftPrint.Split("\n");
             string[] rightRows = rightPrint.Split("\n");
@@ -59,11 +66,43 @@ namespace Tetris
                 if (hasRightEntry) rightEntry = rightRows[i];
                 else rightEntry = RepeatingString(" ", rightRows[0].Length);
 
-                string space = RepeatingString(" ", spaces);
+                string space = RepeatingString(" ", spaceBetween);
                 combinedRows[i] = $"{leftEntry}{space}{rightEntry}";
             }
 
             return StrArrToStr(combinedRows);
+        }
+
+        public string ConnectPrintsVertically(string upPrint, string downPrint, int spaceBetween)
+        {
+            string[] downRows = downPrint.Split("\n");
+            string[] upRows = upPrint.Split("\n");
+
+            string combinedRows = "";
+
+            string longestEntry = Utils.LongerStringOfTwoStrings(downRows[0], upRows[0]);
+
+            for (int i = 0; i < upRows.Length; i++)
+            {
+                string padding = "";
+                if (upRows[i].Length == 0) padding += RepeatingString(" ", longestEntry.Length);
+                else padding += RepeatingString(" ", (longestEntry.Length - upRows[0].Length));
+                combinedRows += $"{upRows[i]}{padding}\n";
+            }
+
+            for (int i = 0; i < spaceBetween; i++) {
+                combinedRows += $"{RepeatingString(" ", longestEntry.Length)}\n";
+            }
+
+            for (int i = 0; i < downRows.Length; i++)
+            {
+                string padding = "";
+                if (downRows[i].Length == 0) padding += RepeatingString(" ", longestEntry.Length);
+                else padding += RepeatingString(" ", (longestEntry.Length - downRows[0].Length));
+                combinedRows += $"{downRows[i]}{padding}\n";
+            }
+
+            return combinedRows;
         }
 
         private string RepeatingString(string str, int repeats)

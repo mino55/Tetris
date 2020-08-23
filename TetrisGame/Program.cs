@@ -110,21 +110,33 @@ namespace Tetris
             {
                 Console.Clear();
 
-                PrintStats();
+                string stats = StatsPrint();
+                string nextTetriminoPrint = NextTetriminoPrint();
+                string statsColumn = _printHelper.ConnectPrintsVertically(nextTetriminoPrint,
+                                                                          stats,
+                                                                          1);
 
-                string boardPrint = BoardPrint();
-                string tetriminoPrint = NextTetriminoPrint();
-                string gameBoard = _printHelper.HorizontalPrintConnect(tetriminoPrint, boardPrint, 1);
+                string boardColumn = BoardPrint();
+                string gameBoard = _printHelper.ConnectPrintsHorizontally(statsColumn,
+                                                                          boardColumn,
+                                                                          1);
                 Console.WriteLine(gameBoard);
 
                 LastChange = _tetrisBoard.ChangeCount;
             }
         }
 
-        private static void PrintStats()
+        private static string StatsPrint()
         {
-            Console.WriteLine($"Score: {_gameStats.Score}, Lines: {_gameStats.Lines}, Blocks: {_gameStats.Shapes}, Level: {_gameStats.Level}");
-            Console.WriteLine("");
+            string stats = " SCORE\n" +
+                           $" {_gameStats.Score}\n" +
+                           "\n" +
+                           $" Lines: {_gameStats.Lines}\n" +
+                           $" Blocks: {_gameStats.Shapes}\n" +
+                           $" Level: {_gameStats.Level}\n";
+            string framedStats = _printHelper.PrintWithFrame(stats, (8 * 3));
+            return framedStats;
+
         }
 
         private static string BoardPrint()
