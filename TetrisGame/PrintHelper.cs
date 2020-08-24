@@ -34,13 +34,8 @@ namespace Tetris
             string[] printRows = print.Split("\n");
             framedPrint += $"┌{PrintLine(printWidth)}┐\n";
             for (int i = 0; i < printRows.Length; i++) {
-                // if (row.Length == 0) continue;
                 string row = printRows[i];
-                if (row.Length < printWidth)
-                {
-                    row += RepeatingString(" ", (printWidth - row.Length));
-                }
-                framedPrint += $"│{row}│\n";
+                framedPrint += $"│{PadOutString(row, printWidth)}│\n";
             }
             framedPrint += $"└{PrintLine(printWidth)}┘\n";
             return framedPrint;
@@ -50,23 +45,26 @@ namespace Tetris
         {
             string[] leftRows = leftPrint.Split("\n");
             string[] rightRows = rightPrint.Split("\n");
-            string[] longerArray = Utils.LongerArrayOfTwoArrays<string>(rightRows, leftRows);
+            int maxHeight = Utils.LongerArrayOfTwoArrays<string>(rightRows, leftRows).Length;
 
-            string[] combinedRows = new string[longerArray.Length];
-            for (int i = 0; i < longerArray.Length; i++)
+            string[] combinedRows = new string[maxHeight];
+            int leftMinWidth = leftRows[0].Length;
+            int righMintWidth = rightRows[0].Length;
+
+            for (int i = 0; i < maxHeight; i++)
             {
                 string leftEntry;
                 string rightEntry;
 
                 bool hasLeftEntry = (i < leftRows.Length && leftRows[i].Length > 0);
                 if (hasLeftEntry) leftEntry = leftRows[i];
-                else leftEntry = RepeatingString(" ", leftRows[0].Length);
+                else leftEntry = PadOutString(leftMinWidth);
 
                 bool hasRightEntry = (i < rightRows.Length && rightRows[i].Length > 0);
                 if (hasRightEntry) rightEntry = rightRows[i];
-                else rightEntry = RepeatingString(" ", rightRows[0].Length);
+                else rightEntry = PadOutString(righMintWidth);
 
-                string space = RepeatingString(" ", spaceBetween);
+                string space = PadOutString(spaceBetween);
                 combinedRows[i] = $"{leftEntry}{space}{rightEntry}";
             }
 
@@ -80,26 +78,26 @@ namespace Tetris
 
             string combinedRows = "";
 
-            string longestEntry = Utils.LongerStringOfTwoStrings(downRows[0], upRows[0]);
+            int minWidth = Utils.LongerStringOfTwoStrings(downRows[0], upRows[0]).Length;
 
             for (int i = 0; i < upRows.Length; i++)
             {
-                string padding = "";
-                if (upRows[i].Length == 0) padding += RepeatingString(" ", longestEntry.Length);
-                else padding += RepeatingString(" ", (longestEntry.Length - upRows[0].Length));
-                combinedRows += $"{upRows[i]}{padding}\n";
+                int width = upRows[0].Length;
+                if (upRows[i].Length == 0) combinedRows += $"{PadOutString(minWidth)}\n";
+                else combinedRows += $"{upRows[i]}{PadOutString(minWidth - width)}\n";
+
             }
 
             for (int i = 0; i < spaceBetween; i++) {
-                combinedRows += $"{RepeatingString(" ", longestEntry.Length)}\n";
+                combinedRows += $"{PadOutString(minWidth)}\n";
             }
 
             for (int i = 0; i < downRows.Length; i++)
             {
-                string padding = "";
-                if (downRows[i].Length == 0) padding += RepeatingString(" ", longestEntry.Length);
-                else padding += RepeatingString(" ", (longestEntry.Length - downRows[0].Length));
-                combinedRows += $"{downRows[i]}{padding}\n";
+                int width = downRows[0].Length;
+                if (downRows[i].Length == 0) combinedRows += $"{PadOutString(minWidth)}\n";
+                else combinedRows += $"{downRows[i]}{PadOutString(minWidth - width)}\n";
+
             }
 
             return combinedRows;
@@ -110,6 +108,16 @@ namespace Tetris
             string repeatedString = "";
             for (int i = 0; i < repeats; i++) { repeatedString += str; }
             return repeatedString;
+        }
+
+        private string PadOutString(string str, int toLength)
+        {
+            return str + RepeatingString(" ", (toLength - str.Length));
+        }
+
+        private string PadOutString(int toLength)
+        {
+            return RepeatingString(" ", toLength);
         }
 
         private string PrintLine(int length)
