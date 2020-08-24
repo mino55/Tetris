@@ -110,52 +110,11 @@ namespace Tetris
             {
                 Console.Clear();
 
-                string stats = StatsPrint();
-                string nextTetriminoPrint = NextTetriminoPrint();
-                string statsColumn = _printHelper.ConnectPrintsVertically(nextTetriminoPrint,
-                                                                          stats,
-                                                                          1);
-
-                string boardColumn = BoardPrint();
-                string gameBoard = _printHelper.ConnectPrintsHorizontally(statsColumn,
-                                                                          boardColumn,
-                                                                          1);
-                Console.WriteLine(gameBoard);
+                string gameFieldPrint = _printHelper.SimplePrint(_tetrisBoard, _nextTetrimino, _gameStats);
+                Console.WriteLine(gameFieldPrint);
 
                 LastChange = _tetrisBoard.ChangeCount;
             }
-        }
-
-        private static string StatsPrint()
-        {
-            string stats = " SCORE\n" +
-                           $" {_gameStats.Score}\n" +
-                           "\n" +
-                           $" Lines: {_gameStats.Lines}\n" +
-                           $" Blocks: {_gameStats.Shapes}\n" +
-                           $" Level: {_gameStats.Level}\n";
-            string framedStats = _printHelper.PrintWithFrame(stats, (8 * 3));
-            return framedStats;
-
-        }
-
-        private static string BoardPrint()
-        {
-            string boardPrint = _printHelper.BoardPrint(_tetrisBoard);
-            int charsPerBoardTile = 3;
-            int boardCharWidth = (_tetrisBoard.width * charsPerBoardTile);
-            string framedBoardPrint = _printHelper.PrintWithFrame(boardPrint, boardCharWidth);
-            return framedBoardPrint;
-
-        }
-
-        private static string NextTetriminoPrint()
-        {
-            string nextTetriminoPrint = _printHelper.BoardPrint(_nextTetrimino);
-            int charsPerBoardTile = 3;
-            int boardCharWidth = (_nextTetrimino.width * charsPerBoardTile);
-            string framedNextTetriminoPrint = _printHelper.PrintWithFrame(nextTetriminoPrint, boardCharWidth);
-            return framedNextTetriminoPrint;
         }
 
         private static void MoveBlock(int dTime)

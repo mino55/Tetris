@@ -28,79 +28,46 @@ namespace Tetris
             return boardPrint;
         }
 
-        public string PrintWithFrame(string print, int printWidth)
+        public string SimplePrint(TetrisBoard tetrisBoard, TetrisBoard nextTetrimino, GameStats gameStats)
         {
-            string framedPrint = "";
-            string[] printRows = print.Split("\n");
-            framedPrint += $"┌{PrintLine(printWidth)}┐\n";
-            for (int i = 0; i < printRows.Length; i++) {
-                string row = printRows[i];
-                framedPrint += $"│{PadOutString(row, printWidth)}│\n";
-            }
-            framedPrint += $"└{PrintLine(printWidth)}┘\n";
-            return framedPrint;
-        }
+            string[] boardRows = BoardPrint(tetrisBoard).Split("\n");
+            string[] nextTetriminoRows = BoardPrint(nextTetrimino).Split("\n");
 
-        public string ConnectPrintsHorizontally(string leftPrint, string rightPrint, int spaceBetween)
-        {
-            string[] leftRows = leftPrint.Split("\n");
-            string[] rightRows = rightPrint.Split("\n");
-            int maxHeight = Utils.LongerArrayOfTwoArrays<string>(rightRows, leftRows).Length;
+            string scoreTitle = PadOutString(" SCORE", 12);
+            string scoreAmount = PadOutString($" {gameStats.Score}", 12);
 
-            string[] combinedRows = new string[maxHeight];
-            int leftMinWidth = leftRows[0].Length;
-            int righMintWidth = rightRows[0].Length;
+            string lines = PadOutString($" Lines: {gameStats.Lines}", 12);
+            string blocks = PadOutString($" Blocks: {gameStats.Shapes}", 12);
+            string level = PadOutString($" Level: {gameStats.Level}", 12);
 
-            for (int i = 0; i < maxHeight; i++)
-            {
-                string leftEntry;
-                string rightEntry;
+            string blankLine14 = PadOutString(14);
+            string blankLine12 = PadOutString(12);
 
-                bool hasLeftEntry = (i < leftRows.Length && leftRows[i].Length > 0);
-                if (hasLeftEntry) leftEntry = leftRows[i];
-                else leftEntry = PadOutString(leftMinWidth);
+            string gameFieldPrint =
+            $"┌{PrintLine(12)}┐ "        + $" ┌{PrintLine(30)}┐\n" +
+            $"│{nextTetriminoRows[0]}│ " + $" │{boardRows[0]}│\n" +
+            $"│{nextTetriminoRows[1]}│ " + $" │{boardRows[1]}│\n" +
+            $"│{nextTetriminoRows[2]}│ " + $" │{boardRows[2]}│\n" +
+            $"│{nextTetriminoRows[3]}│ " + $" │{boardRows[3]}│\n" +
+            $"└{PrintLine(12)}┘ "        + $" │{boardRows[4]}│\n" +
+            $"{blankLine14} "            + $" │{boardRows[5]}│\n" +
+            $"{blankLine14} "            + $" │{boardRows[6]}│\n" +
+            $"┌{PrintLine(12)}┐ "        + $" │{boardRows[7]}│\n" +
+            $"│{scoreTitle}│ "           + $" │{boardRows[8]}│\n" +
+            $"│{scoreAmount}│ "          + $" │{boardRows[9]}│\n" +
+            $"│{blankLine12}│ "          + $" │{boardRows[10]}│\n" +
+            $"│{lines}│ "                + $" │{boardRows[11]}│\n" +
+            $"│{blocks}│ "               + $" │{boardRows[12]}│\n" +
+            $"│{level}│ "                + $" │{boardRows[13]}│\n" +
+            $"│{blankLine12}│ "          + $" │{boardRows[14]}│\n" +
+            $"└{PrintLine(12)}┘ "        + $" │{boardRows[15]}│\n" +
+            $"{blankLine14} "            + $" │{boardRows[16]}│\n" +
+            $"{blankLine14} "            + $" │{boardRows[17]}│\n" +
+            $"{blankLine14} "            + $" │{boardRows[18]}│\n" +
+            $"{blankLine14} "            + $" │{boardRows[19]}│\n" +
+            $"{blankLine14} "            + $" └{PrintLine(30)}┘\n";
 
-                bool hasRightEntry = (i < rightRows.Length && rightRows[i].Length > 0);
-                if (hasRightEntry) rightEntry = rightRows[i];
-                else rightEntry = PadOutString(righMintWidth);
-
-                string space = PadOutString(spaceBetween);
-                combinedRows[i] = $"{leftEntry}{space}{rightEntry}";
-            }
-
-            return StrArrToStr(combinedRows);
-        }
-
-        public string ConnectPrintsVertically(string upPrint, string downPrint, int spaceBetween)
-        {
-            string[] downRows = downPrint.Split("\n");
-            string[] upRows = upPrint.Split("\n");
-
-            string combinedRows = "";
-
-            int minWidth = Utils.LongerStringOfTwoStrings(downRows[0], upRows[0]).Length;
-
-            for (int i = 0; i < upRows.Length; i++)
-            {
-                int width = upRows[0].Length;
-                if (upRows[i].Length == 0) combinedRows += $"{PadOutString(minWidth)}\n";
-                else combinedRows += $"{upRows[i]}{PadOutString(minWidth - width)}\n";
-
-            }
-
-            for (int i = 0; i < spaceBetween; i++) {
-                combinedRows += $"{PadOutString(minWidth)}\n";
-            }
-
-            for (int i = 0; i < downRows.Length; i++)
-            {
-                int width = downRows[0].Length;
-                if (downRows[i].Length == 0) combinedRows += $"{PadOutString(minWidth)}\n";
-                else combinedRows += $"{downRows[i]}{PadOutString(minWidth - width)}\n";
-
-            }
-
-            return combinedRows;
+            return gameFieldPrint;
         }
 
         private string RepeatingString(string str, int repeats)
@@ -125,13 +92,6 @@ namespace Tetris
             string line = "";
             for(int i = 0; i < length; i++) { line += "─"; }
             return line;
-        }
-
-        private string StrArrToStr(string[] strArr)
-        {
-            string str = "";
-            foreach (string row in strArr) { str += $"{row}\n"; }
-            return str;
         }
     }
 }
