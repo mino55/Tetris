@@ -155,8 +155,8 @@ namespace Tetris
         private static void UpdateNextTetrmino()
         {
             Tetrimino current = _tetrisBoardOperator.NextTetrimino;
-            _nextTetrimino = new TetrisBoard(4, 4);
-            _nextTetrimino.AddTetriminoAt(current, new Point(1, 2));
+            _nextTetrimino = new TetrisBoard(5, 4);
+            _nextTetrimino.AddTetriminoAt(current, new Point(2, 2));
         }
 
         private static void ProcessInput()
