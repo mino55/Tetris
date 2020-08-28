@@ -30,15 +30,17 @@ namespace Tetris
 
         public void stopListening()
         {
-            _thread.Abort();
+            try {
+                _thread.Abort();
+            } catch(Exception) {}
         }
 
         private void ReceiveKey()
         {
             while (true)
             {
-                    _key = System.Console.ReadKey(true);
-                    isNewKey = true;
+                _key = System.Console.ReadKey(true);
+                isNewKey = true;
             }
         }
     }
