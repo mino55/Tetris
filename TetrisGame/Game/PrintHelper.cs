@@ -73,28 +73,44 @@ namespace Tetris
             return gameFieldPrint;
         }
 
+        public string PadOutString(string str, int toLength)
+        {
+            return str + RepeatingString(" ", (toLength - str.Length));
+        }
+
+        public string PadOutStringCentered(string str, int strWidth, int toLength)
+        {
+            // TODO: create a method to clean out octal codes from strings
+            // https://stackoverflow.com/questions/7149601/how-to-remove-replace-ansi-color-codes-from-a-string-in-javascript/7150870
+            // Then we no longer need to pass strWidth as an argument
+
+            int lengthCenter = toLength / 2;
+            int strCenter = strWidth / 2;
+            int leftPaddingLength = lengthCenter - strCenter;
+            int rightPaddingLength = (toLength - leftPaddingLength - strWidth);
+
+            string leftPadding = PadOutString(leftPaddingLength);
+            string rightPadding = PadOutString(rightPaddingLength);
+            return $"{leftPadding}{str}{rightPadding}";
+        }
+
+        public string PadOutString(int toLength)
+        {
+            return RepeatingString(" ", toLength);
+        }
+
+        public string PrintLine(int length)
+        {
+            string line = "";
+            for(int i = 0; i < length; i++) { line += "─"; }
+            return line;
+        }
+
         private string RepeatingString(string str, int repeats)
         {
             string repeatedString = "";
             for (int i = 0; i < repeats; i++) { repeatedString += str; }
             return repeatedString;
-        }
-
-        private string PadOutString(string str, int toLength)
-        {
-            return str + RepeatingString(" ", (toLength - str.Length));
-        }
-
-        private string PadOutString(int toLength)
-        {
-            return RepeatingString(" ", toLength);
-        }
-
-        private string PrintLine(int length)
-        {
-            string line = "";
-            for(int i = 0; i < length; i++) { line += "─"; }
-            return line;
         }
     }
 }

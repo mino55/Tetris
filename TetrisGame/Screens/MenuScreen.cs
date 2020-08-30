@@ -5,6 +5,7 @@ namespace Tetris
     public class MenuScreen : IScreen
     {
         private Engine _engine;
+        private PrintHelper _printHelper = new PrintHelper();
         private int _selections = 4;
         private int _currentSelection = 0;
 
@@ -24,13 +25,8 @@ namespace Tetris
 
         public string Render()
         {
-            string header = (
-                $"{Padding(6)}______________________\n" +
-                $"{Padding(6)}_______ TETRIS _______\n" +
-                "\n"
-            );
             string selection = PrintSelection();
-            return (header + selection);
+            return selection;
         }
 
         private void selectNext()
@@ -66,10 +62,51 @@ namespace Tetris
 
         private string PrintSelection()
         {
-            return $"{Padding(12)}{HighlightableString(0, "Start Game", Color.RED)}\n\n" +
-                   $"{Padding(12)}{HighlightableString(1, " Options", Color.RED)}\n\n" +
-                   $"{Padding(12)}{HighlightableString(2, "Highscore", Color.RED)}\n\n" +
-                   $"{Padding(12)}{HighlightableString(3, "  Quit", Color.RED)}\n\n";
+            string[] selection = Selection();
+            int width = 52;
+
+            string print = "";
+            string blankLine = _printHelper.PadOutString(width);
+
+            print += $"┌{_printHelper.PrintLine(width)}┐\n";
+            for (int i = 0; i < 20; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        print += $"│{_printHelper.PadOutStringCentered("______________________", 22, width)}│\n";
+                        print += $"│{_printHelper.PadOutStringCentered("_______ TETRIS _______", 22, width)}│\n";
+                        break;
+                    case 4:
+                        print += $"│{_printHelper.PadOutStringCentered(selection[0], 10, width)}│\n";
+                        break;
+                    case 6:
+                        print += $"│{_printHelper.PadOutStringCentered(selection[1], 7, width)}│\n";
+                        break;
+                    case 8:
+                        print += $"│{_printHelper.PadOutStringCentered(selection[2], 9, width)}│\n";
+                        break;
+                    case 10:
+                        print += $"│{_printHelper.PadOutStringCentered(selection[3], 4, width)}│\n";
+                        break;
+                    default:
+                        print += $"│{blankLine}│\n";
+                        break;
+                }
+            }
+            print += $"└{_printHelper.PrintLine(width)}┘\n";
+
+            return print;
+        }
+
+        private string[] Selection()
+        {
+            return new string[] {
+                $"{HighlightableString(0, "Start Game", Color.RED)}",
+                $"{HighlightableString(1, "Options", Color.RED)}",
+                $"{HighlightableString(2, "Highscore", Color.RED)}",
+                $"{HighlightableString(3, "Quit", Color.RED)}"
+            };
         }
 
         private string HighlightableString(int highlightOnSelection, string str, Color highlightColor)

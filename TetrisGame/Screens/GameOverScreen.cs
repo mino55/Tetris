@@ -19,7 +19,7 @@ namespace Tetris
 
         public void Input(string input, int dTime)
         {
-            if (input == "Enter") _engine.SwitchScreen(new GameScreen());
+            if (input == "Enter") _engine.SwitchScreen(new MenuScreen());
         }
 
         public string Render()
