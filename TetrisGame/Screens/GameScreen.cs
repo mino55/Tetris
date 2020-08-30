@@ -39,10 +39,8 @@ namespace Tetris
             UpdateNextTetrmino();
         }
 
-        public void Render(int dTime, string input, Engine engine)
+        public string Render(int dTime, string input, Engine engine)
         {
-            DrawGame();
-
             if (_tetrisBoardOperator.CurrentTetriminoIsLocked)
             {
                 ResolveRows();
@@ -57,6 +55,8 @@ namespace Tetris
                 UpdateNextTetrmino();
             }
             else MoveBlock(dTime, input);
+
+            return DrawGame();
         }
 
         public void Unmount() {}
@@ -66,17 +66,10 @@ namespace Tetris
             return _tetriminoFactory.Random();
         }
 
-        private void DrawGame()
+        private string DrawGame()
         {
-            if (LastChange != _tetrisBoard.ChangeCount)
-            {
-                Console.Clear();
-
-                string gameFieldPrint = _printHelper.SimplePrint(_tetrisBoard, _nextTetrimino, _gameStats);
-                Console.WriteLine(gameFieldPrint);
-
-                LastChange = _tetrisBoard.ChangeCount;
-            }
+            string gameFieldPrint = _printHelper.SimplePrint(_tetrisBoard, _nextTetrimino, _gameStats);
+            return gameFieldPrint;
         }
 
         private void MoveBlock(int dTime, string input)

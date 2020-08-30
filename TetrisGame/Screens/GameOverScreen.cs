@@ -11,17 +11,18 @@ namespace Tetris
             _gameStats = gameStats;
         }
 
-        public void Render(int dTime, string input, Engine engine)
+        public string Render(int dTime, string input, Engine engine)
         {
-            Console.Clear();
-            Console.WriteLine("GAME OVER");
-            Console.WriteLine("Score: " + _gameStats.Score);
-            Console.WriteLine("Lines: " + _gameStats.Lines);
-            Console.WriteLine("Level: " + _gameStats.Level);
-            Console.WriteLine("Blocks: " + _gameStats.Shapes);
-            Console.WriteLine("Press enter to restart game...");
-
             if (input == "Enter") engine.SwitchScreen(new GameScreen());
+
+            return (
+                "GAME OVER" +
+                $"Score: {_gameStats.Score}\n" +
+                $"Lines: {_gameStats.Lines}\n" +
+                $"Level: {_gameStats.Level}\n" +
+                $"Blocks: {_gameStats.Shapes}\n" +
+                "Press enter to restart game..."
+            );
         }
     }
 }

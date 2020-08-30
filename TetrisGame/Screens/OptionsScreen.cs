@@ -4,14 +4,15 @@ namespace Tetris
 {
     public class OptionsScreen : IScreen
     {
-        public void Render(int dTime, string input, Engine engine)
+        public string Render(int dTime, string input, Engine engine)
         {
-            Console.Clear();
-            Console.WriteLine("OPTIONS");
-            Console.WriteLine("Under construction!");
-            Console.WriteLine("Press enter to go back...");
-
             if (input == "Enter") engine.SwitchScreen(new MenuScreen());
+
+            return (
+                "OPTIONS\n" +
+                "Under construction!\n" +
+                "Press enter to go back..."
+            );
         }
     }
 }

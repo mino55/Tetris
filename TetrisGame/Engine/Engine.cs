@@ -9,6 +9,8 @@ namespace Tetris
 
         private bool _started = false;
 
+        private string _lastRenderedPrint = "";
+
         private KeyReceiver _keyReceiver = new KeyReceiver();
 
         public IScreen _currentScreen;
@@ -46,9 +48,20 @@ namespace Tetris
 
             string input = GetKeyInput();
 
-            _currentScreen.Render(dTime, input, this);
+            string print = _currentScreen.Render(dTime, input, this);
+            Render(print);
 
             Thread.Sleep(dTime);
+        }
+
+        private void Render(string print)
+        {
+            if (_lastRenderedPrint != print)
+            {
+                _lastRenderedPrint = print;
+                Console.Clear();
+                Console.WriteLine(print);
+            }
         }
 
         private string GetKeyInput()

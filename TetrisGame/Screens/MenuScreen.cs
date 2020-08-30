@@ -9,18 +9,19 @@ namespace Tetris
 
         private ColorHelper _colorHelper = new ColorHelper();
 
-        public void Render(int dTime, string input, Engine engine)
+        public string Render(int dTime, string input, Engine engine)
         {
-            Console.Clear();
-            Console.WriteLine($"{Padding(6)}______________________");
-            Console.WriteLine($"{Padding(6)}_______ TETRIS _______");
-            Console.WriteLine("");
-
             if (input == "Enter") Pick(_currentSelection, engine);
             if (input == "S") selectNext();
             if (input == "W") selectPrevious();
 
-            Console.WriteLine(PrintSelection());
+            string header = (
+                $"{Padding(6)}______________________\n" +
+                $"{Padding(6)}_______ TETRIS _______\n" +
+                "\n"
+            );
+            string selection = PrintSelection();
+            return (header + selection);
         }
 
         private void selectNext()
@@ -49,7 +50,7 @@ namespace Tetris
                     engine.SwitchScreen(new HighscoreScreen());
                     break;
                 case 3:
-                    engine.Stop(); // TOOD: Google: Thread abort is not supported on this platform
+                    engine.Stop();
                     break;
             }
         }
