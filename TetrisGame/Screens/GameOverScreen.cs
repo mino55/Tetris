@@ -2,7 +2,7 @@ using System;
 
 namespace Tetris
 {
-    public class GameOverScreen : IScreen
+    public class GameOverScreen : MenuScreen
     {
         private Engine _engine;
         private GameStats _gameStats;
@@ -12,26 +12,22 @@ namespace Tetris
             _gameStats = gameStats;
         }
 
-        public void Mount(Engine engine)
+        protected override void Pick(int selection, Engine engine)
         {
-            _engine = engine;
+            engine.SwitchScreen(new MainScreen());
         }
 
-        public void Input(string input, int dTime)
+        protected override void RenderMenuItems(string[] menuPrint)
         {
-            if (input == "Enter") _engine.SwitchScreen(new MenuScreen());
+            menuPrint[2] = CenterString("GAME OVER");
+            menuPrint[4] = CenterString($"Score: {_gameStats.Score}");
+            menuPrint[6] = CenterString($"Lines: {_gameStats.Lines}");
+            menuPrint[8] = CenterString($"Level: {_gameStats.Level}");
+            menuPrint[10] = CenterString($"Blocks: {_gameStats.Shapes}");
+            menuPrint[14] = CenterString("Press enter to restart game...");
         }
 
-        public string Render()
-        {
-            return (
-                "GAME OVER" +
-                $"Score: {_gameStats.Score}\n" +
-                $"Lines: {_gameStats.Lines}\n" +
-                $"Level: {_gameStats.Level}\n" +
-                $"Blocks: {_gameStats.Shapes}\n" +
-                "Press enter to restart game..."
-            );
-        }
+        protected override void UnhandledInput(string input, int dTime, Engine engine)
+        {}
     }
 }

@@ -3,27 +3,21 @@ using System;
 namespace Tetris
 
 {
-    public class HighscoreScreen : IScreen
+    public class HighscoreScreen : MenuScreen
     {
-        private Engine _engine;
-
-        public void Mount(Engine engine)
+        protected override void Pick(int selection, Engine engine)
         {
-            _engine = engine;
+            engine.SwitchScreen(new MainScreen());
         }
 
-        public void Input(string input, int dTime)
+        protected override void RenderMenuItems(string[] menuPrint)
         {
-            if (input == "Enter") _engine.SwitchScreen(new MenuScreen());
+            menuPrint[4] = PadOutString("   HIGHSCORE");
+            menuPrint[5] = PadOutString("   Under construction!");
+            menuPrint[9] = PadOutString("   Press enter to go back...");
         }
 
-        public string Render()
-        {
-            return (
-                "HIGHSCORE\n" +
-                "Under construction!\n" +
-                "Press enter to go back..."
-            );
-        }
+        protected override void UnhandledInput(string input, int dTime, Engine engine)
+        {}
     }
 }

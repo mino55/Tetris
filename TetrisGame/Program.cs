@@ -8,7 +8,7 @@ namespace Tetris
     {
         static void Main(string[] args)
         {
-            MenuScreen menuScreen = new MenuScreen();
+            MainScreen menuScreen = new MainScreen();
             Engine engine = new Engine(60, menuScreen);
             engine.Start();
         }
