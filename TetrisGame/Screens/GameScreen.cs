@@ -4,6 +4,8 @@ namespace Tetris
 {
     public class GameScreen : IScreen
     {
+        Engine _engine;
+
         private Point _centerPoint = null;
         private TetrisBoard _tetrisBoard = null;
         private TetrisBoard _nextTetrimino = null;
@@ -36,46 +38,50 @@ namespace Tetris
 
             _tetrisBoardOperator.NewCurrentTetrimino(CreateTetrimino(), _centerPoint);
             _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
-            UpdateNextTetrmino();
+            UpdateNextTetrimino();
         }
 
-        public string Render(int dTime, string input, Engine engine)
+        public void Mount(Engine engine)
+        {
+            _engine = engine;
+        }
+
+        public void Input(string input, int dTime)
         {
             if (_tetrisBoardOperator.CurrentTetriminoIsLocked)
             {
                 ResolveRows();
-                try
-                {
-                    NextBlock();
-                }
-                catch (Exceptions.NoOverwriteBlockException)
-                {
-                    engine.SwitchScreen(new GameOverScreen(_gameStats));
-                }
-                UpdateNextTetrmino();
+                SpawnNextTetrimino();
+                UpdateNextTetrimino();
             }
-            else MoveBlock(dTime, input);
-
-            return DrawGame();
+            else
+            {
+                MoveTetriminoOnInput(input);
+                CountDropTimer(dTime);
+            }
         }
 
-        public void Unmount() {}
-
-        private Tetrimino CreateTetrimino()
-        {
-            return _tetriminoFactory.Random();
-        }
-
-        private string DrawGame()
+        public string Render()
         {
             string gameFieldPrint = _printHelper.SimplePrint(_tetrisBoard, _nextTetrimino, _gameStats);
             return gameFieldPrint;
         }
 
-        private void MoveBlock(int dTime, string input)
+        private void SpawnNextTetrimino()
         {
-            ProcessInput(input);
-            DropTimer(dTime);
+            try
+            {
+                NextBlock();
+            }
+            catch (Exceptions.NoOverwriteBlockException)
+            {
+                _engine.SwitchScreen(new GameOverScreen(_gameStats));
+            }
+        }
+
+        private Tetrimino CreateTetrimino()
+        {
+            return _tetriminoFactory.Random();
         }
 
         private void ResolveRows()
@@ -95,14 +101,14 @@ namespace Tetris
             _gameStats.RegisterTetrimino(_tetrisBoardOperator.CurrentTetrimino.Type());
         }
 
-        private void UpdateNextTetrmino()
+        private void UpdateNextTetrimino()
         {
             Tetrimino current = _tetrisBoardOperator.NextTetrimino;
             _nextTetrimino = new TetrisBoard(5, 4);
             _nextTetrimino.AddTetriminoAt(current, new Point(2, 2));
         }
 
-        private void ProcessInput(string key)
+        private void MoveTetriminoOnInput(string key)
         {
             switch (key)
             {
@@ -132,7 +138,7 @@ namespace Tetris
             }
         }
 
-        private void DropTimer(int dTime)
+        private void CountDropTimer(int dTime)
         {
             int dropTime = 1000 - (100 * _gameStats.Level);
 

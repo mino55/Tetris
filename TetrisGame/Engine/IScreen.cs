@@ -2,6 +2,10 @@ namespace Tetris
 {
     public interface IScreen
     {
-        string Render(int dTime, string input, Engine engine);
+        void Mount(Engine engine);
+
+        void Input(string input, int dTime);
+
+        string Render();
     }
 }

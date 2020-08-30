@@ -4,6 +4,7 @@ namespace Tetris
 {
     public class GameOverScreen : IScreen
     {
+        private Engine _engine;
         private GameStats _gameStats;
 
         public GameOverScreen(GameStats gameStats)
@@ -11,10 +12,18 @@ namespace Tetris
             _gameStats = gameStats;
         }
 
-        public string Render(int dTime, string input, Engine engine)
+        public void Mount(Engine engine)
         {
-            if (input == "Enter") engine.SwitchScreen(new GameScreen());
+            _engine = engine;
+        }
 
+        public void Input(string input, int dTime)
+        {
+            if (input == "Enter") _engine.SwitchScreen(new GameScreen());
+        }
+
+        public string Render()
+        {
             return (
                 "GAME OVER" +
                 $"Score: {_gameStats.Score}\n" +

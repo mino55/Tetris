@@ -4,17 +4,26 @@ namespace Tetris
 {
     public class MenuScreen : IScreen
     {
+        private Engine _engine;
         private int _selections = 4;
         private int _currentSelection = 0;
 
         private ColorHelper _colorHelper = new ColorHelper();
 
-        public string Render(int dTime, string input, Engine engine)
+        public void Mount(Engine engine)
         {
-            if (input == "Enter") Pick(_currentSelection, engine);
+            _engine = engine;
+        }
+
+        public void Input(string input, int dTime)
+        {
+            if (input == "Enter") Pick(_currentSelection);
             if (input == "S") selectNext();
             if (input == "W") selectPrevious();
+        }
 
+        public string Render()
+        {
             string header = (
                 $"{Padding(6)}______________________\n" +
                 $"{Padding(6)}_______ TETRIS _______\n" +
@@ -36,21 +45,21 @@ namespace Tetris
             else _currentSelection -= 1;
         }
 
-        private void Pick(int selection, Engine engine)
+        private void Pick(int selection)
         {
             switch(selection)
             {
                 case 0:
-                    engine.SwitchScreen(new GameScreen());
+                    _engine.SwitchScreen(new GameScreen());
                     break;
                 case 1:
-                    engine.SwitchScreen(new OptionsScreen());
+                    _engine.SwitchScreen(new OptionsScreen());
                     break;
                 case 2:
-                    engine.SwitchScreen(new HighscoreScreen());
+                    _engine.SwitchScreen(new HighscoreScreen());
                     break;
                 case 3:
-                    engine.Stop();
+                    _engine.Stop();
                     break;
             }
         }

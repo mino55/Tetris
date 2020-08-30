@@ -19,6 +19,7 @@ namespace Tetris
         {
             _FPS = fps;
             _currentScreen = startScreen;
+            _currentScreen.Mount(this);
         }
 
         public void Start()
@@ -40,6 +41,7 @@ namespace Tetris
         public void SwitchScreen(IScreen screen)
         {
             _currentScreen = screen;
+            _currentScreen.Mount(this);
         }
 
         private void Loop()
@@ -47,8 +49,9 @@ namespace Tetris
             int dTime = (1000 / _FPS);
 
             string input = GetKeyInput();
+            _currentScreen.Input(input, dTime);
 
-            string print = _currentScreen.Render(dTime, input, this);
+            string print = _currentScreen.Render();
             Render(print);
 
             Thread.Sleep(dTime);

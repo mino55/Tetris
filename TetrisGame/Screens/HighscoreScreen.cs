@@ -1,13 +1,24 @@
 using System;
 
 namespace Tetris
+
 {
     public class HighscoreScreen : IScreen
     {
-        public string Render(int dTime, string input, Engine engine)
-        {
-            if (input == "Enter") engine.SwitchScreen(new MenuScreen());
+        private Engine _engine;
 
+        public void Mount(Engine engine)
+        {
+            _engine = engine;
+        }
+
+        public void Input(string input, int dTime)
+        {
+            if (input == "Enter") _engine.SwitchScreen(new MenuScreen());
+        }
+
+        public string Render()
+        {
             return (
                 "HIGHSCORE\n" +
                 "Under construction!\n" +
