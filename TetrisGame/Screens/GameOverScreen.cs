@@ -17,14 +17,14 @@ namespace Tetris
             engine.SwitchScreen(new MainScreen());
         }
 
-        protected override void RenderMenuItems(string[] menuPrint)
+        protected override void RenderMenuItems(MenuLine[] menuPrint)
         {
-            menuPrint[2] = CenterString("GAME OVER");
-            menuPrint[4] = CenterString($"Score: {_gameStats.Score}");
-            menuPrint[6] = CenterString($"Lines: {_gameStats.Lines}");
-            menuPrint[8] = CenterString($"Level: {_gameStats.Level}");
-            menuPrint[10] = CenterString($"Blocks: {_gameStats.Shapes}");
-            menuPrint[14] = CenterString("Press enter to restart game...");
+            menuPrint[2] = CenterAlign("GAME OVER");
+            menuPrint[4] = CenterAlign($"Score: {_gameStats.Score}");
+            menuPrint[6] = CenterAlign($"Lines: {_gameStats.Lines}");
+            menuPrint[8] = CenterAlign($"Level: {_gameStats.Level}");
+            menuPrint[10] = CenterAlign($"Blocks: {_gameStats.Shapes}");
+            menuPrint[14] = CenterAlign("Press enter to restart game...");
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine)

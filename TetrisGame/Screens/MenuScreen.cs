@@ -35,12 +35,12 @@ namespace Tetris
 
         public string Render()
         {
-            string[] menuPrint = new string[_height];
+            MenuLine[] menuPrint = new MenuLine[_height];
             RenderMenuItems(menuPrint);
             return MenuPrintToStr(menuPrint);
         }
 
-        private string MenuPrintToStr(string[] menuPrint)
+        private string MenuPrintToStr(MenuLine[] menuPrint)
         {
             string str = "";
             string blankLine = _printHelper.PadOutString(_width);
@@ -76,21 +76,39 @@ namespace Tetris
             return str;
         }
 
-        protected string CenterString(string str, int strWidth = -1)
+        protected MenuLine CenterAlign(string str, int strWidth = -1)
         {
             if (strWidth == -1) strWidth = str.Length;
-            return $"{_printHelper.PadOutStringCentered(str, strWidth, _width)}";
+            return new MenuLine($"{_printHelper.PadOutStringCentered(str, strWidth, _width)}");
         }
 
-        protected string PadOutString(string str)
+        protected MenuLine LeftAlign(string str)
         {
-            return _printHelper.PadOutString(str, _width);
+            return new MenuLine(_printHelper.PadOutString(str, _width));
         }
 
-        protected abstract void RenderMenuItems(string[] menuPrint);
+        protected abstract void RenderMenuItems(MenuLine[] menuPrint);
 
         protected abstract void Pick(int selection, Engine engine);
 
         protected abstract void UnhandledInput(string input, int dTime, Engine engine);
+
+        // TOOD: move the methods doing the actual alignment into this class
+        //       but wait until the point where we can remove color codes
+        //       via regex.
+        protected class MenuLine
+        {
+            public string _content;
+
+            public MenuLine(string content)
+            {
+                _content = content;
+            }
+
+            public override string ToString()
+            {
+                return _content;
+            }
+        }
     }
 }

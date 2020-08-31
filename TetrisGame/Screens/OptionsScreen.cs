@@ -9,11 +9,11 @@ namespace Tetris
             engine.SwitchScreen(new MainScreen());
         }
 
-        protected override void RenderMenuItems(string[] menuPrint)
+        protected override void RenderMenuItems(MenuLine[] menuPrint)
         {
-            menuPrint[4] = PadOutString("   OPTIONS");
-            menuPrint[5] = PadOutString("   Under construction!");
-            menuPrint[9] = PadOutString("   Press enter to go back...");
+            menuPrint[4] = LeftAlign("   OPTIONS");
+            menuPrint[5] = LeftAlign("   Under construction!");
+            menuPrint[9] = LeftAlign("   Press enter to go back...");
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine)
