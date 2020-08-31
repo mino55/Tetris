@@ -12,10 +12,18 @@ namespace Tetris
             _gameStats = gameStats;
         }
 
-        protected override void Pick(int selection, Engine engine)
+        protected override void SetupMenuSelection(MenuSelections menuSelection)
+        {
+            menuSelection.AddPick("Continue");
+        }
+
+        protected override void OnPick(string selection, Engine engine)
         {
             engine.SwitchScreen(new MainScreen());
         }
+
+        protected override void OnSetting(string name, string state, Engine engine)
+        {}
 
         protected override void RenderMenuItems(MenuLine[] menuPrint)
         {

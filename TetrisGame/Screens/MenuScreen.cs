@@ -6,8 +6,7 @@ namespace Tetris
     {
         private Engine _engine;
         private PrintHelper _printHelper = new PrintHelper();
-        private int _selections = 4;
-        private int _currentSelection = 0;
+        private MenuSelections _menuSelections = new MenuSelections();
 
         private int _width;
         private int _height;
@@ -23,14 +22,19 @@ namespace Tetris
         public void Mount(Engine engine)
         {
             _engine = engine;
+            SetupMenuSelection(_menuSelections);
         }
 
         public void Input(string input, int dTime)
         {
-            if (input == "Enter") Pick(_currentSelection, _engine);
-            else if (input == "S") selectNext();
-            else if (input == "W") selectPrevious();
-            else UnhandledInput(input, dTime, _engine);
+            if (input == "S") _menuSelections.SelectNext();
+            else if (input == "W") _menuSelections.SelectPrevious();
+            else
+            {
+                MenuSelections.Type type = _menuSelections.CurrentSelectionType();
+                if (type == MenuSelections.Type.PICK) InputPick(input, dTime);
+                if (type == MenuSelections.Type.SETTING) InputSetting(input, dTime);
+            }
         }
 
         public string Render()
@@ -55,25 +59,18 @@ namespace Tetris
             return str;
         }
 
-        private void selectNext()
+        protected string HighlightableString(string onSelection, string str, Color highlightColor)
         {
-            if (_currentSelection >= (_selections - 1)) _currentSelection = 0;
-            else _currentSelection += 1;
-        }
-
-        private void selectPrevious()
-        {
-            if (_currentSelection <= 0) _currentSelection = (_selections - 1);
-            else _currentSelection -= 1;
-        }
-
-        protected string HighlightableString(int highlightOnSelection, string str, Color highlightColor)
-        {
-            if (highlightOnSelection == _currentSelection)
+            if (onSelection == _menuSelections.CurrentSelection())
             {
                 return _colorHelper.ColorString(str, highlightColor);
             }
             return str;
+        }
+
+        protected string StateOfSetting(string name)
+        {
+            return _menuSelections.StateOfSetting(name);
         }
 
         protected MenuLine CenterAlign(string str, int strWidth = -1)
@@ -87,9 +84,44 @@ namespace Tetris
             return new MenuLine(_printHelper.PadOutString(str, _width));
         }
 
+        private void InputPick(string input, int dTime)
+        {
+            if (input == "Enter") OnPick(_menuSelections.CurrentSelection(), _engine);
+            else UnhandledInput(input, dTime, _engine);
+        }
+
+        private void InputSetting(string input, int dTime)
+        {
+            if (input == "Enter"){
+                _menuSelections.SelectedSettingNextState();
+                OnSetting(_menuSelections.CurrentSelection(),
+                          _menuSelections.SelectedSettingCurrentState(),
+                          _engine);
+            }
+            else if (input == "D")
+            {
+                _menuSelections.SelectedSettingNextState();
+                OnSetting(_menuSelections.CurrentSelection(),
+                          _menuSelections.SelectedSettingCurrentState(),
+                          _engine);
+            }
+            else if (input == "A")
+            {
+                _menuSelections.SelectedSettingPreviousState();
+                OnSetting(_menuSelections.CurrentSelection(),
+                          _menuSelections.SelectedSettingCurrentState(),
+                          _engine);
+            }
+            else UnhandledInput(input, dTime, _engine);
+        }
+
+        protected abstract void SetupMenuSelection(MenuSelections menuSelection);
+
         protected abstract void RenderMenuItems(MenuLine[] menuPrint);
 
-        protected abstract void Pick(int selection, Engine engine);
+        protected abstract void OnPick(string name, Engine engine);
+
+        protected abstract void OnSetting(string name, string state, Engine engine);
 
         protected abstract void UnhandledInput(string input, int dTime, Engine engine);
 

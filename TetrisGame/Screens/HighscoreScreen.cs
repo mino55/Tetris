@@ -5,7 +5,12 @@ namespace Tetris
 {
     public class HighscoreScreen : MenuScreen
     {
-        protected override void Pick(int selection, Engine engine)
+        protected override void SetupMenuSelection(MenuSelections menuSelection)
+        {
+            menuSelection.AddPick("Continue");
+        }
+
+        protected override void OnPick(string selection, Engine engine)
         {
             engine.SwitchScreen(new MainScreen());
         }
@@ -18,6 +23,9 @@ namespace Tetris
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine)
+        {}
+
+        protected override void OnSetting(string name, string state, Engine engine)
         {}
     }
 }

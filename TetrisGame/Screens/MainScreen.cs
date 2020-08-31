@@ -2,12 +2,20 @@ namespace Tetris
 {
     class MainScreen : MenuScreen
     {
+        protected override void SetupMenuSelection(MenuSelections menuSelection)
+        {
+            menuSelection.AddPick("start");
+            menuSelection.AddPick("options");
+            menuSelection.AddPick("highscore");
+            menuSelection.AddPick("quit");
+        }
+
         protected override void RenderMenuItems(MenuLine[] menuPrint)
         {
-            string startGame = $"{HighlightableString(0, "Start Game", Color.RED)}";
-            string options = $"{HighlightableString(1, "Options", Color.RED)}";
-            string highscore = $"{HighlightableString(2, "Highscore", Color.RED)}";
-            string quit = $"{HighlightableString(3, "Quit", Color.RED)}";
+            string startGame = $"{HighlightableString("start", "Start Game", Color.RED)}";
+            string options = $"{HighlightableString("options", "Options", Color.RED)}";
+            string highscore = $"{HighlightableString("highscore", "Highscore", Color.RED)}";
+            string quit = $"{HighlightableString("quit", "Quit", Color.RED)}";
 
             menuPrint[1] = CenterAlign("______________________", 22);
             menuPrint[2] = CenterAlign("_______ TETRIS _______", 22);
@@ -17,25 +25,28 @@ namespace Tetris
             menuPrint[10] = CenterAlign(quit, 4);
         }
 
-        protected override void Pick(int selection, Engine engine)
+        protected override void OnPick(string selection, Engine engine)
         {
             switch(selection)
             {
-                case 0:
+                case "start":
                     engine.SwitchScreen(new GameScreen());
                     break;
-                case 1:
+                case "options":
                     engine.SwitchScreen(new OptionsScreen());
                     break;
-                case 2:
+                case "highscore":
                     engine.SwitchScreen(new HighscoreScreen());
                     break;
-                case 3:
+                case "quit":
                     engine.Stop();
                     break;
             }
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine) {}
+
+        protected override void OnSetting(string name, string state, Engine engine)
+        {}
     }
 }
