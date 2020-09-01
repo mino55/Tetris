@@ -68,6 +68,11 @@ namespace Tetris
             return str;
         }
 
+        protected bool IsSelected(string name)
+        {
+            return _menuSelections.IsSelected(name);
+        }
+
         protected string StateOfSetting(string name)
         {
             return _menuSelections.StateOfSetting(name);
