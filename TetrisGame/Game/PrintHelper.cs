@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Tetris
 {
     public class PrintHelper
@@ -78,11 +80,9 @@ namespace Tetris
             return str + RepeatingString(" ", (toLength - str.Length));
         }
 
-        public string PadOutStringCentered(string str, int strWidth, int toLength)
+        public string PadOutStringCentered(string str, int toLength)
         {
-            // TODO: create a method to clean out octal codes from strings
-            // https://stackoverflow.com/questions/7149601/how-to-remove-replace-ansi-color-codes-from-a-string-in-javascript/7150870
-            // Then we no longer need to pass strWidth as an argument
+            int strWidth = CleanString(str).Length;
 
             int lengthCenter = toLength / 2;
             int strCenter = strWidth / 2;
@@ -104,6 +104,12 @@ namespace Tetris
             string line = "";
             for(int i = 0; i < length; i++) { line += "─"; }
             return line;
+        }
+
+        public string CleanString(string str)
+        {
+            string pattern = @"\u001b\[[0-9]*m";
+            return Regex.Replace(str, pattern, "");
         }
 
         private string RepeatingString(string str, int repeats)

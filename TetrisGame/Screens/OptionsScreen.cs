@@ -25,8 +25,8 @@ namespace Tetris
             string fpsState = StateOfSetting("fps");
             string fps = $"{HighlightableString("fps", $"FPS: {fpsState}", Color.RED)}";
 
-            menuPrint[4] = CenterAlign(fps, 7);
-            menuPrint[6] = CenterAlign(back, 4);
+            menuPrint[4] = CenterAlign(fps);
+            menuPrint[6] = CenterAlign(back);
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine)

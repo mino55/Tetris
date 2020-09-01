@@ -17,12 +17,12 @@ namespace Tetris
             string highscore = $"{HighlightableString("highscore", "Highscore", Color.RED)}";
             string quit = $"{HighlightableString("quit", "Quit", Color.RED)}";
 
-            menuPrint[1] = CenterAlign("______________________", 22);
-            menuPrint[2] = CenterAlign("_______ TETRIS _______", 22);
-            menuPrint[4] = CenterAlign(startGame, 10);
-            menuPrint[6] = CenterAlign(options, 7);
-            menuPrint[8] = CenterAlign(highscore, 9);
-            menuPrint[10] = CenterAlign(quit, 4);
+            menuPrint[1] = CenterAlign("______________________");
+            menuPrint[2] = CenterAlign("_______ TETRIS _______");
+            menuPrint[4] = CenterAlign(startGame);
+            menuPrint[6] = CenterAlign(options);
+            menuPrint[8] = CenterAlign(highscore);
+            menuPrint[10] = CenterAlign(quit);
         }
 
         protected override void OnPick(string selection, Engine engine)

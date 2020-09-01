@@ -73,15 +73,14 @@ namespace Tetris
             return _menuSelections.StateOfSetting(name);
         }
 
-        protected MenuLine CenterAlign(string str, int strWidth = -1)
+        protected MenuLine CenterAlign(string str)
         {
-            if (strWidth == -1) strWidth = str.Length;
-            return new MenuLine($"{_printHelper.PadOutStringCentered(str, strWidth, _width)}");
+            return new MenuLine(str, _width, Alignment.CENTER, _printHelper);
         }
 
         protected MenuLine LeftAlign(string str)
         {
-            return new MenuLine(_printHelper.PadOutString(str, _width));
+            return new MenuLine(str, _width, Alignment.LEFT, _printHelper);
         }
 
         private void InputPick(string input, int dTime)
@@ -125,20 +124,39 @@ namespace Tetris
 
         protected abstract void UnhandledInput(string input, int dTime, Engine engine);
 
-        // TOOD: move the methods doing the actual alignment into this class
-        //       but wait until the point where we can remove color codes
-        //       via regex.
+        protected enum Alignment
+        {
+            RIGHT,
+            CENTER,
+            LEFT
+        }
+
         protected class MenuLine
         {
-            public string _content;
+            private string _content;
+            int _length;
+            private Alignment _alignment;
+            private PrintHelper _printHelper;
 
-            public MenuLine(string content)
+            public MenuLine(string content, int length, Alignment alignment, PrintHelper printHelper)
             {
                 _content = content;
+                _alignment = alignment;
+                _length = length;
+                _printHelper = printHelper;
             }
 
             public override string ToString()
             {
+                switch(_alignment)
+                {
+                    case Alignment.RIGHT:
+                        return "";
+                    case Alignment.CENTER:
+                        return _printHelper.PadOutStringCentered(_content, _length);
+                    case Alignment.LEFT:
+                        return _printHelper.PadOutString(_content, _length);
+                }
                 return _content;
             }
         }
