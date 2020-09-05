@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Tetris
 {
@@ -13,6 +14,7 @@ namespace Tetris
         private Tetriminos.Factory _tetriminoFactory = null;
         private GameStats _gameStats;
         private PrintHelper _printHelper;
+        private Dictionary<String, Action> _keyMapping;
 
         private int _dropTimer = 0;
         private int LastChange = 0;
@@ -20,6 +22,8 @@ namespace Tetris
         public GameScreen()
         {
             _printHelper = new PrintHelper();
+
+            _keyMapping = CreateMapping();
 
             _gameStats = new GameStats(startLevel: 0,
                                        linesPerLevel: 10,
@@ -56,7 +60,9 @@ namespace Tetris
             }
             else
             {
-                MoveTetriminoOnInput(input);
+                if (input != null &&_keyMapping.ContainsKey(input)) {
+                    MoveTetriminoOnInput(_keyMapping[input]);
+                }
                 CountDropTimer(dTime);
             }
         }
@@ -108,29 +114,29 @@ namespace Tetris
             _nextTetrimino.AddTetriminoAt(current, new Point(2, 2));
         }
 
-        private void MoveTetriminoOnInput(string key)
+        private void MoveTetriminoOnInput(Action action)
         {
-            switch (key)
+            switch (action)
             {
-                case "A":
+                case Action.MOVE_LEFT:
                     _tetrisBoardOperator.MoveCurrentTetriminoLeft();
                     break;
-                case "D":
+                case Action.MOVE_RIGHT:
                     _tetrisBoardOperator.MoveCurrentTetriminoRight();
                     break;
-                case "W":
+                case Action.ROTATE_FLIP:
                     _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.FLIP);
                     break;
-                case "Q":
-                    _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.REVERSE);
-                    break;
-                case "E":
+                case Action.ROTATE_CLOCKWISE:
                     _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.CLOCKWISE);
                     break;
-                case "S":
+                case Action.ROTATE_REVERSE:
+                    _tetrisBoardOperator.RotateCurrentTetrimino(Rotation.REVERSE);
+                    break;
+                case Action.DROP:
                     _tetrisBoardOperator.DropCurrentTetrimino();
                     break;
-                case "Spacebar":
+                case Action.SLAM:
                     _tetrisBoardOperator.SlamCurrentTetrimino();
                     break;
                 default:
@@ -148,6 +154,31 @@ namespace Tetris
                  _tetrisBoardOperator.DropCurrentTetrimino();
                  _dropTimer = dropTime;
             }
+        }
+
+        private Dictionary<String, Action> CreateMapping()
+        {
+            Dictionary<String, Action> mapping = new Dictionary<String, Action>();
+
+            mapping["A"] = Action.MOVE_LEFT;
+            mapping["D"] = Action.MOVE_RIGHT;
+            mapping["W"] = Action.ROTATE_FLIP;
+            mapping["E"] = Action.ROTATE_CLOCKWISE;
+            mapping["Q"] = Action.ROTATE_REVERSE;
+            mapping["S"] = Action.DROP;
+            mapping["Spacebar"] = Action.SLAM;
+
+            return mapping;
+        }
+
+        public enum Action {
+            MOVE_LEFT,
+            MOVE_RIGHT,
+            DROP,
+            ROTATE_CLOCKWISE,
+            ROTATE_REVERSE,
+            ROTATE_FLIP,
+            SLAM
         }
     }
 }
