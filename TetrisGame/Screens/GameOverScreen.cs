@@ -6,9 +6,11 @@ namespace Tetris
     {
         private Engine _engine;
         private GameStats _gameStats;
+        private ScreenFactory _screenFactory;
 
-        public GameOverScreen(GameStats gameStats)
+        public GameOverScreen(ScreenFactory screenFactory, GameStats gameStats)
         {
+            _screenFactory = new ScreenFactory();
             _gameStats = gameStats;
         }
 
@@ -19,7 +21,7 @@ namespace Tetris
 
         protected override void OnPick(string selection, Engine engine)
         {
-            engine.SwitchScreen(new MainScreen());
+            engine.SwitchScreen(_screenFactory.CreateMainScreen());
         }
 
         protected override void OnSetting(string name, string state, Engine engine)

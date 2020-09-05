@@ -5,6 +5,13 @@ namespace Tetris
 {
     public class HighscoreScreen : MenuScreen
     {
+        ScreenFactory _screenFactory;
+
+        public HighscoreScreen(ScreenFactory screenFactory) : base()
+        {
+            _screenFactory = screenFactory;
+        }
+
         protected override void SetupMenuSelection(MenuSelections menuSelection)
         {
             menuSelection.AddPick("Continue");
@@ -12,7 +19,7 @@ namespace Tetris
 
         protected override void OnPick(string selection, Engine engine)
         {
-            engine.SwitchScreen(new MainScreen());
+            engine.SwitchScreen(_screenFactory.CreateMainScreen());
         }
 
         protected override void RenderMenuItems(MenuLine[] menuPrint)

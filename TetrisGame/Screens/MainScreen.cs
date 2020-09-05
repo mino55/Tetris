@@ -1,7 +1,14 @@
 namespace Tetris
 {
-    class MainScreen : MenuScreen
+    public class MainScreen : MenuScreen
     {
+        private ScreenFactory _screenFactory = null;
+
+        public MainScreen(ScreenFactory screenFactory) : base()
+        {
+            _screenFactory = screenFactory;
+        }
+
         protected override void SetupMenuSelection(MenuSelections menuSelection)
         {
             menuSelection.AddPick("start");
@@ -30,13 +37,13 @@ namespace Tetris
             switch(selection)
             {
                 case "start":
-                    engine.SwitchScreen(new GameScreen());
+                    engine.SwitchScreen(_screenFactory.CreateGameScreen());
                     break;
                 case "options":
-                    engine.SwitchScreen(new OptionsScreen());
+                    engine.SwitchScreen(_screenFactory.CreateOptionsScreen());
                     break;
                 case "highscore":
-                    engine.SwitchScreen(new HighscoreScreen());
+                    engine.SwitchScreen(_screenFactory.CreateHighscoreScreen());
                     break;
                 case "quit":
                     engine.Stop();

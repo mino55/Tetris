@@ -16,11 +16,15 @@ namespace Tetris
         private PrintHelper _printHelper;
         private Dictionary<String, Action> _keyMapping;
 
+        private ScreenFactory _screenFactory;
+
         private int _dropTimer = 0;
         private int LastChange = 0;
 
-        public GameScreen()
+        public GameScreen(ScreenFactory screenFactory)
         {
+            _screenFactory = screenFactory;
+
             _printHelper = new PrintHelper();
 
             _keyMapping = CreateMapping();
@@ -81,7 +85,7 @@ namespace Tetris
             }
             catch (Exceptions.NoOverwriteBlockException)
             {
-                _engine.SwitchScreen(new GameOverScreen(_gameStats));
+                _engine.SwitchScreen(_screenFactory.CreateGameOverScreen(_gameStats));
             }
         }
 

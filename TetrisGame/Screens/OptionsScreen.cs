@@ -4,6 +4,13 @@ namespace Tetris
 {
     public class OptionsScreen : MenuScreen
     {
+        ScreenFactory _screenFactory;
+
+        public OptionsScreen(ScreenFactory screenFactory) : base()
+        {
+            _screenFactory = screenFactory;
+        }
+
         protected override void SetupMenuSelection(MenuSelections menuSelection)
         {
             menuSelection.AddSetting("controlls", new string[] {"simple ", "complex"});
@@ -13,7 +20,7 @@ namespace Tetris
 
         protected override void OnPick(string selection, Engine engine)
         {
-            engine.SwitchScreen(new MainScreen());
+            engine.SwitchScreen(_screenFactory.CreateMainScreen());
         }
 
         protected override void OnSetting(string name, string state, Engine engine)
