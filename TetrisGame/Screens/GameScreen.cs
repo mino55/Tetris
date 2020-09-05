@@ -8,12 +8,15 @@ namespace Tetris
         Engine _engine;
 
         private Point _centerPoint = null;
-        private TetrisBoard _tetrisBoard = null;
+        private TetrisBoard _tetrisBoard = new TetrisBoard(10, 20);
         private TetrisBoard _nextTetrimino = null;
         private TetrisBoardOperator _tetrisBoardOperator = null;
-        private Tetriminos.Factory _tetriminoFactory = null;
-        private GameStats _gameStats;
-        private PrintHelper _printHelper;
+        private Tetriminos.Factory _tetriminoFactory = new Tetriminos.Factory(new ColorHelper());
+        private GameStats _gameStats = new GameStats(startLevel: 0,
+                                                     linesPerLevel: 10,
+                                                     effectLevelLimit: 10,
+                                                     speedIncreasePerEffectLevel: 90);
+        private PrintHelper _printHelper = new PrintHelper();
         private Dictionary<String, Action> _keyMapping;
         private ScreenFactory _screenFactory;
         private GameSettings _gameSettings;
@@ -21,25 +24,16 @@ namespace Tetris
         private int _dropTimer = 0;
         private int LastChange = 0;
 
-        public GameScreen(ScreenFactory screenFactory, GameSettings gameSettings)
+        public GameScreen(ScreenFactory screenFactory,
+                          GameSettings gameSettings,
+                          KeyMapping keyMapping)
         {
             _screenFactory = screenFactory;
 
             _gameSettings = gameSettings;
 
-            _printHelper = new PrintHelper();
+            SetKeyMapping(keyMapping);
 
-            _keyMapping = CreateMapping();
-
-            _gameStats = new GameStats(startLevel: 0,
-                                       linesPerLevel: 10,
-                                       effectLevelLimit: 10,
-                                       speedIncreasePerEffectLevel: 90);
-
-            ColorHelper colorHelper = new ColorHelper();
-            _tetriminoFactory = new Tetriminos.Factory(colorHelper);
-
-            _tetrisBoard = new TetrisBoard(10, 20);
             int spawnX = (_tetrisBoard.width / 2);
             int spawnY = 1;
             _centerPoint = new Point(spawnX, spawnY);
@@ -77,6 +71,19 @@ namespace Tetris
         {
             string gameFieldPrint = _printHelper.SimplePrint(_tetrisBoard, _nextTetrimino, _gameStats);
             return gameFieldPrint;
+        }
+
+        public void SetKeyMapping(KeyMapping keyMapping)
+        {
+            switch(keyMapping)
+            {
+                case KeyMapping.SIMPLE:
+                    _keyMapping = CreateSimpleKeyMapping();
+                    break;
+                case KeyMapping.COMPLEX:
+                    _keyMapping = CreateComplexKeyMapping();
+                    break;
+            }
         }
 
         private void SpawnNextTetrimino()
@@ -162,19 +169,49 @@ namespace Tetris
             }
         }
 
-        private Dictionary<String, Action> CreateMapping()
+        private Dictionary<String, Action> CreateSimpleKeyMapping()
+        {
+            Dictionary<String, Action> mapping = new Dictionary<String, Action>();
+
+            mapping["A"] = Action.MOVE_LEFT;
+            mapping["D"] = Action.MOVE_RIGHT;
+            mapping["W"] = Action.ROTATE_CLOCKWISE;
+            mapping["S"] = Action.DROP;
+
+            mapping["LeftArrow"] = Action.MOVE_LEFT;
+            mapping["RightArrow"] = Action.MOVE_RIGHT;
+            mapping["UpArrow"] = Action.ROTATE_CLOCKWISE;
+            mapping["DownArrow"] = Action.DROP;
+
+            mapping["Spacebar"] = Action.SLAM;
+
+            return mapping;
+        }
+
+        private Dictionary<String, Action> CreateComplexKeyMapping()
         {
             Dictionary<String, Action> mapping = new Dictionary<String, Action>();
 
             mapping["A"] = Action.MOVE_LEFT;
             mapping["D"] = Action.MOVE_RIGHT;
             mapping["W"] = Action.ROTATE_FLIP;
+            mapping["S"] = Action.DROP;
+
+            mapping["LeftArrow"] = Action.MOVE_LEFT;
+            mapping["RightArrow"] = Action.MOVE_RIGHT;
+            mapping["UpArrow"] = Action.ROTATE_FLIP;
+            mapping["DownArrow"] = Action.DROP;
+
             mapping["E"] = Action.ROTATE_CLOCKWISE;
             mapping["Q"] = Action.ROTATE_REVERSE;
-            mapping["S"] = Action.DROP;
             mapping["Spacebar"] = Action.SLAM;
 
             return mapping;
+        }
+
+        public enum KeyMapping {
+            SIMPLE,
+            COMPLEX
         }
 
         public enum Action {

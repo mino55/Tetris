@@ -16,7 +16,15 @@ namespace Tetris
 
         public GameScreen CreateGameScreen()
         {
-            return new GameScreen(this, _gameSettings);
+            GameScreen.KeyMapping keyMapping;
+
+            if (_gameSettings.Controlls == "simple ")
+                keyMapping = GameScreen.KeyMapping.SIMPLE;
+            else if (_gameSettings.Controlls == "complex")
+                keyMapping = GameScreen.KeyMapping.COMPLEX;
+            else throw new System.Exception("Non-existant keyMapping");
+
+            return new GameScreen(this, _gameSettings, keyMapping);
         }
 
         public OptionsScreen CreateOptionsScreen()

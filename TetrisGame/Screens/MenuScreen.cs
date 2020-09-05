@@ -81,6 +81,7 @@ namespace Tetris
         protected void SetSettingState(string name, string state)
         {
             _menuSelections.SetSettingState(name, state);
+            OnSetting(name, state, _engine);
         }
 
         protected MenuLine CenterAlign(string str)

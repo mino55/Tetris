@@ -19,8 +19,14 @@ namespace Tetris
             menuSelection.AddSetting("fps", new string[] {"60", "30", "20"});
             menuSelection.AddPick("back");
 
-            if (_gameSettings.FPS == -1) _gameSettings.FPS = int.Parse(GetSettingState("fps"));
+            if (_gameSettings.FPS == -1)
+                _gameSettings.FPS = int.Parse(GetSettingState("fps"));
             else menuSelection.SetSettingState("fps", $"{_gameSettings.FPS}");
+
+            if (_gameSettings.Controlls == null) {
+                _gameSettings.Controlls = GetSettingState("controlls");
+            }
+            else menuSelection.SetSettingState("controlls", _gameSettings.Controlls);
         }
 
         protected override void OnPick(string selection, Engine engine)
@@ -34,6 +40,11 @@ namespace Tetris
             {
                 engine.FPS = int.Parse(state);
                 _gameSettings.FPS = int.Parse(state);
+            }
+
+            if (name == "controlls")
+            {
+                _gameSettings.Controlls = state;
             }
         }
 
