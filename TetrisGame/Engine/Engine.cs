@@ -5,7 +5,7 @@ namespace Tetris
 {
     public class Engine
     {
-        private int _FPS;
+        public int FPS { get; set; }
 
         private bool _started = false;
 
@@ -15,9 +15,9 @@ namespace Tetris
 
         public IScreen _currentScreen;
 
-        public Engine(int fps, IScreen startScreen)
+        public Engine(int defaultFPS, IScreen startScreen)
         {
-            _FPS = fps;
+            FPS = defaultFPS;
             _currentScreen = startScreen;
             _currentScreen.Mount(this);
         }
@@ -46,7 +46,7 @@ namespace Tetris
 
         private void Loop()
         {
-            int dTime = (1000 / _FPS);
+            int dTime = (1000 / FPS);
 
             string input = GetKeyInput();
             _currentScreen.Input(input, dTime);
@@ -64,6 +64,7 @@ namespace Tetris
                 _lastRenderedPrint = print;
                 Console.Clear();
                 Console.WriteLine(print);
+                Console.WriteLine(FPS);
             }
         }
 

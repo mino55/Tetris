@@ -15,15 +15,17 @@ namespace Tetris
         private GameStats _gameStats;
         private PrintHelper _printHelper;
         private Dictionary<String, Action> _keyMapping;
-
         private ScreenFactory _screenFactory;
+        private GameSettings _gameSettings;
 
         private int _dropTimer = 0;
         private int LastChange = 0;
 
-        public GameScreen(ScreenFactory screenFactory)
+        public GameScreen(ScreenFactory screenFactory, GameSettings gameSettings)
         {
             _screenFactory = screenFactory;
+
+            _gameSettings = gameSettings;
 
             _printHelper = new PrintHelper();
 

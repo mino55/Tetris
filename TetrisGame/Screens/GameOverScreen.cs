@@ -10,7 +10,7 @@ namespace Tetris
 
         public GameOverScreen(ScreenFactory screenFactory, GameStats gameStats)
         {
-            _screenFactory = new ScreenFactory();
+            _screenFactory = screenFactory;
             _gameStats = gameStats;
         }
 

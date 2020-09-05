@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Tetris
@@ -49,10 +50,16 @@ namespace Tetris
             return (_selections[_currentSelectionIndex] == name);
         }
 
-        public string StateOfSetting(string name)
+        public string GetSettingState(string name)
         {
             int stateIndex = _currentSettingStateIndex[name];
             return _settingStates[name][stateIndex];
+        }
+
+        public void SetSettingState(string name, string state)
+        {
+            int stateIndex = Array.IndexOf(_settingStates[name], state);
+            _currentSettingStateIndex[name] = stateIndex;
         }
 
         public void SelectNext()

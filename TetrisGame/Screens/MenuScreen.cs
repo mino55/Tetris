@@ -73,9 +73,14 @@ namespace Tetris
             return _menuSelections.IsSelected(name);
         }
 
-        protected string StateOfSetting(string name)
+        protected string GetSettingState(string name)
         {
-            return _menuSelections.StateOfSetting(name);
+            return _menuSelections.GetSettingState(name);
+        }
+
+        protected void SetSettingState(string name, string state)
+        {
+            _menuSelections.SetSettingState(name, state);
         }
 
         protected MenuLine CenterAlign(string str)

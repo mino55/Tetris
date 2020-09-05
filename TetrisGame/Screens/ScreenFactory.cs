@@ -2,10 +2,7 @@ namespace Tetris
 {
     public class ScreenFactory
     {
-        public ScreenFactory()
-        {
-            // TODO: in here we assign settings!
-        }
+        GameSettings _gameSettings = new GameSettings();
 
         public MainScreen CreateMainScreen()
         {
@@ -19,12 +16,12 @@ namespace Tetris
 
         public GameScreen CreateGameScreen()
         {
-            return new GameScreen(this);
+            return new GameScreen(this, _gameSettings);
         }
 
         public OptionsScreen CreateOptionsScreen()
         {
-            return new OptionsScreen(this);
+            return new OptionsScreen(this, _gameSettings);
         }
 
         public HighscoreScreen CreateHighscoreScreen()
