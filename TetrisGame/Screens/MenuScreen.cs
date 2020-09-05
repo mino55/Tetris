@@ -27,8 +27,8 @@ namespace Tetris
 
         public void Input(string input, int dTime)
         {
-            if (input == "S") _menuSelections.SelectNext();
-            else if (input == "W") _menuSelections.SelectPrevious();
+            if (input == "S" || input == "DownArrow") _menuSelections.SelectNext();
+            else if (input == "W" || input == "UpArrow") _menuSelections.SelectPrevious();
             else
             {
                 MenuSelections.Type type = _menuSelections.CurrentSelectionType();
@@ -108,14 +108,14 @@ namespace Tetris
                           _menuSelections.SelectedSettingCurrentState(),
                           _engine);
             }
-            else if (input == "D")
+            else if (input == "D" || input == "RightArrow")
             {
                 _menuSelections.SelectedSettingNextState();
                 OnSetting(_menuSelections.CurrentSelection(),
                           _menuSelections.SelectedSettingCurrentState(),
                           _engine);
             }
-            else if (input == "A")
+            else if (input == "A" || input == "LeftArrow")
             {
                 _menuSelections.SelectedSettingPreviousState();
                 OnSetting(_menuSelections.CurrentSelection(),
