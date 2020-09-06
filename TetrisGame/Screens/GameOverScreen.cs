@@ -7,11 +7,15 @@ namespace Tetris
         private Engine _engine;
         private GameStats _gameStats;
         private ScreenFactory _screenFactory;
+        private FileStoreOperator _fileStoreOperator;
 
-        public GameOverScreen(ScreenFactory screenFactory, GameStats gameStats)
+        public GameOverScreen(ScreenFactory screenFactory,
+                              GameStats gameStats,
+                              FileStoreOperator fileStoreOperator)
         {
             _screenFactory = screenFactory;
             _gameStats = gameStats;
+            _fileStoreOperator = fileStoreOperator;
         }
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)

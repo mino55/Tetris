@@ -2,7 +2,15 @@ namespace Tetris
 {
     public class ScreenFactory
     {
-        GameSettings _gameSettings = new GameSettings();
+        GameSettings _gameSettings;
+        FileStoreOperator _fileStoreOperator;
+
+        public ScreenFactory(GameSettings gameSettings,
+                             FileStoreOperator fileStoreOperator)
+        {
+            _fileStoreOperator = fileStoreOperator;
+            _gameSettings = gameSettings;
+        }
 
         public MainScreen CreateMainScreen()
         {
@@ -11,7 +19,7 @@ namespace Tetris
 
         public GameOverScreen CreateGameOverScreen(GameStats gameStats)
         {
-            return new GameOverScreen(this, gameStats);
+            return new GameOverScreen(this, gameStats, _fileStoreOperator);
         }
 
         public GameScreen CreateGameScreen()
@@ -29,12 +37,12 @@ namespace Tetris
 
         public OptionsScreen CreateOptionsScreen()
         {
-            return new OptionsScreen(this, _gameSettings);
+            return new OptionsScreen(this, _gameSettings, _fileStoreOperator);
         }
 
         public HighscoreScreen CreateHighscoreScreen()
         {
-            return new HighscoreScreen(this);
+            return new HighscoreScreen(this, _fileStoreOperator);
         }
     }
 }

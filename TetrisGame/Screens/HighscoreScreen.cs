@@ -5,11 +5,14 @@ namespace Tetris
 {
     public class HighscoreScreen : MenuScreen
     {
-        ScreenFactory _screenFactory;
+        private ScreenFactory _screenFactory;
+        private FileStoreOperator _fileStoreOperator;
 
-        public HighscoreScreen(ScreenFactory screenFactory) : base()
+        public HighscoreScreen(ScreenFactory screenFactory,
+                               FileStoreOperator fileStoreOperator) : base()
         {
             _screenFactory = screenFactory;
+            _fileStoreOperator = fileStoreOperator;
         }
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)
