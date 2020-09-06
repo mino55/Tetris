@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Tetris
 {
     public class FileStoreOperator
@@ -18,7 +20,44 @@ namespace Tetris
             }
         }
 
-        public string[] DefaultStoreKeys()
+        public void InsertHighscore(string name, int highscore)
+        {
+            int place = GetHighscorePlace(highscore);
+            if (place == -1) return;
+
+            List<string> NewNameOrder = new List<string>();
+            List<string> NewValueOrder = new List<string>();
+            for (int i = 1; i <= 10; i++)
+            {
+                NewNameOrder.Add(Store.Get($"h{i}_name"));
+                NewValueOrder.Add(Store.Get($"h{i}_value"));
+            }
+
+            NewNameOrder.Insert((place - 1), name);
+            NewNameOrder.RemoveAt(10);
+
+            NewValueOrder.Insert((place - 1), $"{highscore}");
+            NewValueOrder.RemoveAt(10);
+
+            for (int i = 1; i <= 10; i++)
+            {
+                Store.Set($"h{i}_name", NewNameOrder[i - 1]);
+                Store.Set($"h{i}_value", NewValueOrder[i - 1]);
+            }
+        }
+
+        public int GetHighscorePlace(int score)
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                int placementScore = int.Parse(Store.Get($"h{i}_value"));
+                if (score > placementScore) return i;
+            }
+
+            return -1;
+        }
+
+        private string[] DefaultStoreKeys()
         {
             return new string[] {
                 "fps", "controlls",
@@ -29,7 +68,7 @@ namespace Tetris
             };
         }
 
-        public string[] DefaultStoreValues()
+        private string[] DefaultStoreValues()
         {
             return new string[] {
                 "60", "simple",

@@ -9,6 +9,7 @@ namespace Tetris
         private ScreenFactory _screenFactory;
         private FileStoreOperator _fileStoreOperator;
         string _name;
+        int _place;
 
         public GameOverScreen(ScreenFactory screenFactory,
                               GameStats gameStats,
@@ -17,23 +18,23 @@ namespace Tetris
             _screenFactory = screenFactory;
             _gameStats = gameStats;
             _fileStoreOperator = fileStoreOperator;
+            _place = _fileStoreOperator.GetHighscorePlace(_gameStats.Score);
         }
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)
         {
-            // TODO:
-            // compare score with all other scores staring from the top
-            // only setup the below menuSelection if it fits in somewhere
-            // otherwise print msg that user didnt make it on the list
+            if (_place > -1)
+            {
+                string[] letters = new string[] {
+                    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+                };
 
-            string[] letters = new string[] {
-                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-                "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-            };
+                menuSelection.AddSetting("letter 1", letters);
+                menuSelection.AddSetting("letter 2", letters);
+                menuSelection.AddSetting("letter 3", letters);
+            }
 
-            menuSelection.AddSetting("letter 1", letters);
-            menuSelection.AddSetting("letter 2", letters);
-            menuSelection.AddSetting("letter 3", letters);
             menuSelection.AddPick("back");
         }
 
@@ -53,6 +54,27 @@ namespace Tetris
             menuPrint[6] = CenterAlign($"Level: {_gameStats.Level}");
             menuPrint[7] = CenterAlign($"Blocks: {_gameStats.Shapes}");
 
+            if (_place > -1) PromptForName(menuPrint);
+            else menuPrint[9] = CenterAlign("You did not make it on the list.");
+
+            string back = $"{HighlightableString("back", "Continue", Color.RED)}";
+            menuPrint[18] = CenterAlign(back);
+        }
+
+        protected override void UnhandledInput(string input, int dTime, Engine engine)
+        {}
+
+        protected override void OnLeave(Engine engine)
+        {
+            if (_place > -1)
+            {
+                _fileStoreOperator.InsertHighscore(_name, _gameStats.Score);
+                _fileStoreOperator.Store.Save();
+            }
+        }
+
+        private void PromptForName(MenuLine[] menuPrint)
+        {
             string letter1 = GetSettingState("letter 1");
             string letter1Hl = $"{HighlightableString("letter 1", $"{letter1}", Color.RED)}";
 
@@ -65,20 +87,6 @@ namespace Tetris
             menuPrint[10] = CenterAlign($"Enter your name:");
             menuPrint[12] = CenterAlign($"{letter1Hl} {letter2Hl} {letter3Hl}");
             _name = $"{letter1}{letter2}{letter3}";
-
-            string back = $"{HighlightableString("back", "Continue", Color.RED)}";
-            menuPrint[18] = CenterAlign(back);
-        }
-
-        protected override void UnhandledInput(string input, int dTime, Engine engine)
-        {}
-
-        protected override void OnLeave(Engine engine)
-        {
-            FileStore store = _fileStoreOperator.Store;
-            store.Set("h1_name", _name);
-            store.Set("h1_value", $"{_gameStats.Score}");
-            store.Save();
         }
     }
 }
