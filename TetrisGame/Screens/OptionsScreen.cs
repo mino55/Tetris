@@ -6,14 +6,15 @@ namespace Tetris
     {
         private ScreenFactory _screenFactory;
         private GameSettings _gameSettings;
-        private FileStoreOperator _fileStoreOperator;
+        private FileStore _store;
 
         public OptionsScreen(ScreenFactory screenFactory,
                              GameSettings gameSettings,
-                             FileStoreOperator _fileStoreOperator) : base()
+                             FileStoreOperator fileStoreOperator) : base()
         {
             _screenFactory = screenFactory;
             _gameSettings = gameSettings;
+            _store = fileStoreOperator.Store;
         }
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)
@@ -22,14 +23,11 @@ namespace Tetris
             menuSelection.AddSetting("fps", new string[] {"60", "30", "20"});
             menuSelection.AddPick("back");
 
-            if (_gameSettings.FPS == -1)
-                _gameSettings.FPS = int.Parse(GetSettingState("fps"));
-            else menuSelection.SetSettingState("fps", $"{_gameSettings.FPS}");
+            _gameSettings.FPS = int.Parse(_store.Get("fps"));
+            _gameSettings.Controlls = _store.Get("controlls");
 
-            if (_gameSettings.Controlls == null) {
-                _gameSettings.Controlls = GetSettingState("controlls");
-            }
-            else menuSelection.SetSettingState("controlls", _gameSettings.Controlls);
+            menuSelection.SetSettingState("fps", $"{_gameSettings.FPS}");
+            menuSelection.SetSettingState("controlls", _gameSettings.Controlls);
         }
 
         protected override void OnPick(string selection, Engine engine)
@@ -64,7 +62,6 @@ namespace Tetris
             string back = HighlightableString("back", "Back", Color.RED);
 
             menuPrint[2] = CenterAlign("OPTIONS");
-            menuPrint[4] = CenterAlign("(Options have no effect yet!)");
             menuPrint[6] = CenterAlign(controlls);
             menuPrint[8] = CenterAlign(fps);
             menuPrint[10] = CenterAlign(back);
@@ -96,6 +93,10 @@ namespace Tetris
         {}
 
         protected override void OnLeave(Engine engine)
-        {}
+        {
+            _store.Set("fps", $"{_gameSettings.FPS}");
+            _store.Set("controlls", _gameSettings.Controlls);
+            _store.Save();
+        }
     }
 }

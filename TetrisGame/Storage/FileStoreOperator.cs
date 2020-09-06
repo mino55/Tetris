@@ -71,7 +71,7 @@ namespace Tetris
         private string[] DefaultStoreValues()
         {
             return new string[] {
-                "60", "simple",
+                "60", "simple ",
                 "CPU", "CPU", "CPU", "CPU", "CPU",
                 "CPU", "CPU", "CPU", "CPU", "CPU",
                 "800", "400", "100", "60", "50",
