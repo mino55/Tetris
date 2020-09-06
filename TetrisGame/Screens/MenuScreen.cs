@@ -37,7 +37,7 @@ namespace Tetris
             }
         }
 
-        public string Render()
+        public string[] Render()
         {
             MenuLine[] menuPrint = new MenuLine[_height];
             RenderMenuItems(menuPrint);
@@ -49,19 +49,19 @@ namespace Tetris
             OnLeave(engine);
         }
 
-        private string MenuPrintToStr(MenuLine[] menuPrint)
+        private string[] MenuPrintToStr(MenuLine[] menuPrint)
         {
-            string str = "";
+            string[] print = new string[menuPrint.Length + 2];
             string blankLine = _printHelper.PadOutString(_width);
 
-            str += $"┌{_printHelper.PrintLine(_width)}┐\n";
+            print[0] = $"┌{_printHelper.PrintLine(_width)}┐";
             for (int i = 0; i < menuPrint.Length; i++) {
-                if (menuPrint[i] == null) str += $"|{blankLine}|\n";
-                else str += $"|{menuPrint[i]}|\n";
+                if (menuPrint[i] == null) print[i + 1] = $"|{blankLine}|";
+                else print[i + 1] += $"|{menuPrint[i]}|";
             }
-            str += $"└{_printHelper.PrintLine(_width)}┘\n";
+            print[menuPrint.Length + 1] = $"└{_printHelper.PrintLine(_width)}┘";
 
-            return str;
+            return print;
         }
 
         protected string HighlightableString(string onSelection, string str, Color highlightColor)

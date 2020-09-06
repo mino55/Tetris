@@ -67,9 +67,9 @@ namespace Tetris
             }
         }
 
-        public string Render()
+        public string[] Render()
         {
-            string gameFieldPrint = _printHelper.SimplePrint(_tetrisBoard, _nextTetrimino, _gameStats);
+            string[] gameFieldPrint = _printHelper.PrintGame(_tetrisBoard, _nextTetrimino, _gameStats);
             return gameFieldPrint;
         }
 

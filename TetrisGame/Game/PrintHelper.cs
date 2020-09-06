@@ -4,11 +4,11 @@ namespace Tetris
 {
     public class PrintHelper
     {
-        public string BoardPrint(Board board)
+        public string[] PrintBoard(Board board)
         {
             int width = board.width;
             int height = board.height;
-            string boardPrint = "";
+            string[] boardPrint = new string[height];
 
             for (int y = 0; y < height; y++)
             {
@@ -23,17 +23,16 @@ namespace Tetris
                     }
                     else row += board.BlockAt(atPoint).Print();
                 }
-                boardPrint += $"{row}";
-                if (y < (height - 1)) boardPrint += "\n";
+                boardPrint[y] = $"{row}";
             }
 
             return boardPrint;
         }
 
-        public string SimplePrint(TetrisBoard tetrisBoard, TetrisBoard nextTetrimino, GameStats gameStats)
+        public string[] PrintGame(TetrisBoard tetrisBoard, TetrisBoard nextTetrimino, GameStats gameStats)
         {
-            string[] boardRows = BoardPrint(tetrisBoard).Split("\n");
-            string[] nextTetriminoRows = BoardPrint(nextTetrimino).Split("\n");
+            string[] boardRows = PrintBoard(tetrisBoard);
+            string[] nextTetriminoRows = PrintBoard(nextTetrimino);
 
             int totalWidth = 14 + 3;
             int innerWidth = 12 + 3;
@@ -48,29 +47,30 @@ namespace Tetris
             string blankLine14 = PadOutString(totalWidth);
             string blankLine12 = PadOutString(innerWidth);
 
-            string gameFieldPrint =
-            $"┌{PrintLine(innerWidth)}┐ " + $" ┌{PrintLine(30)}┐\n" +
-            $"│{nextTetriminoRows[0]}│ "  + $" │{boardRows[0]}│\n" +
-            $"│{nextTetriminoRows[1]}│ "  + $" │{boardRows[1]}│\n" +
-            $"│{nextTetriminoRows[2]}│ "  + $" │{boardRows[2]}│\n" +
-            $"│{nextTetriminoRows[3]}│ "  + $" │{boardRows[3]}│\n" +
-            $"└{PrintLine(innerWidth)}┘ " + $" │{boardRows[4]}│\n" +
-            $"{blankLine14} "             + $" │{boardRows[5]}│\n" +
-            $"┌{PrintLine(innerWidth)}┐ " + $" │{boardRows[6]}│\n" +
-            $"│{scoreTitle}│ "            + $" │{boardRows[7]}│\n" +
-            $"│{scoreAmount}│ "           + $" │{boardRows[8]}│\n" +
-            $"└{PrintLine(innerWidth)}┘ " + $" │{boardRows[9]}│\n" +
-            $"{blankLine14} "             + $" │{boardRows[10]}│\n" +
-            $"┌{PrintLine(innerWidth)}┐ " + $" │{boardRows[11]}│\n" +
-            $"│{lines}│ "                 + $" │{boardRows[12]}│\n" +
-            $"│{blocks}│ "                + $" │{boardRows[13]}│\n" +
-            $"│{level}│ "                 + $" │{boardRows[14]}│\n" +
-            $"└{PrintLine(innerWidth)}┘ " + $" │{boardRows[15]}│\n" +
-            $"{blankLine14} "             + $" │{boardRows[16]}│\n" +
-            $"{blankLine14} "             + $" │{boardRows[17]}│\n" +
-            $"{blankLine14} "             + $" │{boardRows[18]}│\n" +
-            $"{blankLine14} "             + $" │{boardRows[19]}│\n" +
-            $"{blankLine14} "             + $" └{PrintLine(30)}┘\n";
+            string[] gameFieldPrint = {
+                $"┌{PrintLine(innerWidth)}┐ " + $" ┌{PrintLine(30)}┐",
+                $"│{nextTetriminoRows[0]}│ "  + $" │{boardRows[0]}│",
+                $"│{nextTetriminoRows[1]}│ "  + $" │{boardRows[1]}│",
+                $"│{nextTetriminoRows[2]}│ "  + $" │{boardRows[2]}│",
+                $"│{nextTetriminoRows[3]}│ "  + $" │{boardRows[3]}│",
+                $"└{PrintLine(innerWidth)}┘ " + $" │{boardRows[4]}│",
+                $"{blankLine14} "             + $" │{boardRows[5]}│",
+                $"┌{PrintLine(innerWidth)}┐ " + $" │{boardRows[6]}│",
+                $"│{scoreTitle}│ "            + $" │{boardRows[7]}│",
+                $"│{scoreAmount}│ "           + $" │{boardRows[8]}│",
+                $"└{PrintLine(innerWidth)}┘ " + $" │{boardRows[9]}│",
+                $"{blankLine14} "             + $" │{boardRows[10]}│",
+                $"┌{PrintLine(innerWidth)}┐ " + $" │{boardRows[11]}│",
+                $"│{lines}│ "                 + $" │{boardRows[12]}│",
+                $"│{blocks}│ "                + $" │{boardRows[13]}│",
+                $"│{level}│ "                 + $" │{boardRows[14]}│",
+                $"└{PrintLine(innerWidth)}┘ " + $" │{boardRows[15]}│",
+                $"{blankLine14} "             + $" │{boardRows[16]}│",
+                $"{blankLine14} "             + $" │{boardRows[17]}│",
+                $"{blankLine14} "             + $" │{boardRows[18]}│",
+                $"{blankLine14} "             + $" │{boardRows[19]}│",
+                $"{blankLine14} "             + $" └{PrintLine(30)}┘"
+            };
 
             return gameFieldPrint;
         }

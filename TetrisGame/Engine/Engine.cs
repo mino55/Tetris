@@ -57,21 +57,34 @@ namespace Tetris
             string input = GetKeyInput();
             _currentScreen.Input(input, dTime);
 
-            string print = _currentScreen.Render();
+            string[] print = _currentScreen.Render();
             Render(print);
 
             Thread.Sleep(dTime);
         }
 
-        private void Render(string print)
+        private void Render(string[] print)
         {
-            if (_lastRenderedPrint != print)
+            string printString = printToPrintString(print);
+            if (_lastRenderedPrint != printString)
             {
-                _lastRenderedPrint = print;
+                _lastRenderedPrint = printString;
                 Console.Clear();
-                Console.WriteLine(print);
+                Console.WriteLine(printString);
                 Console.WriteLine(FPS);  // TODO: Purely for debugging -- remove
             }
+        }
+
+        private string printToPrintString(string[] print)
+        {
+            string printString = "";
+            for (int i = 0; i < print.Length; i++)
+            {
+                printString += print[i];
+                bool lastIndex = (i == (print.Length - 1));
+                if (!lastIndex) printString += "\n";
+            }
+            return printString;
         }
 
         private string GetKeyInput()

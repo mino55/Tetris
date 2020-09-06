@@ -6,7 +6,7 @@ namespace Tetris
 
         void Input(string input, int dTime);
 
-        string Render();
+        string[] Render();
 
         void Unmount(Engine engine);
     }
