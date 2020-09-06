@@ -24,12 +24,25 @@ namespace Tetris
             string highscore = $"{HighlightableString("highscore", "Highscore", Color.RED)}";
             string quit = $"{HighlightableString("quit", "Quit", Color.RED)}";
 
-            menuPrint[1] = CenterAlign("______________________");
-            menuPrint[2] = CenterAlign("_______ TETRIS _______");
-            menuPrint[4] = CenterAlign(startGame);
-            menuPrint[6] = CenterAlign(options);
-            menuPrint[8] = CenterAlign(highscore);
-            menuPrint[10] = CenterAlign(quit);
+            // menuPrint[1] = CenterAlign("______________________");
+            // menuPrint[2] = CenterAlign("_______ TETRIS _______");
+
+            menuPrint[1] = CenterAlign("\u001b[35m┏━━━━━┓                    \u001b[0m");
+            menuPrint[2] = CenterAlign("\u001b[35m┗━┓ ┏━╋━━━┳━━━━━┳━━━┳━┳━━━┓\u001b[0m");
+            menuPrint[3] = CenterAlign("\u001b[35m  ┃ ┃ ┃ ━━╋━┓ ┏━┫ ┏━╋━┫ ━━┫\u001b[0m");
+            menuPrint[4] = CenterAlign("\u001b[35m  ┃ ┃ ┃ ━━┫ ┃ ┃ ┃ ┃ ┃ ┣━━ ┃\u001b[0m");
+            menuPrint[5] = CenterAlign("\u001b[35m  ┗━┛ ┗━━━┛ ┗━┛ ┗━┛ ┗━┻━━━┛\u001b[0m");
+
+            // menuPrint[1] = CenterAlign("\u001b[32m┏━━━━━┓ \u001b[35m      \u001b[0m        \u001b[36m      \u001b[33m    \u001b[34m     \u001b[0m");
+            // menuPrint[2] = CenterAlign("\u001b[32m┗━┓ ┏━┛ \u001b[35m┏━━━┓ \u001b[0m┏━━━━━┓ \u001b[36m┏━━━┓ \u001b[33m┏━┓ \u001b[34m┏━━━┓\u001b[0m");
+            // menuPrint[3] = CenterAlign("\u001b[32m  ┃ ┃   \u001b[35m┃ ━━┫ \u001b[0m┗━┓ ┏━┛ \u001b[36m┃ ┏━┛ \u001b[33m┣━┫ \u001b[34m┃ ━━┫\u001b[0m");
+            // menuPrint[4] = CenterAlign("\u001b[32m  ┃ ┃   \u001b[35m┃ ━━┫ \u001b[0m  ┃ ┃   \u001b[36m┃ ┃   \u001b[33m┃ ┃ \u001b[34m┣━━ ┃\u001b[0m");
+            // menuPrint[5] = CenterAlign("\u001b[32m  ┗━┛   \u001b[35m┗━━━┛ \u001b[0m  ┗━┛   \u001b[36m┗━┛   \u001b[33m┗━┛ \u001b[34m┗━━━┛\u001b[0m");
+
+            menuPrint[10] = CenterAlign(startGame);
+            menuPrint[12] = CenterAlign(options);
+            menuPrint[14] = CenterAlign(highscore);
+            menuPrint[16] = CenterAlign(quit);
         }
 
         protected override void OnPick(string selection, Engine engine)
