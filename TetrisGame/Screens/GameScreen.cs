@@ -73,6 +73,8 @@ namespace Tetris
             return gameFieldPrint;
         }
 
+        public void Unmount(Engine engine) {}
+
         public void SetKeyMapping(KeyMapping keyMapping)
         {
             switch(keyMapping)

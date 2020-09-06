@@ -50,5 +50,8 @@ namespace Tetris
 
         protected override void OnSetting(string name, string state, Engine engine)
         {}
+
+        protected override void OnLeave(Engine engine)
+        {}
     }
 }

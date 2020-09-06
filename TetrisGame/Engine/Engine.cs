@@ -18,9 +18,9 @@ namespace Tetris
         public Engine(int defaultFPS, IScreen startScreen)
         {
             FPS = defaultFPS;
-            _currentScreen = startScreen;
-            _currentScreen.Mount(this);
+            MountScreen(startScreen);
         }
+
 
         public void Start()
         {
@@ -40,6 +40,12 @@ namespace Tetris
 
         public void SwitchScreen(IScreen screen)
         {
+            MountScreen(screen);
+        }
+
+        private void MountScreen(IScreen screen)
+        {
+            if (_currentScreen != null) _currentScreen.Unmount(this);
             _currentScreen = screen;
             _currentScreen.Mount(this);
         }

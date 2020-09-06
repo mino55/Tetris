@@ -44,6 +44,11 @@ namespace Tetris
             return MenuPrintToStr(menuPrint);
         }
 
+        public void Unmount(Engine engine)
+        {
+            OnLeave(engine);
+        }
+
         private string MenuPrintToStr(MenuLine[] menuPrint)
         {
             string str = "";
@@ -134,6 +139,8 @@ namespace Tetris
         protected abstract void OnSetting(string name, string state, Engine engine);
 
         protected abstract void UnhandledInput(string input, int dTime, Engine engine);
+
+        protected abstract void OnLeave(Engine engine);
 
         protected enum Alignment
         {

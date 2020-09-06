@@ -8,6 +8,8 @@ namespace Tetris
 
         string Get(string key);
 
+        void Set(string key, string value);
+
         string[] Keys();
 
         string[] Values();

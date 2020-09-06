@@ -34,6 +34,11 @@ namespace Tetris
             return _values[_keys.IndexOf(key)];
         }
 
+        public void Set(string key, string value)
+        {
+            _values[_keys.IndexOf(key)] = value;
+        }
+
         public string[] Keys()
         {
             return _keys.ToArray();
