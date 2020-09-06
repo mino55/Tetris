@@ -186,6 +186,7 @@ namespace Tetris
             mapping["DownArrow"] = Action.DROP;
 
             mapping["Spacebar"] = Action.SLAM;
+            mapping["Enter"] = Action.SLAM;
 
             return mapping;
         }
@@ -207,6 +208,7 @@ namespace Tetris
             mapping["E"] = Action.ROTATE_CLOCKWISE;
             mapping["Q"] = Action.ROTATE_REVERSE;
             mapping["Spacebar"] = Action.SLAM;
+            mapping["Enter"] = Action.SLAM;
 
             return mapping;
         }

@@ -82,13 +82,13 @@ namespace Tetris
             if (IsSelected("controlls") && GetSettingState("controlls") == "complex")
             {
                 menuPrint[16] = LeftAlign("  (UP: Flip) (DOWN: Quick drop) (Q: Rotate left)");
-                menuPrint[18] = LeftAlign("  (E: Rotate right) (SPACE: Slam)");
+                menuPrint[18] = LeftAlign("  (E: Rotate right) (SPACE/ENTER: Slam)");
             }
 
             if (IsSelected("controlls") && GetSettingState("controlls") == "simple ")
             {
                 menuPrint[16] = LeftAlign("      (UP: Rotate right) (DOWN: Quick drop)");
-                menuPrint[18] = LeftAlign("      (SPACE: Slam)");
+                menuPrint[18] = LeftAlign("      (SPACE/ENTER: Slam)");
             }
         }
 
