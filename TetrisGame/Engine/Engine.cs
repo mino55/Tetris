@@ -7,35 +7,45 @@ namespace Tetris
     {
         public int FPS { get; set; }
 
-        private bool _started = false;
+        public bool Started { get; private set; }
 
         private string _lastRenderedPrint = "";
 
-        private KeyReceiver _keyReceiver = new KeyReceiver();
+        private KeyReceiver _keyReceiver;
 
         public IScreen _currentScreen;
 
-        public Engine(int defaultFPS, IScreen startScreen)
+        public Engine(int defaultFPS, IScreen startScreen, KeyReceiver keyReceiver)
         {
             FPS = defaultFPS;
             MountScreen(startScreen);
+            Started = false;
+            _keyReceiver = keyReceiver;
         }
-
 
         public void Start()
         {
             _keyReceiver.startListening();
-            _started = true;
-            while(_started)
-            {
-                Loop();
-            }
+            Started = true;
         }
 
         public void Stop()
         {
             _keyReceiver.stopListening();
-            _started = false;
+            Started = false;
+        }
+
+        public void Loop()
+        {
+            int dTime = (1000 / FPS);
+
+            string input = GetKeyInput();
+            _currentScreen.Input(input, dTime);
+
+            string[] print = _currentScreen.Render();
+            Render(print);
+
+            Thread.Sleep(dTime);
         }
 
         public void SwitchScreen(IScreen screen)
@@ -48,19 +58,6 @@ namespace Tetris
             if (_currentScreen != null) _currentScreen.Unmount(this);
             _currentScreen = screen;
             _currentScreen.Mount(this);
-        }
-
-        private void Loop()
-        {
-            int dTime = (1000 / FPS);
-
-            string input = GetKeyInput();
-            _currentScreen.Input(input, dTime);
-
-            string[] print = _currentScreen.Render();
-            Render(print);
-
-            Thread.Sleep(dTime);
         }
 
         private void Render(string[] print)

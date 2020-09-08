@@ -16,8 +16,13 @@ namespace Tetris
 
             _screenFactory = new ScreenFactory(_gameSettings, _fileStoreOperator);
             MainScreen menuScreen = _screenFactory.CreateMainScreen();
-            Engine engine = new Engine(60, menuScreen);
+
+            Engine engine = new Engine(60, menuScreen, new KeyReceiver());
             engine.Start();
+            while (engine.Started)
+            {
+                engine.Loop();
+            }
         }
     }
 }

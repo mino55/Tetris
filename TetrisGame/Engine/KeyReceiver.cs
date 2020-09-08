@@ -9,6 +9,7 @@ namespace Tetris
         public bool isNewKey  { get; private set; }
         private ConsoleKeyInfo _key;
         private Thread _thread;
+        public bool Listening { get; private set; }
 
         public KeyReceiver()
         {
@@ -26,6 +27,7 @@ namespace Tetris
             _thread = new Thread(() => { ReceiveKey(); });
             _thread.IsBackground = true;
             _thread.Start();
+            Listening = true;
         }
 
         public void stopListening()
@@ -33,6 +35,7 @@ namespace Tetris
             try {
                 _thread.Abort();
             } catch(Exception) {}
+            Listening = false;
         }
 
         private void ReceiveKey()
