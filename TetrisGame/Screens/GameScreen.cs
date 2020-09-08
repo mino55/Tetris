@@ -23,6 +23,7 @@ namespace Tetris
 
         private int _dropTimer = 0;
         private int LastChange = 0;
+        private bool _paused = false;
 
         public GameScreen(ScreenFactory screenFactory,
                           GameSettings gameSettings,
@@ -52,6 +53,10 @@ namespace Tetris
 
         public void Input(string input, int dTime)
         {
+            if (input == "P") _paused = !_paused;
+
+            if (_paused) return;
+
             if (_tetrisBoardOperator.CurrentTetriminoIsLocked)
             {
                 ResolveRows();
@@ -70,6 +75,9 @@ namespace Tetris
         public string[] Render()
         {
             string[] gameFieldPrint = _printHelper.PrintGame(_tetrisBoard, _nextTetrimino, _gameStats);
+
+            if (_paused) RenderPauseScreen(gameFieldPrint);
+
             return gameFieldPrint;
         }
 
@@ -127,6 +135,17 @@ namespace Tetris
             Tetrimino current = _tetrisBoardOperator.NextTetrimino;
             _nextTetrimino = new TetrisBoard(5, 4);
             _nextTetrimino.AddTetriminoAt(current, new Point(2, 2));
+        }
+
+        private void RenderPauseScreen(string[] gameFieldPrint)
+        {
+            int lineLength = gameFieldPrint[0].Length;
+            string line = _printHelper.PrintLine(lineLength);
+            string msg = "Press P to unpause";
+            gameFieldPrint[10] = line;
+            gameFieldPrint[11] = _printHelper.PadOutStringCentered("PAUSED", lineLength);
+            gameFieldPrint[12] = _printHelper.PadOutStringCentered(msg, lineLength);
+            gameFieldPrint[13] = line;
         }
 
         private void MoveTetriminoOnInput(Action action)
