@@ -1,28 +1,30 @@
 ﻿using System;
-using System.Threading;
-using Tetris;
 
 namespace Tetris
 {
     class Program
     {
-        static private FileStoreOperator _fileStoreOperator;
-        static private GameSettings _gameSettings = new GameSettings();
-        static private ScreenFactory _screenFactory;
         static void Main(string[] args)
         {
             FileStore fileStore = new FileStore(@"./tetris_store.txt");
-            _fileStoreOperator = new FileStoreOperator(fileStore);
+            GameSettings gameSettings = new GameSettings();
+            FileStoreOperator fileStoreOperator = new FileStoreOperator(fileStore);
 
-            _screenFactory = new ScreenFactory(_gameSettings, _fileStoreOperator);
-            MainScreen menuScreen = _screenFactory.CreateMainScreen();
+            ScreenFactory screenFactory = new ScreenFactory(gameSettings,
+                                                            fileStoreOperator);
+            MainScreen menuScreen = screenFactory.CreateMainScreen();
 
-            Engine engine = new Engine(60, menuScreen, new KeyReceiver());
+            KeyReceiver keyReceiver = new KeyReceiver();
+            Engine engine = new Engine(60, menuScreen, keyReceiver);
+            KeyListener keyListener = new KeyListener(keyReceiver);
+
+            keyListener.Start();
             engine.Start();
             while (engine.Started)
             {
                 engine.Loop();
             }
+            keyListener.Stop();
         }
     }
 }

@@ -27,11 +27,11 @@ namespace Tetris
         }
 
         [Fact]
-        public void Start_KeyReceiverStartListening()
+        public void Start_StartedSetTrue()
         {
             _engine.Start();
 
-            Assert.True(_keyReceiver.Listening);
+            Assert.True(_engine.Started);
         }
 
         [Fact]
@@ -47,6 +47,15 @@ namespace Tetris
             _engine.Loop();
             int dTime = 1000 / _FPS;
             _screenMock.Verify(screen => screen.Input(null, dTime), Times.Once());
+        }
+
+        [Fact]
+        public void Loop_ReceivedKey_CallsScreenInputWithKey()
+        {
+            _keyReceiver.ReceiveKey("Any key");
+            _engine.Loop();
+            int dTime = 1000 / _FPS;
+            _screenMock.Verify(screen => screen.Input("Any key", dTime), Times.Once());
         }
 
         [Fact]
@@ -66,12 +75,12 @@ namespace Tetris
         }
 
         [Fact]
-        public void Stop_KeyReceiverStopsListening()
+        public void Stop_StartedSetFalse()
         {
             _engine.Start();
             _engine.Stop();
 
-            Assert.False(_keyReceiver.Listening);
+            Assert.False(_engine.Started);
         }
    }
 }

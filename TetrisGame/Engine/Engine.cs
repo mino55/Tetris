@@ -25,13 +25,11 @@ namespace Tetris
 
         public void Start()
         {
-            _keyReceiver.startListening();
             Started = true;
         }
 
         public void Stop()
         {
-            _keyReceiver.stopListening();
             Started = false;
         }
 
@@ -89,8 +87,7 @@ namespace Tetris
             string key = null;
             if (_keyReceiver.isNewKey)
             {
-                ConsoleKeyInfo keyInput = _keyReceiver.Key();
-                key = keyInput.Key.ToString();
+                key = _keyReceiver.Key();
                 Console.WriteLine($"Input: {key}"); // TODO: Purely for debugging -- remove
             }
             return key;
