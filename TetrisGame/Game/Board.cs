@@ -5,25 +5,24 @@ namespace Tetris
 {
     public class Board
     {
-        public int width { get; private set; }
-        public int height { get; private set; }
-
-        private Block[,] _tiles;
-        private Dictionary<Block, Point> _blockPoints;
-        public List<Block> _allBlocks;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public int ChangeCount { get; private set; }
+        public List<Block> _allBlocks = new List<Block>();
+
+        private readonly Block[,] _tiles;
+        private readonly Dictionary<Block, Point> _blockPoints = new Dictionary<Block, Point>();
+
         public Board(int boardWidth, int boardHeight)
         {
-            _allBlocks = new List<Block>();
-            width = boardWidth;
-            height = boardHeight;
+            Width = boardWidth;
+            Height = boardHeight;
 
-            _tiles = new Block[height, width];
-            _blockPoints = new Dictionary<Block, Point>();
+            _tiles = new Block[Height, Width];
             ChangeCount = 0;
         }
 
-        public Block BlockAt(Point point) { return _tiles[point.y, point.x]; }
+        public Block BlockAt(Point point) { return _tiles[point.Y, point.X]; }
 
         public Block[] AllBlocks() {
             return _allBlocks.ToArray();
@@ -79,7 +78,7 @@ namespace Tetris
         public List<Block[]> BlocksInRows()
         {
             List<Block[]> rows = new List<Block[]>();
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Height; y++)
             {
                 if (HasRow(y)) rows.Add(Row(y));
             }
@@ -97,7 +96,7 @@ namespace Tetris
 
         private bool HasRow(int atY)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
                 Point atPoint = new Point(x, atY);
                 if (BlockAt(atPoint) == null) return false;
@@ -107,8 +106,8 @@ namespace Tetris
 
         private Block[] Row(int atY)
         {
-            Block[] row = new Block[width];
-            for (int x = 0; x < width; x++)
+            Block[] row = new Block[Width];
+            for (int x = 0; x < Width; x++)
             {
                 Point atPoint = new Point(x, atY);
                 row[x] = BlockAt(atPoint);
@@ -118,22 +117,22 @@ namespace Tetris
 
         protected void PlaceBlockAt(Block block, Point atPoint)
         {
-            _tiles[atPoint.y, atPoint.x] = block;
+            _tiles[atPoint.Y, atPoint.X] = block;
             _blockPoints[block] = atPoint;
             ChangeCount++;
         }
 
         protected void UnplaceBlockAt(Block block, Point atPoint)
         {
-            _tiles[atPoint.y, atPoint.x] = null;
+            _tiles[atPoint.Y, atPoint.X] = null;
             _blockPoints[block] = null;
             ChangeCount++;
         }
 
         protected bool IsInsideBoard(Point atPoint)
         {
-            bool inside_x = atPoint.x < width && atPoint.x >= 0;
-            bool inside_y = atPoint.y < height && atPoint.y >= 0;
+            bool inside_x = atPoint.X < Width && atPoint.X >= 0;
+            bool inside_y = atPoint.Y < Height && atPoint.Y >= 0;
             return inside_x && inside_y;
         }
 
@@ -156,7 +155,7 @@ namespace Tetris
             if (BlockPoint(block) == null)
             {
                 string msg = "The referenced block has not been placed on board.";
-                throw new Tetris.Exceptions.BlockNotPlacedException(msg);
+                throw new Exceptions.BlockNotPlacedException(msg);
             }
         }
     }

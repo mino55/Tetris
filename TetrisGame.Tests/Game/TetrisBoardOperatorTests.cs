@@ -7,7 +7,6 @@ namespace Tetris.Tests
     {
         private readonly TetrisBoard _tetrisBoard;
         private readonly TetrisBoardOperator _tetrisBoardOperator;
-
         private readonly Block[] _blocks;
 
         private Tetrimino CreateTetrimino()
@@ -16,9 +15,9 @@ namespace Tetris.Tests
             return tetrimino;
         }
 
-        private void fillBoardRowAt(int rowAt)
+        private void FillBoardRowAt(int rowAt)
         {
-            for (int x = 0;  x < _tetrisBoard.width; x++ )
+            for (int x = 0;  x < _tetrisBoard.Width; x++ )
             {
                 _tetrisBoard.AddBlockAt(new Block(), new Point(x, rowAt));
             }
@@ -179,7 +178,7 @@ namespace Tetris.Tests
         {
             for (int y = 0; y < numberOfRows; y++)
             {
-                fillBoardRowAt(y);
+                FillBoardRowAt(y);
             }
 
             int rows = _tetrisBoardOperator.Rows();
@@ -190,7 +189,7 @@ namespace Tetris.Tests
         [Fact]
         public void Rows_NoRows_returnZero()
         {
-            fillBoardRowAt(0);
+            FillBoardRowAt(0);
             _tetrisBoard.RemoveBlockAt(new Point(4, 0));
             Assert.Equal(0, _tetrisBoardOperator.Rows());
         }
@@ -203,7 +202,7 @@ namespace Tetris.Tests
         {
             for (int y = 0; y < numberOfRows; y++)
             {
-                fillBoardRowAt(y);
+                FillBoardRowAt(y);
             }
             Block nonRowBlock = new Block();
             Point atPoint = new Point(4, 4);
@@ -238,8 +237,8 @@ namespace Tetris.Tests
             Block blockAboveGap = new Block();
             _tetrisBoard.AddBlockAt(blockAboveGap, new Point(4, 1));
             Block blockBelowGap = new Block();
-            fillBoardRowAt(2);
-            fillBoardRowAt(3);
+            FillBoardRowAt(2);
+            FillBoardRowAt(3);
             _tetrisBoard.AddBlockAt(blockBelowGap, new Point(0, 4));
 
             _tetrisBoardOperator.CleanRows();

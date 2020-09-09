@@ -6,14 +6,11 @@ namespace Tetris
     public class Engine
     {
         public int FPS { get; set; }
-
         public bool Started { get; private set; }
+        public IScreen _currentScreen;
 
         private string _lastRenderedPrint = "";
-
-        private KeyReceiver _keyReceiver;
-
-        public IScreen _currentScreen;
+        private readonly KeyReceiver _keyReceiver;
 
         public Engine(int defaultFPS, IScreen startScreen, KeyReceiver keyReceiver)
         {
@@ -60,7 +57,7 @@ namespace Tetris
 
         private void Render(string[] print)
         {
-            string printString = printToPrintString(print);
+            string printString = PrintToPrintString(print);
             if (_lastRenderedPrint != printString)
             {
                 _lastRenderedPrint = printString;
@@ -70,13 +67,13 @@ namespace Tetris
             }
         }
 
-        private string printToPrintString(string[] print)
+        private string PrintToPrintString(string[] print)
         {
             string printString = "";
             for (int i = 0; i < print.Length; i++)
             {
                 printString += print[i];
-                bool lastIndex = (i == (print.Length - 1));
+                bool lastIndex = i == (print.Length - 1);
                 if (!lastIndex) printString += "\n";
             }
             return printString;

@@ -2,8 +2,8 @@ namespace Tetris
 {
     public class ScreenFactory
     {
-        GameSettings _gameSettings;
-        FileStoreOperator _fileStoreOperator;
+        private readonly GameSettings _gameSettings;
+        private readonly FileStoreOperator _fileStoreOperator;
 
         public ScreenFactory(GameSettings gameSettings,
                              FileStoreOperator fileStoreOperator)
@@ -32,7 +32,7 @@ namespace Tetris
                 keyMapping = GameScreen.KeyMapping.COMPLEX;
             else throw new System.Exception("Non-existant keyMapping");
 
-            return new GameScreen(this, _gameSettings, keyMapping);
+            return new GameScreen(this, keyMapping);
         }
 
         public OptionsScreen CreateOptionsScreen()

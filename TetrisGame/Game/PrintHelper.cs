@@ -6,8 +6,8 @@ namespace Tetris
     {
         public string[] PrintBoard(Board board)
         {
-            int width = board.width;
-            int height = board.height;
+            int width = board.Width;
+            int height = board.Height;
             string[] boardPrint = new string[height];
 
             for (int y = 0; y < height; y++)
@@ -45,7 +45,6 @@ namespace Tetris
             string level = PadOutString($" Level: {gameStats.Level}", innerWidth);
 
             string blankLine14 = PadOutString(totalWidth);
-            string blankLine12 = PadOutString(innerWidth);
 
             string[] gameFieldPrint = {
                 $"┌{PrintLine(innerWidth)}┐ " + $" ┌{PrintLine(30)}┐",
@@ -77,7 +76,7 @@ namespace Tetris
 
         public string PadOutString(string str, int toLength)
         {
-            return str + RepeatingString(" ", (toLength - str.Length));
+            return str + RepeatingString(" ", toLength - str.Length);
         }
 
         public string PadOutStringCentered(string str, int toLength)
@@ -87,7 +86,7 @@ namespace Tetris
             int lengthCenter = toLength / 2;
             int strCenter = strWidth / 2;
             int leftPaddingLength = lengthCenter - strCenter;
-            int rightPaddingLength = (toLength - leftPaddingLength - strWidth);
+            int rightPaddingLength = toLength - leftPaddingLength - strWidth;
 
             string leftPadding = PadOutString(leftPaddingLength);
             string rightPadding = PadOutString(rightPaddingLength);

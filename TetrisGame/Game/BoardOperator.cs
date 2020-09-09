@@ -1,15 +1,13 @@
-using System;
-
 namespace Tetris
 {
     public class BoardOperator
     {
         public Board _board;
-        public Block currentBlock { get; private set; }
+        public Block CurrentBlock { get; private set; }
+        public bool CurrentBlockIsLocked { get; private set; }
+
         private Block _nextBlock;
         private Point _nextBlockStartPoint;
-
-        public bool currentBlockIsLocked { get; private set; }
 
         public BoardOperator(Board board)
         {
@@ -20,9 +18,9 @@ namespace Tetris
         {
             ValidateCurrentBlockOverwrite();
 
-            currentBlock = block;
+            CurrentBlock = block;
             _board.AddBlockAt(block, startPoint);
-            currentBlockIsLocked = false;
+            CurrentBlockIsLocked = false;
         }
 
         public void NewNextBlock(Block block, Point startPoint)
@@ -37,7 +35,7 @@ namespace Tetris
         {
             ValidateNextBlockMissing();
 
-            currentBlock = null;
+            CurrentBlock = null;
             NewCurrentBlock(_nextBlock, _nextBlockStartPoint);
             _nextBlock = null;
             _nextBlockStartPoint = null;
@@ -47,25 +45,25 @@ namespace Tetris
         {
             ValidateCurrentBlockMissing();
 
-            if (_board.IsEmptyBelowBlock(currentBlock))
+            if (_board.IsEmptyBelowBlock(CurrentBlock))
             {
-                _board.MoveBlock(currentBlock, new Point(0, 1));
+                _board.MoveBlock(CurrentBlock, new Point(0, 1));
             }
-            else currentBlockIsLocked = true;
+            else CurrentBlockIsLocked = true;
         }
 
         public void MoveCurrentBlockRight()
         {
             ValidateCurrentBlockMissing();
 
-            _board.MoveBlock(currentBlock, new Point(1, 0));
+            _board.MoveBlock(CurrentBlock, new Point(1, 0));
         }
 
         public void MoveCurrentBlockLeft()
         {
             ValidateCurrentBlockMissing();
 
-            _board.MoveBlock(currentBlock, new Point(-1, 0));
+            _board.MoveBlock(CurrentBlock, new Point(-1, 0));
         }
 
         public void RorateCurrentBlock() {}
@@ -74,7 +72,7 @@ namespace Tetris
         {
             ValidateCurrentBlockMissing();
 
-            while (!currentBlockIsLocked)
+            while (!CurrentBlockIsLocked)
             {
                 DropCurrentBlock();
             }
@@ -89,7 +87,7 @@ namespace Tetris
         {
             foreach (Block[] row in _board.BlocksInRows())
             {
-                int at_y = _board.BlockPoint(row[0]).y;
+                int at_y = _board.BlockPoint(row[0]).Y;
                 ClearRow(row);
                 FillRowGapAt(at_y);
             }
@@ -105,11 +103,11 @@ namespace Tetris
 
         private void FillRowGapAt(int atY)
         {
-            for (int y = (_board.height - 1); y >= 0; y--)
+            for (int y = _board.Height - 1; y >= 0; y--)
             {
                 if (y > atY) continue;
 
-                for (int x = 0; x < _board.width; x++)
+                for (int x = 0; x < _board.Width; x++)
                 {
                     Block block = _board.BlockAt(new Point(x, y));
                     if (block == null) continue;
@@ -121,10 +119,10 @@ namespace Tetris
 
         private void ValidateCurrentBlockMissing()
         {
-            if (currentBlock == null)
+            if (CurrentBlock == null)
             {
                 string msg = "Desired operation requires a 'current block' to be set.";
-                throw new Tetris.Exceptions.MissingBlockException(msg);
+                throw new Exceptions.MissingBlockException(msg);
             }
         }
 
@@ -133,16 +131,16 @@ namespace Tetris
             if (_nextBlock == null)
             {
                 string msg = "Desired operation requires a 'next block' to be set.";
-                throw new Tetris.Exceptions.MissingBlockException(msg);
+                throw new Exceptions.MissingBlockException(msg);
             }
         }
 
         private void ValidateCurrentBlockOverwrite()
         {
-            if (currentBlock != null)
+            if (CurrentBlock != null)
             {
                 string msg = "Trying to overwrite 'current block': not allowed.";
-                throw new Tetris.Exceptions.NoOverwriteBlockException(msg);
+                throw new Exceptions.NoOverwriteBlockException(msg);
             }
         }
 
@@ -151,7 +149,7 @@ namespace Tetris
             if (_nextBlock != null)
             {
                 string msg = "Trying to overwrite 'next block': not allowed.";
-                throw new Tetris.Exceptions.NoOverwriteBlockException(msg);
+                throw new Exceptions.NoOverwriteBlockException(msg);
             }
         }
     }

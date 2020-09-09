@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Tetris
+﻿namespace Tetris
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             FileStore fileStore = new FileStore(@"./tetris_store.txt");
             GameSettings gameSettings = new GameSettings();

@@ -4,7 +4,7 @@ namespace Tetris
 {
     public class FileStore : IStore
     {
-        string _path;
+        private readonly string _path;
         private List<string> _keys = new List<string>();
         private List<string> _values = new List<string>();
 

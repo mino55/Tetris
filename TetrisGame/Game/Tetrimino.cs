@@ -1,24 +1,23 @@
-using System;
 using System.Collections.Generic;
 
 namespace Tetris
 {
     public class Tetrimino
     {
-        public Block[] blocks { get; private set; }
+        public Block[] Blocks { get; private set; }
 
-        public Direction direction { get; private set; }
+        public Direction Direction { get; private set; }
 
         public Tetrimino(Direction direction, Block[] blocks)
         {
-            this.direction = direction;
-            this.blocks = blocks;
+            this.Direction = direction;
+            this.Blocks = blocks;
         }
 
         public Tetrimino()
         {
-            this.direction = Direction.UP;
-            this.blocks = null;
+            this.Direction = Direction.UP;
+            this.Blocks = null;
         }
 
         public static int Size<T>()
@@ -42,67 +41,52 @@ namespace Tetris
 
         public Direction ClockwiseRotation()
         {
-            switch(direction)
+            return Direction switch
             {
-                case Direction.UP:
-                    return Direction.RIGHT;
-                case Direction.RIGHT:
-                    return Direction.DOWN;
-                case Direction.DOWN:
-                    return Direction.LEFT;
-                case Direction.LEFT:
-                    return Direction.UP;
-                default:
-                    throw new Exceptions.InvalidDirectionException();
-            }
+                Direction.UP => Direction.RIGHT,
+                Direction.RIGHT => Direction.DOWN,
+                Direction.DOWN => Direction.LEFT,
+                Direction.LEFT => Direction.UP,
+                _ => throw new Exceptions.InvalidDirectionException(),
+            };
         }
 
         public Direction ReverseRotation()
         {
-            switch(direction)
+            return Direction switch
             {
-                case Direction.UP:
-                    return Direction.LEFT;
-                case Direction.LEFT:
-                    return Direction.DOWN;
-                case Direction.DOWN:
-                    return Direction.RIGHT;
-                case Direction.RIGHT:
-                    return Direction.UP;
-                default:
-                    throw new Exceptions.InvalidDirectionException();
-            }
+                Direction.UP => Direction.LEFT,
+                Direction.LEFT => Direction.DOWN,
+                Direction.DOWN => Direction.RIGHT,
+                Direction.RIGHT => Direction.UP,
+                _ => throw new Exceptions.InvalidDirectionException(),
+            };
         }
 
         public Direction FlipRotation()
         {
-            switch(direction)
+            return Direction switch
             {
-                case Direction.UP:
-                    return Direction.DOWN;
-                case Direction.LEFT:
-                    return Direction.RIGHT;
-                case Direction.DOWN:
-                    return Direction.UP;
-                case Direction.RIGHT:
-                    return Direction.LEFT;
-                default:
-                    throw new Exceptions.InvalidDirectionException();
-            }
+                Direction.UP => Direction.DOWN,
+                Direction.LEFT => Direction.RIGHT,
+                Direction.DOWN => Direction.UP,
+                Direction.RIGHT => Direction.LEFT,
+                _ => throw new Exceptions.InvalidDirectionException(),
+            };
         }
 
         public void RotateTo(Direction direction)
         {
-            this.direction = direction;
+            this.Direction = direction;
         }
 
         public Block ShapeBlockAt(Point shapePoint, Direction dir)
         {
             int[,] shape = Shape(dir);
-            int blockIndex = (shape[shapePoint.y, shapePoint.x] - 1);
+            int blockIndex = shape[shapePoint.Y, shapePoint.X] - 1;
             if (blockIndex == -1) return null;
 
-            return blocks[blockIndex];
+            return Blocks[blockIndex];
         }
 
         public Point[] ShapePoints(Direction dir)
@@ -122,19 +106,14 @@ namespace Tetris
 
         public int[,] Shape(Direction dir)
         {
-            switch(dir)
+            return dir switch
             {
-                case Direction.UP:
-                    return ShapeDirectionUp();
-                case Direction.RIGHT:
-                    return ShapeDirectionRight();
-                case Direction.DOWN:
-                    return ShapeDirectionDown();
-                case Direction.LEFT:
-                    return ShapeDirectionLeft();
-                default:
-                    throw new Exceptions.InvalidDirectionException();
-            }
+                Direction.UP => ShapeDirectionUp(),
+                Direction.RIGHT => ShapeDirectionRight(),
+                Direction.DOWN => ShapeDirectionDown(),
+                Direction.LEFT => ShapeDirectionLeft(),
+                _ => throw new Exceptions.InvalidDirectionException(),
+            };
         }
 
         public virtual Point ShapeCenterOffset()
@@ -144,7 +123,7 @@ namespace Tetris
 
         public bool ContainsBlock(Block block)
         {
-            foreach (Block b in blocks) { if (block == b) return true; }
+            foreach (Block b in Blocks) { if (block == b) return true; }
 
             return false;
         }

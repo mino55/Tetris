@@ -1,15 +1,13 @@
-using System;
-
 namespace Tetris
 {
     public class TetrisBoardOperator
     {
+        public bool CurrentTetriminoIsLocked { get; private set; }
         public TetrisBoard _tetrisBoard;
         public Tetrimino CurrentTetrimino { get; private set; }
         public Tetrimino NextTetrimino { get; private set; }
-        private Point _nextTetriminoStartPoint;
 
-        public bool CurrentTetriminoIsLocked { get; private set; }
+        private Point _nextTetriminoStartPoint;
 
         public TetrisBoardOperator(TetrisBoard tetrisBoard)
         {
@@ -103,7 +101,7 @@ namespace Tetris
         {
             foreach (Block[] row in _tetrisBoard.BlocksInRows())
             {
-                int at_y = _tetrisBoard.BlockPoint(row[0]).y;
+                int at_y = _tetrisBoard.BlockPoint(row[0]).Y;
                 ClearRow(row);
                 FillRowGapAt(at_y);
             }
@@ -119,11 +117,11 @@ namespace Tetris
 
         private void FillRowGapAt(int atY)
         {
-            for (int y = (_tetrisBoard.height - 1); y >= 0; y--)
+            for (int y = _tetrisBoard.Height - 1; y >= 0; y--)
             {
                 if (y > atY) continue;
 
-                for (int x = 0; x < _tetrisBoard.width; x++)
+                for (int x = 0; x < _tetrisBoard.Width; x++)
                 {
                     Block block = _tetrisBoard.BlockAt(new Point(x, y));
                     if (block == null) continue;

@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Tetris.Tests
@@ -9,7 +8,6 @@ namespace Tetris.Tests
 
         public TetriminoTests()
         {
-            Block[] blocks = new Block[Tetrimino.Size<Tetrimino>()];
             _tetrimino = new Tetrimino(Direction.UP, new Block[] { new Block(), new Block()});
         }
 

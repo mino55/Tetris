@@ -4,7 +4,7 @@ namespace Tetris
 {
     public class MenuSelectionTests
     {
-        private MenuSelections _menuSelections;
+        private readonly MenuSelections _menuSelections;
 
         public MenuSelectionTests()
         {

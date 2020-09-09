@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -8,9 +7,9 @@ namespace Tetris.Tests
     {
         private readonly Board _board;
 
-        private void fillBoardRowAt(int rowAt)
+        private void FillBoardRowAt(int rowAt)
         {
-            for (int x = 0;  x < _board.width; x++ )
+            for (int x = 0;  x < _board.Width; x++ )
             {
                 _board.AddBlockAt(new Block(), new Point(x, rowAt));
             }
@@ -64,7 +63,7 @@ namespace Tetris.Tests
 
             Block secondBlock = new Block();
 
-            Assert.Throws<Tetris.Exceptions.NoOverwriteBlockException>(
+            Assert.Throws<Exceptions.NoOverwriteBlockException>(
                () => _board.AddBlockAt(secondBlock, point)
             );
         }
@@ -79,7 +78,7 @@ namespace Tetris.Tests
             Point point = new Point(x, y);
             Block block = new Block();
 
-            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+            Assert.Throws<Exceptions.BlockOutsideBoardException>(
                () => _board.AddBlockAt(block, point)
             );
         }
@@ -103,7 +102,7 @@ namespace Tetris.Tests
             Point point = new Point(1, 2);
             Block block = new Block();
 
-            Assert.Throws<Tetris.Exceptions.MissingBlockException>(
+            Assert.Throws<Exceptions.MissingBlockException>(
                () => _board.RemoveBlockAt(point)
             );
         }
@@ -117,7 +116,7 @@ namespace Tetris.Tests
         {
             Point point = new Point(x, y);
 
-            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+            Assert.Throws<Exceptions.BlockOutsideBoardException>(
                () => _board.RemoveBlockAt(point)
             );
         }
@@ -199,7 +198,6 @@ namespace Tetris.Tests
             Point byPoint = new Point(move_x, move_y);
             _board.MoveBlock(block, byPoint);
 
-            Point endPoint = Point.AddPoints(startPoint, byPoint);
             Assert.Equal(_board.BlockAt(startPoint), block);
         }
 
@@ -211,7 +209,7 @@ namespace Tetris.Tests
         {
             for (int y = 0; y < numberOfRows; y++)
             {
-                fillBoardRowAt(y);
+                FillBoardRowAt(y);
             }
 
             List<Block[]> blockRows = _board.BlocksInRows();
@@ -222,11 +220,11 @@ namespace Tetris.Tests
         [Fact]
         public void BlocksInRows_ThereIsRow_RowHasBlocks()
         {
-            fillBoardRowAt(0);
+            FillBoardRowAt(0);
 
             Block[] blockRow = _board.BlocksInRows()[0];
 
-            for (int x = 0;  x < _board.width; x++ )
+            for (int x = 0;  x < _board.Width; x++ )
             {
                 Assert.True(blockRow[x] is Block);
             }
@@ -235,7 +233,7 @@ namespace Tetris.Tests
         [Fact]
         public void BlocksInRows_NoRows_ReturnEmptyRowList()
         {
-            fillBoardRowAt(0);
+            FillBoardRowAt(0);
             _board.RemoveBlockAt(new Point(4, 0));
 
             List<Block[]> blockRows = _board.BlocksInRows();
@@ -288,7 +286,7 @@ namespace Tetris.Tests
             Point point = new Point(0, 0);
             Block block = new Block();
 
-            Assert.Throws<Tetris.Exceptions.BlockNotPlacedException>(
+            Assert.Throws<Exceptions.BlockNotPlacedException>(
                 () => _board.IsEmptyBelowBlock(block)
             );
         }
@@ -301,7 +299,7 @@ namespace Tetris.Tests
             _board.AddBlockAt(new Block(), new Point(0, 0));
             int afterChange = _board.ChangeCount;
 
-            Assert.Equal(afterChange, (beforeChange + 1));
+            Assert.Equal(afterChange, beforeChange + 1);
         }
 
         [Fact]
@@ -313,7 +311,7 @@ namespace Tetris.Tests
             _board.RemoveBlockAt(new Point(0, 0));
             int afterChange = _board.ChangeCount;
 
-            Assert.Equal(afterChange, (beforeChange + 1));
+            Assert.Equal(afterChange, beforeChange + 1);
         }
 
         [Fact]
@@ -326,7 +324,7 @@ namespace Tetris.Tests
             _board.MoveBlock(block, new Point(1, 0));
             int afterChange = _board.ChangeCount;
 
-            Assert.Equal(afterChange, (beforeChange + 2));
+            Assert.Equal(afterChange, beforeChange + 2);
         }
     }
 }

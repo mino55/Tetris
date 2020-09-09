@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Tetris.Tests
@@ -8,9 +7,9 @@ namespace Tetris.Tests
         private readonly Board _board;
         private readonly BoardOperator _boardOperator;
 
-        private void fillBoardRowAt(int rowAt)
+        private void FillBoardRowAt(int rowAt)
         {
-            for (int x = 0;  x < _board.width; x++ )
+            for (int x = 0;  x < _board.Width; x++ )
             {
                 _board.AddBlockAt(new Block(), new Point(x, rowAt));
             }
@@ -30,7 +29,7 @@ namespace Tetris.Tests
 
             _boardOperator.NewCurrentBlock(block, point);
 
-            Assert.Equal(block, _boardOperator.currentBlock);
+            Assert.Equal(block, _boardOperator.CurrentBlock);
         }
 
         [Fact]
@@ -65,7 +64,7 @@ namespace Tetris.Tests
 
             _boardOperator.NextCurrentBlock();
 
-            Assert.Equal(nextBlock, _boardOperator.currentBlock);
+            Assert.Equal(nextBlock, _boardOperator.CurrentBlock);
         }
 
         [Fact]
@@ -101,7 +100,7 @@ namespace Tetris.Tests
 
             _boardOperator.DropCurrentBlock();
 
-            Assert.False(_boardOperator.currentBlockIsLocked);
+            Assert.False(_boardOperator.CurrentBlockIsLocked);
         }
 
         [Fact]
@@ -126,7 +125,7 @@ namespace Tetris.Tests
 
             _boardOperator.DropCurrentBlock();
 
-            Assert.True(_boardOperator.currentBlockIsLocked);
+            Assert.True(_boardOperator.CurrentBlockIsLocked);
         }
 
         [Fact]
@@ -169,7 +168,7 @@ namespace Tetris.Tests
         {
             for (int y = 0; y < numberOfRows; y++)
             {
-                fillBoardRowAt(y);
+                FillBoardRowAt(y);
             }
 
             int rows = _boardOperator.Rows();
@@ -180,7 +179,7 @@ namespace Tetris.Tests
         [Fact]
         public void Rows_NoRows_returnZero()
         {
-            fillBoardRowAt(0);
+            FillBoardRowAt(0);
             _board.RemoveBlockAt(new Point(4, 0));
             Assert.Equal(0, _boardOperator.Rows());
         }
@@ -193,7 +192,7 @@ namespace Tetris.Tests
         {
             for (int y = 0; y < numberOfRows; y++)
             {
-                fillBoardRowAt(y);
+                FillBoardRowAt(y);
             }
             Block nonRowBlock = new Block();
             Point atPoint = new Point(4, 4);
@@ -228,8 +227,8 @@ namespace Tetris.Tests
             Block blockAboveGap = new Block();
             _board.AddBlockAt(blockAboveGap, new Point(4, 1));
             Block blockBelowGap = new Block();
-            fillBoardRowAt(2);
-            fillBoardRowAt(3);
+            FillBoardRowAt(2);
+            FillBoardRowAt(3);
             _board.AddBlockAt(blockBelowGap, new Point(0, 4));
 
             _boardOperator.CleanRows();

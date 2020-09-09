@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Tetris
@@ -14,11 +13,10 @@ namespace Tetris
         public int DropDelay { get; private set; }
         public int StartLevel { get; private set; }
 
-        private int _linesPerLevel;
-        private int _effectLevelLimit;
-        private int _speedIncreasePerEffectLevel;
-
-        private List<Tetriminos.Type> _history = null;
+        private readonly int _linesPerLevel;
+        private readonly int _effectLevelLimit;
+        private readonly int _speedIncreasePerEffectLevel;
+        private readonly List<Tetriminos.Type> _history = null;
 
         public GameStats(int startLevel,
                          int linesPerLevel,
@@ -101,7 +99,7 @@ namespace Tetris
         }
 
         private void CalculateDropDelay() {
-            DropDelay = (MaxDropDelay - (EffectLevel * _speedIncreasePerEffectLevel));
+            DropDelay = MaxDropDelay - EffectLevel * _speedIncreasePerEffectLevel;
         }
     }
 }

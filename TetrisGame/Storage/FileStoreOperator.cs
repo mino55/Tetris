@@ -25,24 +25,24 @@ namespace Tetris
             int place = GetHighscorePlace(highscore);
             if (place == -1) return;
 
-            List<string> NewNameOrder = new List<string>();
-            List<string> NewValueOrder = new List<string>();
+            List<string> newNameOrder = new List<string>();
+            List<string> newValueOrder = new List<string>();
             for (int i = 1; i <= 10; i++)
             {
-                NewNameOrder.Add(Store.Get($"h{i}_name"));
-                NewValueOrder.Add(Store.Get($"h{i}_value"));
+                newNameOrder.Add(Store.Get($"h{i}_name"));
+                newValueOrder.Add(Store.Get($"h{i}_value"));
             }
 
-            NewNameOrder.Insert((place - 1), name);
-            NewNameOrder.RemoveAt(10);
+            newNameOrder.Insert(place - 1, name);
+            newNameOrder.RemoveAt(10);
 
-            NewValueOrder.Insert((place - 1), $"{highscore}");
-            NewValueOrder.RemoveAt(10);
+            newValueOrder.Insert(place - 1, $"{highscore}");
+            newValueOrder.RemoveAt(10);
 
             for (int i = 1; i <= 10; i++)
             {
-                Store.Set($"h{i}_name", NewNameOrder[i - 1]);
-                Store.Set($"h{i}_value", NewValueOrder[i - 1]);
+                Store.Set($"h{i}_name", newNameOrder[i - 1]);
+                Store.Set($"h{i}_value", newValueOrder[i - 1]);
             }
         }
 

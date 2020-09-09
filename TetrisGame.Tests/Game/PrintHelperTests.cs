@@ -4,7 +4,7 @@ namespace Tetris
 {
     public class PrintHelperTests
     {
-        PrintHelper _printHelper;
+        private readonly PrintHelper _printHelper;
 
         public PrintHelperTests()
         {

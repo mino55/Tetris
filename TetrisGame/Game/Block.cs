@@ -2,7 +2,7 @@ namespace Tetris
 {
   public class Block
   {
-    private string _print;
+    private readonly string _print;
 
     public Block()
     {

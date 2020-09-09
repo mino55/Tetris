@@ -5,37 +5,30 @@ namespace Tetris
 {
     public class GameScreen : IScreen
     {
-        Engine _engine;
-
-        private Point _centerPoint = null;
-        private TetrisBoard _tetrisBoard = new TetrisBoard(10, 20);
-        private TetrisBoard _nextTetrimino = null;
-        private TetrisBoardOperator _tetrisBoardOperator = null;
-        private Tetriminos.Factory _tetriminoFactory = new Tetriminos.Factory(new ColorHelper());
-        private GameStats _gameStats = new GameStats(startLevel: 0,
+        private int _dropTimer = 0;
+        private bool _paused = false;
+        private Engine _engine;
+        private TetrisBoard _nextTetrimino;
+        private Dictionary<string, Action> _keyMapping;
+        private readonly Point _centerPoint;
+        private readonly TetrisBoardOperator _tetrisBoardOperator;
+        private readonly ScreenFactory _screenFactory;
+        private readonly TetrisBoard _tetrisBoard = new TetrisBoard(10, 20);
+        private readonly Tetriminos.Factory _tetriminoFactory = new Tetriminos.Factory(new ColorHelper());
+        private readonly GameStats _gameStats = new GameStats(startLevel: 0,
                                                      linesPerLevel: 10,
                                                      effectLevelLimit: 10,
                                                      speedIncreasePerEffectLevel: 90);
-        private PrintHelper _printHelper = new PrintHelper();
-        private Dictionary<String, Action> _keyMapping;
-        private ScreenFactory _screenFactory;
-        private GameSettings _gameSettings;
-
-        private int _dropTimer = 0;
-        private int LastChange = 0;
-        private bool _paused = false;
+        private readonly PrintHelper _printHelper = new PrintHelper();
 
         public GameScreen(ScreenFactory screenFactory,
-                          GameSettings gameSettings,
                           KeyMapping keyMapping)
         {
             _screenFactory = screenFactory;
 
-            _gameSettings = gameSettings;
-
             SetKeyMapping(keyMapping);
 
-            int spawnX = (_tetrisBoard.width / 2);
+            int spawnX = _tetrisBoard.Width / 2;
             int spawnY = 1;
             _centerPoint = new Point(spawnX, spawnY);
 
@@ -190,44 +183,46 @@ namespace Tetris
             }
         }
 
-        private Dictionary<String, Action> CreateSimpleKeyMapping()
+        private Dictionary<string, Action> CreateSimpleKeyMapping()
         {
-            Dictionary<String, Action> mapping = new Dictionary<String, Action>();
+            Dictionary<string, Action> mapping = new Dictionary<string, Action>
+            {
+                ["A"] = Action.MOVE_LEFT,
+                ["D"] = Action.MOVE_RIGHT,
+                ["W"] = Action.ROTATE_CLOCKWISE,
+                ["S"] = Action.DROP,
 
-            mapping["A"] = Action.MOVE_LEFT;
-            mapping["D"] = Action.MOVE_RIGHT;
-            mapping["W"] = Action.ROTATE_CLOCKWISE;
-            mapping["S"] = Action.DROP;
+                ["LeftArrow"] = Action.MOVE_LEFT,
+                ["RightArrow"] = Action.MOVE_RIGHT,
+                ["UpArrow"] = Action.ROTATE_CLOCKWISE,
+                ["DownArrow"] = Action.DROP,
 
-            mapping["LeftArrow"] = Action.MOVE_LEFT;
-            mapping["RightArrow"] = Action.MOVE_RIGHT;
-            mapping["UpArrow"] = Action.ROTATE_CLOCKWISE;
-            mapping["DownArrow"] = Action.DROP;
-
-            mapping["Spacebar"] = Action.SLAM;
-            mapping["Enter"] = Action.SLAM;
+                ["Spacebar"] = Action.SLAM,
+                ["Enter"] = Action.SLAM
+            };
 
             return mapping;
         }
 
-        private Dictionary<String, Action> CreateComplexKeyMapping()
+        private Dictionary<string, Action> CreateComplexKeyMapping()
         {
-            Dictionary<String, Action> mapping = new Dictionary<String, Action>();
+            Dictionary<string, Action> mapping = new Dictionary<string, Action>
+            {
+                ["A"] = Action.MOVE_LEFT,
+                ["D"] = Action.MOVE_RIGHT,
+                ["W"] = Action.ROTATE_FLIP,
+                ["S"] = Action.DROP,
 
-            mapping["A"] = Action.MOVE_LEFT;
-            mapping["D"] = Action.MOVE_RIGHT;
-            mapping["W"] = Action.ROTATE_FLIP;
-            mapping["S"] = Action.DROP;
+                ["LeftArrow"] = Action.MOVE_LEFT,
+                ["RightArrow"] = Action.MOVE_RIGHT,
+                ["UpArrow"] = Action.ROTATE_FLIP,
+                ["DownArrow"] = Action.DROP,
 
-            mapping["LeftArrow"] = Action.MOVE_LEFT;
-            mapping["RightArrow"] = Action.MOVE_RIGHT;
-            mapping["UpArrow"] = Action.ROTATE_FLIP;
-            mapping["DownArrow"] = Action.DROP;
-
-            mapping["E"] = Action.ROTATE_CLOCKWISE;
-            mapping["Q"] = Action.ROTATE_REVERSE;
-            mapping["Spacebar"] = Action.SLAM;
-            mapping["Enter"] = Action.SLAM;
+                ["E"] = Action.ROTATE_CLOCKWISE,
+                ["Q"] = Action.ROTATE_REVERSE,
+                ["Spacebar"] = Action.SLAM,
+                ["Enter"] = Action.SLAM
+            };
 
             return mapping;
         }

@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Tetris.Tests
@@ -65,7 +64,7 @@ namespace Tetris.Tests
             _gameStats.ScoreLines(1);
             int levelAfter = _gameStats.Level;
 
-            Assert.Equal(levelAfter, (levelBefore + 1));
+            Assert.Equal(levelAfter, levelBefore + 1);
         }
 
         [Fact]
@@ -87,7 +86,7 @@ namespace Tetris.Tests
             _gameStats.ScoreLines(10);
             int dropDelayAfter =  _gameStats.DropDelay;
 
-            Assert.Equal(dropDelayAfter, (dropDelayBefore - 90));
+            Assert.Equal(dropDelayAfter, dropDelayBefore - 90);
         }
 
         [Fact]
@@ -129,7 +128,7 @@ namespace Tetris.Tests
         {
             _gameStats = GameStatsAtLevel(0);
 
-            _gameStats.RegisterTetrimino((new Tetriminos.ShapeS()).Type());
+            _gameStats.RegisterTetrimino(new Tetriminos.ShapeS().Type());
 
             Assert.Equal(1, _gameStats.Shapes);
         }
@@ -139,11 +138,10 @@ namespace Tetris.Tests
         {
             _gameStats = GameStatsAtLevel(0);
 
-            _gameStats.RegisterTetrimino((new Tetriminos.ShapeS()).Type());
+            _gameStats.RegisterTetrimino(new Tetriminos.ShapeS().Type());
 
             Assert.Single(_gameStats.History());
             Assert.Equal(Tetriminos.Type.SHAPE_S, _gameStats.History()[0]);
         }
     }
-
 }

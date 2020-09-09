@@ -39,7 +39,7 @@ namespace Tetris
             Point point = new Point(2, 2);
             _tetrisBoard.AddBlockAt(new Block(), new Point (2, 2));
 
-            Assert.Throws<Tetris.Exceptions.NoOverwriteBlockException>(
+            Assert.Throws<Exceptions.NoOverwriteBlockException>(
                 () => _tetrisBoard.AddTetriminoAt(tetrimino, point)
             );
         }
@@ -51,7 +51,7 @@ namespace Tetris
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
             Point point = new Point(0, 0);
 
-            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+            Assert.Throws<Exceptions.BlockOutsideBoardException>(
                 () => _tetrisBoard.AddTetriminoAt(tetrimino, point)
             );
         }
@@ -79,13 +79,13 @@ namespace Tetris
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
             Point point = new Point(2, 2);
 
-            Assert.Throws<Tetris.Exceptions.MissingTetriminoException>(
+            Assert.Throws<Exceptions.MissingTetriminoException>(
                 () => _tetrisBoard.RemoveTetrimino(tetrimino)
             );
         }
 
         [Fact]
-        private void ReleaseTetrimino_TerminoPlaced_RemoveTetriminoButKeepBlocks()
+        public void ReleaseTetrimino_TerminoPlaced_RemoveTetriminoButKeepBlocks()
         {
             Block[] blocks = { new Block(), new Block() };
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
@@ -191,7 +191,7 @@ namespace Tetris
             _tetrisBoard.AddTetriminoAt(tetrimino, new Point(2, 2));
             _tetrisBoard.AddBlockAt(new Block(), new Point(blockX, blockY));
 
-            Assert.Throws<Tetris.Exceptions.NoOverwriteBlockException>(
+            Assert.Throws<Exceptions.NoOverwriteBlockException>(
                () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
             );
         }
@@ -210,7 +210,7 @@ namespace Tetris
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
             _tetrisBoard.AddTetriminoAt(tetrimino, new Point(startX, startY));
 
-            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+            Assert.Throws<Exceptions.BlockOutsideBoardException>(
                () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
             );
         }
@@ -225,7 +225,7 @@ namespace Tetris
             Block[] blocks = { new Block(), new Block() };
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
 
-            Assert.Throws<Tetris.Exceptions.MissingTetriminoException>(
+            Assert.Throws<Exceptions.MissingTetriminoException>(
                () => _tetrisBoard.MoveTetrimino(tetrimino, new Point(byX, byY))
             );
         }
@@ -304,7 +304,7 @@ namespace Tetris
             _tetrisBoard.AddTetriminoAt(tetrimino, new Point(x, y));
             _tetrisBoard.AddBlockAt(new Block(), new Point(2, 2));
 
-            Assert.Throws<Tetris.Exceptions.NoOverwriteBlockException>(
+            Assert.Throws<Exceptions.NoOverwriteBlockException>(
                () => _tetrisBoard.Rotate(tetrimino, rotation)
             );
         }
@@ -319,7 +319,7 @@ namespace Tetris
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
             _tetrisBoard.AddTetriminoAt(tetrimino, new Point(x, y));
 
-            Assert.Throws<Tetris.Exceptions.BlockOutsideBoardException>(
+            Assert.Throws<Exceptions.BlockOutsideBoardException>(
                () => _tetrisBoard.Rotate(tetrimino, rotation)
             );
         }
@@ -333,7 +333,7 @@ namespace Tetris
             Block[] blocks = { new Block(), new Block() };
             Tetrimino tetrimino = new Tetrimino(Direction.UP, blocks);
 
-            Assert.Throws<Tetris.Exceptions.MissingTetriminoException>(
+            Assert.Throws<Exceptions.MissingTetriminoException>(
                () => _tetrisBoard.Rotate(tetrimino, rotation)
             );
         }

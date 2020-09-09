@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 
 namespace Tetris
 {
     public class TetrisBoard : Board
     {
-        private Dictionary<Tetrimino, Point> _tetriminoPoints;
+        private readonly Dictionary<Tetrimino, Point> _tetriminoPoints;
 
-        private List<Tetrimino> _allTetriminos;
+        private readonly List<Tetrimino> _allTetriminos;
 
         public TetrisBoard(int boardWidth, int boardHeight) : base(boardWidth, boardHeight)
         {
@@ -52,7 +51,7 @@ namespace Tetris
         {
             Point atPoint = TetriminoPoint(tetrimino);
             Point toPoint = Point.AddPoints(atPoint, byPoint);
-            return TetriminoFitsAt(tetrimino, toPoint, tetrimino.direction);
+            return TetriminoFitsAt(tetrimino, toPoint, tetrimino.Direction);
         }
 
         public void MoveTetrimino(Tetrimino tetrimino, Point byPoint)
@@ -67,17 +66,13 @@ namespace Tetris
 
         public bool CanRotate(Tetrimino tetrimino, Rotation rotation)
         {
-            switch(rotation)
+            return rotation switch
             {
-                case Rotation.CLOCKWISE:
-                    return CanRotateDir(tetrimino, tetrimino.ClockwiseRotation());
-                case Rotation.REVERSE:
-                    return CanRotateDir(tetrimino, tetrimino.ReverseRotation());
-                case Rotation.FLIP:
-                    return CanRotateDir(tetrimino, tetrimino.FlipRotation());
-                default:
-                    return false;
-            }
+                Rotation.CLOCKWISE => CanRotateDir(tetrimino, tetrimino.ClockwiseRotation()),
+                Rotation.REVERSE => CanRotateDir(tetrimino, tetrimino.ReverseRotation()),
+                Rotation.FLIP => CanRotateDir(tetrimino, tetrimino.FlipRotation()),
+                _ => false,
+            };
         }
 
         public void Rotate(Tetrimino tetrimino, Rotation rotation)
@@ -116,9 +111,9 @@ namespace Tetris
 
         private void PlaceTetriminoAt(Tetrimino tetrimino, Point atPoint)
         {
-            foreach (Point shapePoint in tetrimino.ShapePoints(tetrimino.direction))
+            foreach (Point shapePoint in tetrimino.ShapePoints(tetrimino.Direction))
             {
-                Block shapeBlock = tetrimino.ShapeBlockAt(shapePoint, tetrimino.direction);
+                Block shapeBlock = tetrimino.ShapeBlockAt(shapePoint, tetrimino.Direction);
 
                 if (shapeBlock == null) continue;
 
@@ -132,7 +127,7 @@ namespace Tetris
 
         private void UnplaceTetrimino(Tetrimino tetrimino)
         {
-            foreach (Block block in tetrimino.blocks)
+            foreach (Block block in tetrimino.Blocks)
             {
                 Point atPoint = BlockPoint(block);
                 RemoveBlockAt(atPoint);

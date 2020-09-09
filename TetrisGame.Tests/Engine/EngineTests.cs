@@ -5,11 +5,10 @@ namespace Tetris
 {
    public class EngineTests
    {
-       private KeyReceiver _keyReceiver;
-       private Engine _engine;
-       private Mock<IScreen> _screenMock;
-
-       int _FPS = 30;
+       private readonly KeyReceiver _keyReceiver;
+       private readonly Engine _engine;
+       private readonly Mock<IScreen> _screenMock;
+       private readonly int _FPS = 30;
 
        public EngineTests()
        {
@@ -61,17 +60,17 @@ namespace Tetris
         [Fact]
         public void SwitchScreen_UnmountsCurrentScreenWithEngine()
         {
-            Mock<IScreen> _screenMock2 = new Mock<IScreen>();
-            _engine.SwitchScreen(_screenMock2.Object);
+            Mock<IScreen> screenMock2 = new Mock<IScreen>();
+            _engine.SwitchScreen(screenMock2.Object);
             _screenMock.Verify(screen => screen.Unmount(_engine), Times.Once());
         }
 
         [Fact]
         public void SwitchScreen_MountsNewScreenWithEngine()
         {
-            Mock<IScreen> _screenMock2 = new Mock<IScreen>();
-            _engine.SwitchScreen(_screenMock2.Object);
-            _screenMock2.Verify(screen => screen.Mount(_engine), Times.Once());
+            Mock<IScreen> screenMock2 = new Mock<IScreen>();
+            _engine.SwitchScreen(screenMock2.Object);
+            screenMock2.Verify(screen => screen.Mount(_engine), Times.Once());
         }
 
         [Fact]
