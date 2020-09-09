@@ -7,7 +7,6 @@ namespace Tetris
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public int ChangeCount { get; private set; }
         public List<Block> _allBlocks = new List<Block>();
 
         private readonly Block[,] _tiles;
@@ -19,7 +18,6 @@ namespace Tetris
             Height = boardHeight;
 
             _tiles = new Block[Height, Width];
-            ChangeCount = 0;
         }
 
         public Block BlockAt(Point point) { return _tiles[point.Y, point.X]; }
@@ -119,14 +117,12 @@ namespace Tetris
         {
             _tiles[atPoint.Y, atPoint.X] = block;
             _blockPoints[block] = atPoint;
-            ChangeCount++;
         }
 
         protected void UnplaceBlockAt(Block block, Point atPoint)
         {
             _tiles[atPoint.Y, atPoint.X] = null;
             _blockPoints[block] = null;
-            ChangeCount++;
         }
 
         protected bool IsInsideBoard(Point atPoint)
