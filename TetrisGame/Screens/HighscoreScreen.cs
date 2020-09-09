@@ -1,12 +1,9 @@
-using System;
-
 namespace Tetris
-
 {
     public class HighscoreScreen : MenuScreen
     {
-        private ScreenFactory _screenFactory;
-        private FileStoreOperator _fileStoreOperator;
+        private readonly ScreenFactory _screenFactory;
+        private readonly FileStoreOperator _fileStoreOperator;
 
         public HighscoreScreen(ScreenFactory screenFactory,
                                FileStoreOperator fileStoreOperator) : base()
@@ -42,7 +39,6 @@ namespace Tetris
 
             string back = $"{HighlightableString("back", "Back", Color.RED)}";
             menuPrint[18] = CenterAlign(back);
-
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine)

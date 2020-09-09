@@ -1,12 +1,10 @@
-using System;
-
 namespace Tetris
 {
     public class OptionsScreen : MenuScreen
     {
-        private ScreenFactory _screenFactory;
-        private GameSettings _gameSettings;
-        private FileStore _store;
+        private readonly ScreenFactory _screenFactory;
+        private readonly GameSettings _gameSettings;
+        private readonly FileStore _store;
 
         public OptionsScreen(ScreenFactory screenFactory,
                              GameSettings gameSettings,

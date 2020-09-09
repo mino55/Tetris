@@ -1,17 +1,13 @@
-using System;
-
 namespace Tetris
 {
     public abstract class MenuScreen : IScreen
     {
         private Engine _engine;
-        private PrintHelper _printHelper = new PrintHelper();
-        private MenuSelections _menuSelections = new MenuSelections();
-
-        private int _width;
-        private int _height;
-
-        private ColorHelper _colorHelper = new ColorHelper();
+        private readonly int _width;
+        private readonly int _height;
+        private readonly PrintHelper _printHelper = new PrintHelper();
+        private readonly MenuSelections _menuSelections = new MenuSelections();
+        private readonly ColorHelper _colorHelper = new ColorHelper();
 
         public MenuScreen()
         {
@@ -151,10 +147,10 @@ namespace Tetris
 
         protected class MenuLine
         {
-            private string _content;
-            int _length;
-            private Alignment _alignment;
-            private PrintHelper _printHelper;
+            readonly int _length;
+            private readonly string _content;
+            private readonly Alignment _alignment;
+            private readonly PrintHelper _printHelper;
 
             public MenuLine(string content, int length, Alignment alignment, PrintHelper printHelper)
             {
@@ -166,16 +162,13 @@ namespace Tetris
 
             public override string ToString()
             {
-                switch(_alignment)
+                return _alignment switch
                 {
-                    case Alignment.RIGHT:
-                        return "";
-                    case Alignment.CENTER:
-                        return _printHelper.PadOutStringCentered(_content, _length);
-                    case Alignment.LEFT:
-                        return _printHelper.PadOutString(_content, _length);
-                }
-                return _content;
+                    Alignment.RIGHT => "",
+                    Alignment.CENTER => _printHelper.PadOutStringCentered(_content, _length),
+                    Alignment.LEFT => _printHelper.PadOutString(_content, _length),
+                    _ => _content,
+                };
             }
         }
     }

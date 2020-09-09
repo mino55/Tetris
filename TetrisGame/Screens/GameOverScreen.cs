@@ -4,12 +4,11 @@ namespace Tetris
 {
     public class GameOverScreen : MenuScreen
     {
-        private Engine _engine;
-        private GameStats _gameStats;
-        private ScreenFactory _screenFactory;
-        private FileStoreOperator _fileStoreOperator;
-        string _name;
-        int _place;
+        private string _name;
+        private readonly GameStats _gameStats;
+        private readonly ScreenFactory _screenFactory;
+        private readonly FileStoreOperator _fileStoreOperator;
+        private readonly int _place;
 
         public GameOverScreen(ScreenFactory screenFactory,
                               GameStats gameStats,
