@@ -17,15 +17,49 @@ namespace Tetris
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)
         {
-            menuSelection.AddSetting("controlls", new string[] {"simple ", "complex"});
-            menuSelection.AddSetting("fps", new string[] {"60", "30", "20"});
+            menuSelection.AddSetting("controlls", new string[] { "simple ", "complex" });
+            menuSelection.AddSetting("fps", new string[] { "60", "30", "20" });
+            menuSelection.AddSetting("color", new string[] { "full", "none" });
+            menuSelection.AddSetting("unicode", new string[] { "full", "limited" });
             menuSelection.AddPick("back");
 
             _gameSettings.FPS = int.Parse(_store.Get("fps"));
             _gameSettings.Controlls = _store.Get("controlls");
+            _gameSettings.Color = _store.Get("color");
+            _gameSettings.Unicode = _store.Get("unicode");
 
             menuSelection.SetSettingState("fps", $"{_gameSettings.FPS}");
             menuSelection.SetSettingState("controlls", _gameSettings.Controlls);
+            menuSelection.SetSettingState("color", $"{_gameSettings.Color}");
+            menuSelection.SetSettingState("unicode", _gameSettings.Unicode);
+        }
+
+        protected override void RenderMenuItems(MenuLine[] menuPrint)
+        {
+            string controllsState = GetSettingState("controlls");
+            string controlls = HighlightableString("controlls",
+                                                   $"Controlls: {controllsState}",
+                                                   Color.RED);
+
+            string fpsState = GetSettingState("fps");
+            string fps = HighlightableString("fps", $"FPS: {fpsState}", Color.RED);
+
+            string colorState = GetSettingState("color");
+            string color = HighlightableString("color", $"Color support: {colorState}", Color.RED);
+
+            string unicodeState = GetSettingState("unicode");
+            string unicode = HighlightableString("unicode", $"Unicode support: {unicodeState}", Color.RED);
+
+            string back = HighlightableString("back", "Back", Color.RED);
+
+            menuPrint[2] = CenterAlign("OPTIONS");
+            menuPrint[5] = CenterAlign(controlls);
+            menuPrint[7] = CenterAlign(fps);
+            menuPrint[9] = CenterAlign(color);
+            menuPrint[11] = CenterAlign(unicode);
+            menuPrint[13] = CenterAlign(back);
+
+            RenderDescription(menuPrint);
         }
 
         protected override void OnPick(string selection, Engine engine)
@@ -45,26 +79,16 @@ namespace Tetris
             {
                 _gameSettings.Controlls = state;
             }
-        }
 
-        protected override void RenderMenuItems(MenuLine[] menuPrint)
-        {
-            string controllsState = GetSettingState("controlls");
-            string controlls = HighlightableString("controlls",
-                                                   $"Controlls: {controllsState}",
-                                                   Color.RED);
+            if (name == "color")
+            {
+                _gameSettings.Color = state;
+            }
 
-            string fpsState = GetSettingState("fps");
-            string fps = HighlightableString("fps", $"FPS: {fpsState}", Color.RED);
-
-            string back = HighlightableString("back", "Back", Color.RED);
-
-            menuPrint[2] = CenterAlign("OPTIONS");
-            menuPrint[6] = CenterAlign(controlls);
-            menuPrint[8] = CenterAlign(fps);
-            menuPrint[10] = CenterAlign(back);
-
-            RenderDescription(menuPrint);
+            if (name == "unicode")
+            {
+                _gameSettings.Unicode = state;
+            }
         }
 
         private void RenderDescription(MenuLine[] menuPrint)
@@ -76,16 +100,37 @@ namespace Tetris
 
             if (IsSelected("controlls") && GetSettingState("controlls") == "complex")
             {
-                menuPrint[14] = LeftAlign("  (P: Pause)");
-                menuPrint[16] = LeftAlign("  (UP: Flip) (DOWN: Quick drop) (Q: Rotate left)");
+                menuPrint[16] = LeftAlign("  (P: Pause)");
+                menuPrint[17] = LeftAlign("  (UP: Flip) (DOWN: Quick drop) (Q: Rotate left)");
                 menuPrint[18] = LeftAlign("  (E: Rotate right) (SPACE/ENTER: Slam)");
             }
 
             if (IsSelected("controlls") && GetSettingState("controlls") == "simple ")
             {
-                menuPrint[14] = LeftAlign("  (P: Pause)");
-                menuPrint[16] = LeftAlign("  (UP: Rotate right) (DOWN: Quick drop)");
+                menuPrint[16] = LeftAlign("  (P: Pause)");
+                menuPrint[17] = LeftAlign("  (UP: Rotate right) (DOWN: Quick drop)");
                 menuPrint[18] = LeftAlign("  (SPACE/ENTER: Slam)");
+            }
+
+            if (IsSelected("color") && GetSettingState("color") == "none")
+            {
+                menuPrint[16] = CenterAlign("Disable colors for maximum terminal support");
+            }
+
+            if (IsSelected("color") && GetSettingState("color") == "full")
+            {
+                menuPrint[16] = CenterAlign("Allow colors (ANSI escape codes)");
+            }
+
+            if (IsSelected("unicode") && GetSettingState("unicode") == "limited")
+            {
+                menuPrint[16] = CenterAlign("Only allow simple box-drawing characters");
+            }
+
+            if (IsSelected("unicode") && GetSettingState("unicode") == "full")
+            {
+                menuPrint[16] = LeftAlign("  Support for complex box-drawing characters");
+                menuPrint[17] = LeftAlign("  such as '┫' and '╋'");
             }
         }
 
@@ -96,6 +141,8 @@ namespace Tetris
         {
             _store.Set("fps", $"{_gameSettings.FPS}");
             _store.Set("controlls", _gameSettings.Controlls);
+            _store.Set("color", $"{_gameSettings.Color}");
+            _store.Set("unicode", _gameSettings.Unicode);
             _store.Save();
         }
     }
