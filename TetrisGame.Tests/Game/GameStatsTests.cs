@@ -81,10 +81,10 @@ namespace Tetris.Tests
         public void ScoreLines_PastLevelThreshold_SpeedIncreases()
         {
             _gameStats = GameStatsAtLevel(0);
-            int dropDelayBefore =  _gameStats.DropDelay;
+            int dropDelayBefore = _gameStats.DropDelay;
 
             _gameStats.ScoreLines(10);
-            int dropDelayAfter =  _gameStats.DropDelay;
+            int dropDelayAfter = _gameStats.DropDelay;
 
             Assert.Equal(dropDelayAfter, dropDelayBefore - 90);
         }
@@ -93,10 +93,10 @@ namespace Tetris.Tests
         public void ScoreLines_BelowLevelThreshold_SpeedRemainsSame()
         {
             _gameStats = GameStatsAtLevel(0);
-            int dropDelayBefore =  _gameStats.DropDelay;
+            int dropDelayBefore = _gameStats.DropDelay;
 
             _gameStats.ScoreLines(9);
-            int dropDelayAfter =  _gameStats.DropDelay;
+            int dropDelayAfter = _gameStats.DropDelay;
 
             Assert.Equal(dropDelayAfter, dropDelayBefore);
         }
@@ -115,16 +115,16 @@ namespace Tetris.Tests
         public void ScoreLines_LevelAboveEffectLevelLimit_SpeedRemainsSame()
         {
             _gameStats = GameStatsAtLevel(10);
-            int dropDelayBefore =  _gameStats.DropDelay;
+            int dropDelayBefore = _gameStats.DropDelay;
 
             _gameStats.ScoreLines(10);
-            int dropDelayAfter =  _gameStats.DropDelay;
+            int dropDelayAfter = _gameStats.DropDelay;
 
             Assert.Equal(dropDelayAfter, dropDelayBefore);
         }
 
         [Fact]
-        public void RegisterTetrimino_IncrementsShapes()
+        public void RegisterTetrimino_IncrementShapes()
         {
             _gameStats = GameStatsAtLevel(0);
 
@@ -134,7 +134,7 @@ namespace Tetris.Tests
         }
 
         [Fact]
-        public void RegisterTetrimino_AddsTetriminoTypeToHistory()
+        public void RegisterTetrimino_AddTetriminoTypeToHistory()
         {
             _gameStats = GameStatsAtLevel(0);
 

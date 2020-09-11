@@ -12,7 +12,7 @@ namespace Tetris
         }
 
         [Fact]
-        public void AddPick_NoPick_AddsPick()
+        public void AddPick_NoPick_AddPick()
         {
             _menuSelections.AddPick("My Pick");
 
@@ -24,7 +24,7 @@ namespace Tetris
         }
 
         [Fact]
-        public void AddSetting_NoSetting_AddsSetting()
+        public void AddSetting_NoSetting_AddSetting()
         {
             _menuSelections.AddSetting("My Setting", new string[] { "state A", "state B" });
 
@@ -42,7 +42,7 @@ namespace Tetris
         [InlineData(1, "Pick 2")]
         [InlineData(2, "Pick 3")]
         [InlineData(3, "Pick 1")]
-        public void SelectNext_WithPicks_CyclesThroughPicks(int times, string expected)
+        public void SelectNext_WithPicks_CycleThroughPicks(int times, string expected)
         {
             _menuSelections.AddPick("Pick 1");
             _menuSelections.AddPick("Pick 2");
@@ -58,7 +58,7 @@ namespace Tetris
         [InlineData(1, "Pick 3")]
         [InlineData(2, "Pick 2")]
         [InlineData(3, "Pick 1")]
-        public void SelectPrevious_WithPicks_CyclesThroughPicksBackwards(int times, string expected)
+        public void SelectPrevious_WithPicks_CycleThroughPicksBackwards(int times, string expected)
         {
             _menuSelections.AddPick("Pick 1");
             _menuSelections.AddPick("Pick 2");
@@ -74,7 +74,7 @@ namespace Tetris
         [InlineData(1, "Setting 2")]
         [InlineData(2, "Setting 3")]
         [InlineData(3, "Setting 1")]
-        public void SelectNext_WithSettings_CyclesThroughSettings(int times, string expected)
+        public void SelectNext_WithSettings_CycleThroughSettings(int times, string expected)
         {
             _menuSelections.AddSetting("Setting 1", new string[] { "state A", "state B" });
             _menuSelections.AddSetting("Setting 2", new string[] { "state A", "state B" });
@@ -90,7 +90,7 @@ namespace Tetris
         [InlineData(1, "Setting 3")]
         [InlineData(2, "Setting 2")]
         [InlineData(3, "Setting 1")]
-        public void SelectPrevious_WithSettings_CyclesThroughSettingsBackwards(int times, string expected)
+        public void SelectPrevious_WithSettings_CycleThroughSettingsBackwards(int times, string expected)
         {
             _menuSelections.AddSetting("Setting 1", new string[] { "state A", "state B" });
             _menuSelections.AddSetting("Setting 2", new string[] { "state A", "state B" });
@@ -106,7 +106,7 @@ namespace Tetris
         [InlineData(1, "Pick 2")]
         [InlineData(2, "Setting 3")]
         [InlineData(3, "Setting 1")]
-        public void SelectNext_WithBoth_CyclesThroughBoth(int times, string expected)
+        public void SelectNext_WithBoth_CycleThroughBoth(int times, string expected)
         {
             _menuSelections.AddSetting("Setting 1", new string[] { "state A", "state B" });
             _menuSelections.AddPick("Pick 2");
@@ -122,7 +122,7 @@ namespace Tetris
         [InlineData(1, "Pick 3")]
         [InlineData(2, "Setting 2")]
         [InlineData(3, "Pick 1")]
-        public void SelectPrevious_WithBoth_CyclesThroughBothBackwards(int times, string expected)
+        public void SelectPrevious_WithBoth_CycleThroughBothBackwards(int times, string expected)
         {
             _menuSelections.AddPick("Pick 1");
             _menuSelections.AddSetting("Setting 2", new string[] { "state A", "state B" });
@@ -138,7 +138,7 @@ namespace Tetris
         [InlineData(1, "state B")]
         [InlineData(2, "state C")]
         [InlineData(3, "state A")]
-        public void SelectSettingNextState_CyclesThroughSettingStates(int times, string expected)
+        public void SelectSettingNextState_CycleThroughSettingStates(int times, string expected)
         {
             _menuSelections.AddSetting("My setting",
                                        new string[] { "state A", "state B", "state C" });
@@ -153,7 +153,7 @@ namespace Tetris
         [InlineData(1, "state C")]
         [InlineData(2, "state B")]
         [InlineData(3, "state A")]
-        public void SelectSettingPreviousState_CyclesThroughSettingStatesBackwards(int times, string expected)
+        public void SelectSettingPreviousState_CycleThroughSettingStatesBackwards(int times, string expected)
         {
             _menuSelections.AddSetting("My setting",
                                        new string[] { "state A", "state B", "state C" });

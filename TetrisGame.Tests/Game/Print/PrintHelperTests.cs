@@ -14,7 +14,7 @@ namespace Tetris
         [Theory]
         [InlineData("\u001b[0msup\n", "sup\n")]
         [InlineData("\u001b[12mHello World!", "Hello World!")]
-        public void CleanString_ReturnsCleanString(string str, string expected)
+        public void CleanString_ReturnStringWithoutColorCodes(string str, string expected)
         {
             string cleanStr = _printHelper.CleanString(str);
 

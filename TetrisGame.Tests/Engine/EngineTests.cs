@@ -20,13 +20,13 @@ namespace Tetris
        }
 
         [Fact]
-        public void Constructor_MountsPassedScreenWithEngine()
+        public void Constructor_MountScreenWithEngine()
         {
             _screenMock.Verify(screen => screen.Mount(_engine), Times.Once());
         }
 
         [Fact]
-        public void Start_StartedSetTrue()
+        public void Start_StartedTrue()
         {
             _engine.Start();
 
@@ -34,14 +34,14 @@ namespace Tetris
         }
 
         [Fact]
-        public void Loop_CallsScreenRender()
+        public void Loop_CallScreenRender()
         {
             _engine.Loop();
             _screenMock.Verify(screen => screen.Render(), Times.Once());
         }
 
         [Fact]
-        public void Loop_NoReceivedKey_CallsScreenInputWithNull()
+        public void Loop_NoReceivedKey_CallScreenInputWithNull()
         {
             _engine.Loop();
             int dTime = 1000 / _FPS;
@@ -49,7 +49,7 @@ namespace Tetris
         }
 
         [Fact]
-        public void Loop_ReceivedKey_CallsScreenInputWithKey()
+        public void Loop_ReceivedKey_CallScreenInputWithKey()
         {
             _keyReceiver.ReceiveKey("Any key");
             _engine.Loop();
@@ -58,7 +58,7 @@ namespace Tetris
         }
 
         [Fact]
-        public void SwitchScreen_UnmountsCurrentScreenWithEngine()
+        public void SwitchScreen_UnmountCurrentScreenWithEngine()
         {
             Mock<IScreen> screenMock2 = new Mock<IScreen>();
             _engine.SwitchScreen(screenMock2.Object);
@@ -66,7 +66,7 @@ namespace Tetris
         }
 
         [Fact]
-        public void SwitchScreen_MountsNewScreenWithEngine()
+        public void SwitchScreen_MountNewScreenWithEngine()
         {
             Mock<IScreen> screenMock2 = new Mock<IScreen>();
             _engine.SwitchScreen(screenMock2.Object);
@@ -74,7 +74,7 @@ namespace Tetris
         }
 
         [Fact]
-        public void Stop_StartedSetFalse()
+        public void Stop_StartedFalse()
         {
             _engine.Start();
             _engine.Stop();

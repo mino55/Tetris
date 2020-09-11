@@ -17,7 +17,7 @@ namespace Tetris.Tests
 
         private void FillBoardRowAt(int rowAt)
         {
-            for (int x = 0;  x < _tetrisBoard.Width; x++ )
+            for (int x = 0; x < _tetrisBoard.Width; x++)
             {
                 _tetrisBoard.AddBlockAt(new Block(), new Point(x, rowAt));
             }
