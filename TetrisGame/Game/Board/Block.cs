@@ -1,22 +1,19 @@
 namespace Tetris
 {
-  public class Block
-  {
-    private readonly string _print;
-
-    public Block()
+    public class Block
     {
-        _print = " B ";
-    }
+        private readonly string _print;
 
-    public Block(string print)
-    {
-        _print = print;
-    }
+        public Block()
+        {
+            _print = " B ";
+        }
 
-    public string Print()
-    {
-      return $"\u001b[31m{_print}\u001b[0m";
+        public Block(string print)
+        {
+            _print = print;
+        }
+
+        public string Print() => _print;
     }
-  }
 }
