@@ -63,7 +63,7 @@ namespace Tetris
                 _lastRenderedPrint = printString;
                 Console.Clear();
                 Console.WriteLine(printString);
-                Console.WriteLine(FPS);  // TODO: Purely for debugging -- remove
+                Console.WriteLine(FPS);
             }
         }
 
@@ -85,7 +85,6 @@ namespace Tetris
             if (_keyReceiver.isNewKey)
             {
                 key = _keyReceiver.Key();
-                Console.WriteLine($"Input: {key}"); // TODO: Purely for debugging -- remove
             }
             return key;
         }
