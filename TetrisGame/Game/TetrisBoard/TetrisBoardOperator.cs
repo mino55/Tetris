@@ -3,7 +3,7 @@ namespace Tetris
     public class TetrisBoardOperator
     {
         public bool CurrentTetriminoIsLocked { get; private set; }
-        public TetrisBoard _tetrisBoard;
+        public TetrisBoard TetrisBoard { get; private set; }
         public Tetrimino CurrentTetrimino { get; private set; }
         public Tetrimino NextTetrimino { get; private set; }
 
@@ -11,7 +11,7 @@ namespace Tetris
 
         public TetrisBoardOperator(TetrisBoard tetrisBoard)
         {
-            _tetrisBoard = tetrisBoard;
+            TetrisBoard = tetrisBoard;
         }
 
         public void NewCurrentTetrimino(Tetrimino tetrimino, Point startPoint)
@@ -19,7 +19,7 @@ namespace Tetris
             ValidateCurrentTetriminoOverwrite();
 
             CurrentTetrimino = tetrimino;
-            _tetrisBoard.AddTetriminoAt(tetrimino, startPoint);
+            TetrisBoard.AddTetriminoAt(tetrimino, startPoint);
             CurrentTetriminoIsLocked = false;
         }
 
@@ -45,9 +45,9 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(0, 1)))
+            if (TetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(0, 1)))
             {
-                _tetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(0, 1));
+                TetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(0, 1));
             }
             else CurrentTetriminoIsLocked = true;
         }
@@ -56,9 +56,9 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(1, 0)))
+            if (TetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(1, 0)))
             {
-                _tetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(1, 0));
+                TetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(1, 0));
             }
         }
 
@@ -66,9 +66,9 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(-1, 0)))
+            if (TetrisBoard.CanMoveTetrimino(CurrentTetrimino, new Point(-1, 0)))
             {
-                _tetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(-1, 0));
+                TetrisBoard.MoveTetrimino(CurrentTetrimino, new Point(-1, 0));
             }
         }
 
@@ -76,9 +76,9 @@ namespace Tetris
         {
             ValidateCurrentTetriminoMissing();
 
-            if (_tetrisBoard.CanRotate(CurrentTetrimino, rotation))
+            if (TetrisBoard.CanRotate(CurrentTetrimino, rotation))
             {
-                _tetrisBoard.Rotate(CurrentTetrimino, rotation);
+                TetrisBoard.Rotate(CurrentTetrimino, rotation);
             }
         }
 
@@ -94,14 +94,14 @@ namespace Tetris
 
         public int Rows()
         {
-            return _tetrisBoard.BlocksInRows().Count;
+            return TetrisBoard.BlocksInRows().Count;
         }
 
         public void CleanRows()
         {
-            foreach (Block[] row in _tetrisBoard.BlocksInRows())
+            foreach (Block[] row in TetrisBoard.BlocksInRows())
             {
-                int at_y = _tetrisBoard.BlockPoint(row[0]).Y;
+                int at_y = TetrisBoard.BlockPoint(row[0]).Y;
                 ClearRow(row);
                 FillRowGapAt(at_y);
             }
@@ -111,22 +111,22 @@ namespace Tetris
         {
             foreach (Block tile in row)
             {
-                _tetrisBoard.RemoveBlock(tile);
+                TetrisBoard.RemoveBlock(tile);
             }
         }
 
         private void FillRowGapAt(int atY)
         {
-            for (int y = _tetrisBoard.Height - 1; y >= 0; y--)
+            for (int y = TetrisBoard.Height - 1; y >= 0; y--)
             {
                 if (y > atY) continue;
 
-                for (int x = 0; x < _tetrisBoard.Width; x++)
+                for (int x = 0; x < TetrisBoard.Width; x++)
                 {
-                    Block block = _tetrisBoard.BlockAt(new Point(x, y));
+                    Block block = TetrisBoard.BlockAt(new Point(x, y));
                     if (block == null) continue;
 
-                    _tetrisBoard.MoveBlock(block, new Point(0, 1));
+                    TetrisBoard.MoveBlock(block, new Point(0, 1));
                 }
             }
         }

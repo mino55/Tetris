@@ -11,10 +11,9 @@ namespace Tetris
         private Dictionary<string, Action> _keyMapping;
         private readonly Point _centerPoint;
         private readonly TetrisBoardOperator _tetrisBoardOperator;
+        private readonly TetrisBoard _tetrisBoard;
         private readonly ScreenFactory _screenFactory;
-        private readonly ColorHelper _colorHelper;
         private readonly Tetriminos.Factory _tetriminoFactory;
-        private readonly TetrisBoard _tetrisBoard = new TetrisBoard(10, 20);
         private readonly GameStats _gameStats = new GameStats(startLevel: 0,
                                                      linesPerLevel: 10,
                                                      effectLevelLimit: 10,
@@ -23,22 +22,20 @@ namespace Tetris
 
         public GameScreen(ScreenFactory screenFactory,
                           KeyMapping keyMapping,
-                          FileStoreOperator fileStoreOperator)
+                          TetrisBoardOperator tetrisBoardOperator,
+                          Tetriminos.Factory tetriminoFactory)
         {
             _screenFactory = screenFactory;
-
-            bool colorEnabled = fileStoreOperator.Store.Get("color") == "full";
-            _colorHelper = new ColorHelper(colorEnabled);
-            _tetriminoFactory = new Tetriminos.Factory(_colorHelper);
+            _tetriminoFactory = tetriminoFactory;
 
             SetKeyMapping(keyMapping);
 
-            int spawnX = _tetrisBoard.Width / 2;
+            int spawnX = tetrisBoardOperator.TetrisBoard.Width / 2;
             int spawnY = 1;
             _centerPoint = new Point(spawnX, spawnY);
 
-            _tetrisBoardOperator = new TetrisBoardOperator(_tetrisBoard);
-
+            _tetrisBoardOperator = tetrisBoardOperator;
+            _tetrisBoard = _tetrisBoardOperator.TetrisBoard;
             _tetrisBoardOperator.NewCurrentTetrimino(CreateTetrimino(), _centerPoint);
             _tetrisBoardOperator.NewNextTetrimino(CreateTetrimino(), _centerPoint);
             UpdateNextTetrimino();

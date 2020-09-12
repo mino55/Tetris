@@ -27,8 +27,12 @@
             FileStoreOperator fileStoreOperator = new FileStoreOperator(fileStore);
             LoadGameSettingsFromStore(gameSettings, fileStoreOperator);
 
+            bool colorEnabled = gameSettings.Color == "full";
+            ColorHelper colorHelper = new ColorHelper(colorEnabled);
+
             ScreenFactory screenFactory = new ScreenFactory(gameSettings,
-                                                            fileStoreOperator);
+                                                            fileStoreOperator,
+                                                            colorHelper);
             return screenFactory;
         }
 

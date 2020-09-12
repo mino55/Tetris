@@ -10,9 +10,9 @@ namespace Tetris
 
         public GameOverScreen(ScreenFactory screenFactory,
                               GameStats gameStats,
-                              GameSettings gameSettings,
-                              FileStoreOperator fileStoreOperator)
-        : base(gameSettings)
+                              FileStoreOperator fileStoreOperator,
+                              ColorHelper colorHelper)
+        : base(colorHelper)
         {
             _screenFactory = screenFactory;
             _gameStats = gameStats;

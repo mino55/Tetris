@@ -8,14 +8,13 @@ namespace Tetris
 
         public MainScreen(ScreenFactory screenFactory,
                           GameSettings gameSettings,
-                          FileStoreOperator fileStoreOperator)
-        : base(gameSettings)
+                          ColorHelper colorHelper)
+        : base(colorHelper)
         {
             _screenFactory = screenFactory;
             _gameSettings = gameSettings;
 
-            bool colorEnabled = gameSettings.Color == "full";
-            _colorHelper = new ColorHelper(colorEnabled);
+            _colorHelper = colorHelper;
         }
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)

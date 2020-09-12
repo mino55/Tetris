@@ -7,14 +7,13 @@ namespace Tetris
         private readonly int _height;
         private readonly PrintHelper _printHelper = new PrintHelper();
         private readonly MenuSelections _menuSelections = new MenuSelections();
-        private readonly ColorHelper _colorHelper = new ColorHelper();
+        private readonly ColorHelper _colorHelper;
 
-        public MenuScreen(GameSettings gameSettings)
+        public MenuScreen(ColorHelper colorHelper)
         {
             _width = 52;
             _height = 20;
-            bool colorEnabled = gameSettings.Color == "full";
-            _colorHelper = new ColorHelper(colorEnabled);
+            _colorHelper = colorHelper;
         }
 
         public void Mount(Engine engine)

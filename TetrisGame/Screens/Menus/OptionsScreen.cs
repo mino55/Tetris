@@ -8,8 +8,9 @@ namespace Tetris
 
         public OptionsScreen(ScreenFactory screenFactory,
                              GameSettings gameSettings,
-                             FileStoreOperator fileStoreOperator)
-        : base(gameSettings)
+                             FileStoreOperator fileStoreOperator,
+                             ColorHelper colorHelper)
+        : base(colorHelper)
         {
             _screenFactory = screenFactory;
             _gameSettings = gameSettings;
