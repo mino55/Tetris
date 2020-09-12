@@ -53,8 +53,8 @@ namespace Tetris
 
             print[0] = $"┌{_printHelper.PrintLine(_width)}┐";
             for (int i = 0; i < menuPrint.Length; i++) {
-                if (menuPrint[i] == null) print[i + 1] = $"|{blankLine}|";
-                else print[i + 1] += $"|{menuPrint[i]}|";
+                if (menuPrint[i] == null) print[i + 1] = $"│{blankLine}│";
+                else print[i + 1] += $"│{menuPrint[i]}│";
             }
             print[menuPrint.Length + 1] = $"└{_printHelper.PrintLine(_width)}┘";
 
