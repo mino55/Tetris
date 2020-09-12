@@ -60,7 +60,7 @@ namespace Tetris
         private string[] DefaultStoreKeys()
         {
             return new string[] {
-                "fps", "controlls",
+                "fps", "controlls", "color", "unicode",
                 "h1_name", "h2_name", "h3_name", "h4_name", "h5_name",
                 "h6_name", "h7_name", "h8_name", "h9_name", "h10_name",
                 "h1_value", "h2_value", "h3_value", "h4_value", "h5_value",
@@ -71,7 +71,7 @@ namespace Tetris
         private string[] DefaultStoreValues()
         {
             return new string[] {
-                "60", "simple ",
+                "60", "simple ", "none", "limited",
                 "CPU", "CPU", "CPU", "CPU", "CPU",
                 "CPU", "CPU", "CPU", "CPU", "CPU",
                 "800", "400", "100", "60", "50",

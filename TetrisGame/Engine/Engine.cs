@@ -32,7 +32,7 @@ namespace Tetris
 
         public void Loop()
         {
-            int dTime = (1000 / FPS);
+            int dTime = 1000 / FPS;
 
             string input = GetKeyInput();
             _currentScreen.Input(input, dTime);

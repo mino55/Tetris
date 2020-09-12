@@ -12,8 +12,9 @@ namespace Tetris
         private readonly Point _centerPoint;
         private readonly TetrisBoardOperator _tetrisBoardOperator;
         private readonly ScreenFactory _screenFactory;
+        private readonly ColorHelper _colorHelper;
+        private readonly Tetriminos.Factory _tetriminoFactory;
         private readonly TetrisBoard _tetrisBoard = new TetrisBoard(10, 20);
-        private readonly Tetriminos.Factory _tetriminoFactory = new Tetriminos.Factory(new ColorHelper());
         private readonly GameStats _gameStats = new GameStats(startLevel: 0,
                                                      linesPerLevel: 10,
                                                      effectLevelLimit: 10,
@@ -21,9 +22,14 @@ namespace Tetris
         private readonly PrintHelper _printHelper = new PrintHelper();
 
         public GameScreen(ScreenFactory screenFactory,
-                          KeyMapping keyMapping)
+                          KeyMapping keyMapping,
+                          FileStoreOperator fileStoreOperator)
         {
             _screenFactory = screenFactory;
+
+            bool colorEnabled = fileStoreOperator.Store.Get("color") == "full";
+            _colorHelper = new ColorHelper(colorEnabled);
+            _tetriminoFactory = new Tetriminos.Factory(_colorHelper);
 
             SetKeyMapping(keyMapping);
 

@@ -3,9 +3,17 @@ namespace Tetris
     public class ColorHelper
     {
         public Color _defaultColor = Color.WHITE;
+        public bool ColorEnabled { get; set; }
+
+        public ColorHelper(bool colorEnabled = true)
+        {
+            ColorEnabled = colorEnabled;
+        }
 
         public string ColorString(string str, Color color)
         {
+            if (!ColorEnabled) return str;
+
             string startColor = ColorToString(color);
             string endColor = ColorToString(_defaultColor);
             return $"{startColor}{str}{endColor}";

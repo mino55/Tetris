@@ -6,7 +6,9 @@ namespace Tetris
         private readonly FileStoreOperator _fileStoreOperator;
 
         public HighscoreScreen(ScreenFactory screenFactory,
-                               FileStoreOperator fileStoreOperator) : base()
+                               GameSettings gameSettings,
+                               FileStoreOperator fileStoreOperator)
+        : base(gameSettings)
         {
             _screenFactory = screenFactory;
             _fileStoreOperator = fileStoreOperator;

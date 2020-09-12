@@ -8,7 +8,8 @@ namespace Tetris
 
         public OptionsScreen(ScreenFactory screenFactory,
                              GameSettings gameSettings,
-                             FileStoreOperator fileStoreOperator) : base()
+                             FileStoreOperator fileStoreOperator)
+        : base(gameSettings)
         {
             _screenFactory = screenFactory;
             _gameSettings = gameSettings;
@@ -22,11 +23,6 @@ namespace Tetris
             menuSelection.AddSetting("color", new string[] { "full", "none" });
             menuSelection.AddSetting("unicode", new string[] { "full", "limited" });
             menuSelection.AddPick("back");
-
-            _gameSettings.FPS = int.Parse(_store.Get("fps"));
-            _gameSettings.Controlls = _store.Get("controlls");
-            _gameSettings.Color = _store.Get("color");
-            _gameSettings.Unicode = _store.Get("unicode");
 
             menuSelection.SetSettingState("fps", $"{_gameSettings.FPS}");
             menuSelection.SetSettingState("controlls", _gameSettings.Controlls);
@@ -83,6 +79,7 @@ namespace Tetris
             if (name == "color")
             {
                 _gameSettings.Color = state;
+                SetColor(_gameSettings.Color == "full");
             }
 
             if (name == "unicode")
@@ -95,7 +92,7 @@ namespace Tetris
         {
             if (IsSelected("fps"))
             {
-                menuPrint[16] = CenterAlign("  FPS determines input FPS");
+                menuPrint[17] = CenterAlign("  FPS determines input FPS");
             }
 
             if (IsSelected("controlls") && GetSettingState("controlls") == "complex")
@@ -114,23 +111,23 @@ namespace Tetris
 
             if (IsSelected("color") && GetSettingState("color") == "none")
             {
-                menuPrint[16] = CenterAlign("Disable colors for maximum terminal support");
+                menuPrint[17] = CenterAlign("Disable colors for maximum terminal support");
             }
 
             if (IsSelected("color") && GetSettingState("color") == "full")
             {
-                menuPrint[16] = CenterAlign("Allow colors (ANSI escape codes)");
+                menuPrint[17] = CenterAlign("Allow colors (ANSI escape codes)");
             }
 
             if (IsSelected("unicode") && GetSettingState("unicode") == "limited")
             {
-                menuPrint[16] = CenterAlign("Only allow simple box-drawing characters");
+                menuPrint[17] = CenterAlign("Only allow simple box-drawing characters");
             }
 
             if (IsSelected("unicode") && GetSettingState("unicode") == "full")
             {
-                menuPrint[16] = LeftAlign("  Support for complex box-drawing characters");
-                menuPrint[17] = LeftAlign("  such as '┫' and '╋'");
+                menuPrint[17] = LeftAlign("  Support for complex box-drawing characters");
+                menuPrint[18] = LeftAlign("  such as '┫' and '╋'");
             }
         }
 
@@ -141,8 +138,8 @@ namespace Tetris
         {
             _store.Set("fps", $"{_gameSettings.FPS}");
             _store.Set("controlls", _gameSettings.Controlls);
-            _store.Set("color", $"{_gameSettings.Color}");
             _store.Set("unicode", _gameSettings.Unicode);
+            _store.Set("color", $"{_gameSettings.Color}");
             _store.Save();
         }
     }

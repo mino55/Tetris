@@ -14,12 +14,15 @@ namespace Tetris
 
         public MainScreen CreateMainScreen()
         {
-            return new MainScreen(this);
+            return new MainScreen(this, _gameSettings, _fileStoreOperator);
         }
 
         public GameOverScreen CreateGameOverScreen(GameStats gameStats)
         {
-            return new GameOverScreen(this, gameStats, _fileStoreOperator);
+            return new GameOverScreen(this,
+                                      gameStats,
+                                      _gameSettings,
+                                      _fileStoreOperator);
         }
 
         public GameScreen CreateGameScreen()
@@ -32,7 +35,7 @@ namespace Tetris
                 keyMapping = GameScreen.KeyMapping.COMPLEX;
             else throw new System.Exception("Non-existant keyMapping");
 
-            return new GameScreen(this, keyMapping);
+            return new GameScreen(this, keyMapping, _fileStoreOperator);
         }
 
         public OptionsScreen CreateOptionsScreen()
@@ -42,7 +45,7 @@ namespace Tetris
 
         public HighscoreScreen CreateHighscoreScreen()
         {
-            return new HighscoreScreen(this, _fileStoreOperator);
+            return new HighscoreScreen(this, _gameSettings, _fileStoreOperator);
         }
     }
 }

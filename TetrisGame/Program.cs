@@ -4,17 +4,13 @@
     {
         static void Main()
         {
-            FileStore fileStore = new FileStore(@"./tetris_store.txt");
             GameSettings gameSettings = new GameSettings();
-            FileStoreOperator fileStoreOperator = new FileStoreOperator(fileStore);
-
-            ScreenFactory screenFactory = new ScreenFactory(gameSettings,
-                                                            fileStoreOperator);
-            MainScreen menuScreen = screenFactory.CreateMainScreen();
+            ScreenFactory screenFactory = InitScreenFactory(gameSettings);
+            MainScreen mainScreen = screenFactory.CreateMainScreen();
 
             KeyReceiver keyReceiver = new KeyReceiver();
-            Engine engine = new Engine(60, menuScreen, keyReceiver);
             KeyListener keyListener = new KeyListener(keyReceiver);
+            Engine engine = new Engine(gameSettings.FPS, mainScreen, keyReceiver);
 
             keyListener.Start();
             engine.Start();
@@ -23,6 +19,26 @@
                 engine.Loop();
             }
             keyListener.Stop();
+        }
+
+        static private ScreenFactory InitScreenFactory(GameSettings gameSettings)
+        {
+            FileStore fileStore = new FileStore(@"./tetris_store.txt");
+            FileStoreOperator fileStoreOperator = new FileStoreOperator(fileStore);
+            LoadGameSettingsFromStore(gameSettings, fileStoreOperator);
+
+            ScreenFactory screenFactory = new ScreenFactory(gameSettings,
+                                                            fileStoreOperator);
+            return screenFactory;
+        }
+
+        static private void LoadGameSettingsFromStore(GameSettings gameSettings,
+                                                      FileStoreOperator fileStoreOperator)
+        {
+            gameSettings.FPS = int.Parse(fileStoreOperator.Store.Get("fps"));
+            gameSettings.Controlls = fileStoreOperator.Store.Get("controlls");
+            gameSettings.Color = fileStoreOperator.Store.Get("color");
+            gameSettings.Unicode = fileStoreOperator.Store.Get("unicode");
         }
     }
 }

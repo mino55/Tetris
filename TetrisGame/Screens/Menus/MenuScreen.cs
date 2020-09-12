@@ -9,10 +9,13 @@ namespace Tetris
         private readonly MenuSelections _menuSelections = new MenuSelections();
         private readonly ColorHelper _colorHelper = new ColorHelper();
 
-        public MenuScreen()
+        public MenuScreen(GameSettings gameSettings)
         {
+            // TODO: extract width and height into the constructor
             _width = 52;
             _height = 20;
+            bool colorEnabled = gameSettings.Color == "full";
+            _colorHelper = new ColorHelper(colorEnabled);
         }
 
         public void Mount(Engine engine)
@@ -64,7 +67,10 @@ namespace Tetris
         {
             if (onSelection == _menuSelections.CurrentSelection())
             {
-                return _colorHelper.ColorString(str, highlightColor);
+                if (_colorHelper.ColorEnabled)
+                    return _colorHelper.ColorString(str, highlightColor);
+                else
+                    return $">> {str} <<";
             }
             return str;
         }
@@ -93,6 +99,11 @@ namespace Tetris
         protected MenuLine LeftAlign(string str)
         {
             return new MenuLine(str, _width, Alignment.LEFT, _printHelper);
+        }
+
+        protected void SetColor(bool enabled)
+        {
+            _colorHelper.ColorEnabled = enabled;
         }
 
         private void InputPick(string input, int dTime)

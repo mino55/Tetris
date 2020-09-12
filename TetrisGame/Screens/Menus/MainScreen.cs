@@ -3,11 +3,19 @@ namespace Tetris
     public class MainScreen : MenuScreen
     {
         private readonly ScreenFactory _screenFactory = null;
-        private readonly ColorHelper _colorHelper = new ColorHelper();
+        private readonly ColorHelper _colorHelper;
+        private readonly GameSettings _gameSettings;
 
-        public MainScreen(ScreenFactory screenFactory) : base()
+        public MainScreen(ScreenFactory screenFactory,
+                          GameSettings gameSettings,
+                          FileStoreOperator fileStoreOperator)
+        : base(gameSettings)
         {
             _screenFactory = screenFactory;
+            _gameSettings = gameSettings;
+
+            bool colorEnabled = gameSettings.Color == "full";
+            _colorHelper = new ColorHelper(colorEnabled);
         }
 
         protected override void SetupMenuSelection(MenuSelections menuSelection)
@@ -25,11 +33,14 @@ namespace Tetris
             string highscore = $"{HighlightableString("highscore", "Highscore", Color.RED)}";
             string quit = $"{HighlightableString("quit", "Quit", Color.RED)}";
 
-            menuPrint[1] = CenterAlign(_colorHelper.ColorString("┏━━━━━┓                    ", Color.PURPLE));
-            menuPrint[2] = CenterAlign(_colorHelper.ColorString("┗━┓ ┏━╋━━━┳━━━━━┳━━━┳━┳━━━┓", Color.PURPLE));
-            menuPrint[3] = CenterAlign(_colorHelper.ColorString("  ┃ ┃ ┃ ━━╋━┓ ┏━┫ ┏━╋━┫ ━━┫", Color.PURPLE));
-            menuPrint[4] = CenterAlign(_colorHelper.ColorString("  ┃ ┃ ┃ ━━┫ ┃ ┃ ┃ ┃ ┃ ┣━━ ┃", Color.PURPLE));
-            menuPrint[5] = CenterAlign(_colorHelper.ColorString("  ┗━┛ ┗━━━┛ ┗━┛ ┗━┛ ┗━┻━━━┛", Color.PURPLE));
+            if (_gameSettings.Unicode == "full")
+            {
+                RenderComplexTitle(menuPrint);
+            }
+            else
+            {
+                RenderSimpleTitle(menuPrint);
+            }
 
             menuPrint[10] = CenterAlign(startGame);
             menuPrint[12] = CenterAlign(options);
@@ -39,7 +50,7 @@ namespace Tetris
 
         protected override void OnPick(string selection, Engine engine)
         {
-            switch(selection)
+            switch (selection)
             {
                 case "start":
                     engine.SwitchScreen(_screenFactory.CreateGameScreen());
@@ -63,5 +74,21 @@ namespace Tetris
 
         protected override void OnLeave(Engine engine)
         {}
+
+        private void RenderComplexTitle(MenuLine[] menuPrint)
+        {
+            menuPrint[1] = CenterAlign(_colorHelper.ColorString("┏━━━━━┓                    ", Color.PURPLE));
+            menuPrint[2] = CenterAlign(_colorHelper.ColorString("┗━┓ ┏━╋━━━┳━━━━━┳━━━┳━┳━━━┓", Color.PURPLE));
+            menuPrint[3] = CenterAlign(_colorHelper.ColorString("  ┃ ┃ ┃ ━━╋━┓ ┏━┫ ┏━╋━┫ ━━┫", Color.PURPLE));
+            menuPrint[4] = CenterAlign(_colorHelper.ColorString("  ┃ ┃ ┃ ━━┫ ┃ ┃ ┃ ┃ ┃ ┣━━ ┃", Color.PURPLE));
+            menuPrint[5] = CenterAlign(_colorHelper.ColorString("  ┗━┛ ┗━━━┛ ┗━┛ ┗━┛ ┗━┻━━━┛", Color.PURPLE));
+        }
+
+        private void RenderSimpleTitle(MenuLine[] menuPrint)
+        {
+            menuPrint[2] = CenterAlign(_colorHelper.ColorString("_____________________", Color.PURPLE));
+            menuPrint[3] = CenterAlign(_colorHelper.ColorString("\\_                 _/", Color.PURPLE));
+            menuPrint[4] = CenterAlign(_colorHelper.ColorString("\\_  T E T R I S  _/", Color.PURPLE));
+        }
     }
 }

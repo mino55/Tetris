@@ -1,5 +1,3 @@
-using System;
-
 namespace Tetris
 {
     public class GameOverScreen : MenuScreen
@@ -12,7 +10,9 @@ namespace Tetris
 
         public GameOverScreen(ScreenFactory screenFactory,
                               GameStats gameStats,
+                              GameSettings gameSettings,
                               FileStoreOperator fileStoreOperator)
+        : base(gameSettings)
         {
             _screenFactory = screenFactory;
             _gameStats = gameStats;
