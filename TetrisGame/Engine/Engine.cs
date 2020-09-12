@@ -63,7 +63,6 @@ namespace Tetris
                 _lastRenderedPrint = printString;
                 Console.Clear();
                 Console.WriteLine(printString);
-                Console.WriteLine(FPS);
             }
         }
 
