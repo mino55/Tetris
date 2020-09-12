@@ -48,7 +48,7 @@ namespace Tetris
 
             string back = HighlightableString("back", "Back", Color.RED);
 
-            menuPrint[2] = CenterAlign("OPTIONS");
+            menuPrint[2] = CenterAlign(WithColor("OPTIONS", Color.PURPLE));
             menuPrint[5] = CenterAlign(controlls);
             menuPrint[7] = CenterAlign(fps);
             menuPrint[9] = CenterAlign(color);

@@ -11,7 +11,6 @@ namespace Tetris
 
         public MenuScreen(GameSettings gameSettings)
         {
-            // TODO: extract width and height into the constructor
             _width = 52;
             _height = 20;
             bool colorEnabled = gameSettings.Color == "full";
@@ -104,6 +103,11 @@ namespace Tetris
         protected void SetColor(bool enabled)
         {
             _colorHelper.ColorEnabled = enabled;
+        }
+
+        protected string WithColor(string str, Color color)
+        {
+            return _colorHelper.ColorString(str, color);
         }
 
         private void InputPick(string input, int dTime)

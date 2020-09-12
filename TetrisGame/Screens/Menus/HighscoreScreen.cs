@@ -27,7 +27,7 @@ namespace Tetris
         protected override void RenderMenuItems(MenuLine[] menuPrint)
         {
             FileStore store = _fileStoreOperator.Store;
-            menuPrint[2] = CenterAlign("HIGHSCORE");
+            menuPrint[2] = CenterAlign(WithColor("HIGHSCORE", Color.PURPLE));
             menuPrint[4] = CenterAlign($"1. {store.Get("h1_name")}: {store.Get("h1_value")}");
             menuPrint[5] = CenterAlign($"2. {store.Get("h2_name")}: {store.Get("h2_value")}");
             menuPrint[6] = CenterAlign($"3. {store.Get("h3_name")}: {store.Get("h3_value")}");

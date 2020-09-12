@@ -47,7 +47,7 @@ namespace Tetris
 
         protected override void RenderMenuItems(MenuLine[] menuPrint)
         {
-            menuPrint[2] = CenterAlign("GAME OVER");
+            menuPrint[2] = CenterAlign(WithColor("GAME OVER", Color.PURPLE));
             menuPrint[4] = CenterAlign($"Score: {_gameStats.Score}");
             menuPrint[5] = CenterAlign($"Lines: {_gameStats.Lines}");
             menuPrint[6] = CenterAlign($"Level: {_gameStats.Level}");
