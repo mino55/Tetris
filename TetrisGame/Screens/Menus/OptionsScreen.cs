@@ -133,7 +133,7 @@ namespace Tetris
         }
 
         protected override void UnhandledInput(string input, int dTime, Engine engine)
-        {}
+        { }
 
         protected override void OnLeave(Engine engine)
         {

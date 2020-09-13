@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Tetris
@@ -22,7 +21,8 @@ namespace Tetris
 
         public Block BlockAt(Point point) { return _tiles[point.Y, point.X]; }
 
-        public Block[] AllBlocks() {
+        public Block[] AllBlocks()
+        {
             return _allBlocks.ToArray();
         }
 

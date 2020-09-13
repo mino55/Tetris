@@ -31,7 +31,7 @@ namespace Tetris
 
             if (!GetType().Equals(obj.GetType())) return false;
 
-            Point point = (Point) obj;
+            Point point = (Point)obj;
             return (X == point.X) && (Y == point.Y);
         }
 

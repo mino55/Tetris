@@ -1,6 +1,7 @@
 namespace Tetris.Tetriminos
 {
-    public enum Type {
+    public enum Type
+    {
         SHAPE_I,
         SHAPE_J,
         SHAPE_L,

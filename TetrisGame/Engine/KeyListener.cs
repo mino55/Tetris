@@ -6,7 +6,7 @@ namespace Tetris
     class KeyListener
     {
         private Thread _thread;
-        private KeyReceiver _keyReceiver;
+        private readonly KeyReceiver _keyReceiver;
 
         public KeyListener(KeyReceiver keyReceiver)
         {
@@ -15,7 +15,8 @@ namespace Tetris
 
         public void Start()
         {
-            _thread = new Thread(() => {
+            _thread = new Thread(() =>
+            {
                 while (true)
                 {
                     ConsoleKeyInfo keyInput = System.Console.ReadKey(true);
@@ -28,9 +29,11 @@ namespace Tetris
 
         public void Stop()
         {
-            try {
+            try
+            {
                 _thread.Abort();
-            } catch(Exception) {}
+            }
+            catch (Exception) { }
         }
     }
 }

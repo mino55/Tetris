@@ -60,7 +60,8 @@ namespace Tetris
             }
             else
             {
-                if (input != null &&_keyMapping.ContainsKey(input)) {
+                if (input != null && _keyMapping.ContainsKey(input))
+                {
                     MoveTetriminoOnInput(_keyMapping[input]);
                 }
                 CountDropTimer(dTime);
@@ -76,11 +77,11 @@ namespace Tetris
             return gameFieldPrint;
         }
 
-        public void Unmount(Engine engine) {}
+        public void Unmount(Engine engine) { }
 
         public void SetKeyMapping(KeyMapping keyMapping)
         {
-            switch(keyMapping)
+            switch (keyMapping)
             {
                 case KeyMapping.SIMPLE:
                     _keyMapping = CreateSimpleKeyMapping();
@@ -180,8 +181,8 @@ namespace Tetris
             _dropTimer -= dTime;
             if (_dropTimer <= 0)
             {
-                 _tetrisBoardOperator.DropCurrentTetrimino();
-                 _dropTimer = dropTime;
+                _tetrisBoardOperator.DropCurrentTetrimino();
+                _dropTimer = dropTime;
             }
         }
 
@@ -229,12 +230,14 @@ namespace Tetris
             return mapping;
         }
 
-        public enum KeyMapping {
+        public enum KeyMapping
+        {
             SIMPLE,
             COMPLEX
         }
 
-        public enum Action {
+        public enum Action
+        {
             MOVE_LEFT,
             MOVE_RIGHT,
             DROP,

@@ -8,7 +8,7 @@ namespace Tetris.Tests
 
         public TetriminoTests()
         {
-            _tetrimino = new Tetrimino(Direction.UP, new Block[] { new Block(), new Block()});
+            _tetrimino = new Tetrimino(Direction.UP, new Block[] { new Block(), new Block() });
         }
 
         [Theory]

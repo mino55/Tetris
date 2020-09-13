@@ -10,14 +10,14 @@ namespace Tetris
 
         public Tetrimino(Direction direction, Block[] blocks)
         {
-            this.Direction = direction;
-            this.Blocks = blocks;
+            Direction = direction;
+            Blocks = blocks;
         }
 
         public Tetrimino()
         {
-            this.Direction = Direction.UP;
-            this.Blocks = null;
+            Direction = Direction.UP;
+            Blocks = null;
         }
 
         public static int Size<T>()
@@ -32,7 +32,10 @@ namespace Tetris
                 for (int x = 0; x < shape.GetLength(1); x++)
                 {
                     int number = shape[y, x];
-                    if (number > blockCount) blockCount = number;
+                    if (number > blockCount)
+                    {
+                        blockCount = number;
+                    }
                 }
             }
 
@@ -77,16 +80,14 @@ namespace Tetris
 
         public void RotateTo(Direction direction)
         {
-            this.Direction = direction;
+            Direction = direction;
         }
 
         public Block ShapeBlockAt(Point shapePoint, Direction dir)
         {
             int[,] shape = Shape(dir);
             int blockIndex = shape[shapePoint.Y, shapePoint.X] - 1;
-            if (blockIndex == -1) return null;
-
-            return Blocks[blockIndex];
+            return blockIndex == -1 ? null : Blocks[blockIndex];
         }
 
         public Point[] ShapePoints(Direction dir)
@@ -118,50 +119,56 @@ namespace Tetris
 
         public virtual Point ShapeCenterOffset()
         {
-          return new Point(1, 1);
+            return new Point(1, 1);
         }
 
         public bool ContainsBlock(Block block)
         {
-            foreach (Block b in Blocks) { if (block == b) return true; }
+            foreach (Block b in Blocks)
+            {
+                if (block == b)
+                {
+                    return true;
+                }
+            }
 
             return false;
         }
 
         protected virtual int[,] ShapeDirectionUp()
         {
-          return new int[,] {
-            { 0, 1, 0 },
-            { 0, 2, 0 },
-            { 0, 0, 0 }
-          };
+            return new int[,] {
+                { 0, 1, 0 },
+                { 0, 2, 0 },
+                { 0, 0, 0 }
+            };
         }
 
         protected virtual int[,] ShapeDirectionRight()
         {
-          return new int[,] {
-            { 0, 0, 0 },
-            { 0, 2, 1 },
-            { 0, 0, 0 }
-          };
+            return new int[,] {
+                { 0, 0, 0 },
+                { 0, 2, 1 },
+                { 0, 0, 0 }
+            };
         }
 
         protected virtual int[,] ShapeDirectionDown()
         {
-          return new int[,] {
-            { 0, 0, 0 },
-            { 0, 2, 0 },
-            { 0, 1, 0 }
-          };
+            return new int[,] {
+                { 0, 0, 0 },
+                { 0, 2, 0 },
+                { 0, 1, 0 }
+            };
         }
 
         protected virtual int[,] ShapeDirectionLeft()
         {
-          return new int[,] {
-            { 0, 0, 0 },
-            { 1, 2, 0 },
-            { 0, 0, 0 }
-          };
+            return new int[,] {
+                { 0, 0, 0 },
+                { 1, 2, 0 },
+                { 0, 0, 0 }
+            };
         }
 
         public virtual Tetriminos.Type Type()

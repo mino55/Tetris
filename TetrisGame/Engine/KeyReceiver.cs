@@ -6,23 +6,23 @@ namespace Tetris
 {
     public class KeyReceiver
     {
-        public bool isNewKey  { get; private set; }
+        public bool IsNewKey { get; private set; }
         private string _key;
 
         public KeyReceiver()
         {
-            isNewKey = false;
+            IsNewKey = false;
         }
 
         public string Key()
         {
-            isNewKey = false;
+            IsNewKey = false;
             return _key;
         }
 
-        public void ReceiveKey(String key)
+        public void ReceiveKey(string key)
         {
-            isNewKey = true;
+            IsNewKey = true;
             _key = key;
         }
     }

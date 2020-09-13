@@ -101,7 +101,7 @@ namespace Tetris
         public string PrintLine(int length)
         {
             string line = "";
-            for(int i = 0; i < length; i++) { line += "─"; }
+            for (int i = 0; i < length; i++) { line += "─"; }
             return line;
         }
 

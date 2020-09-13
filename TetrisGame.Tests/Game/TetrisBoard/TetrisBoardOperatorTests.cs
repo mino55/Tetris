@@ -148,7 +148,7 @@ namespace Tetris.Tests
             _tetrisBoardOperator.SlamCurrentTetrimino();
 
             Point endPoint = new Point(0, 4);
-            Assert.Null( _tetrisBoard.BlockAt(startPoint));
+            Assert.Null(_tetrisBoard.BlockAt(startPoint));
             Assert.Equal(_blocks[1], _tetrisBoard.BlockAt(endPoint));
         }
 
@@ -165,7 +165,7 @@ namespace Tetris.Tests
             _tetrisBoardOperator.SlamCurrentTetrimino();
 
             Point endPoint = new Point(0, 3);
-            Assert.Null( _tetrisBoard.BlockAt(startPoint));
+            Assert.Null(_tetrisBoard.BlockAt(startPoint));
             Assert.Equal(_blocks[1], _tetrisBoard.BlockAt(endPoint));
             Assert.Equal(otherBlock, _tetrisBoard.BlockAt(otherPoint));
         }

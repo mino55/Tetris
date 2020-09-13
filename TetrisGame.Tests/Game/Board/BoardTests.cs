@@ -9,7 +9,7 @@ namespace Tetris.Tests
 
         private void FillBoardRowAt(int rowAt)
         {
-            for (int x = 0; x < _board.Width; x++ )
+            for (int x = 0; x < _board.Width; x++)
             {
                 _board.AddBlockAt(new Block(), new Point(x, rowAt));
             }
@@ -224,7 +224,7 @@ namespace Tetris.Tests
 
             Block[] blockRow = _board.BlocksInRows()[0];
 
-            for (int x = 0;  x < _board.Width; x++ )
+            for (int x = 0; x < _board.Width; x++)
             {
                 Assert.True(blockRow[x] is Block);
             }

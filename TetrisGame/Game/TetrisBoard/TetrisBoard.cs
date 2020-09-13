@@ -14,8 +14,9 @@ namespace Tetris
             _tetriminoPoints = new Dictionary<Tetrimino, Point>();
         }
 
-        public Tetrimino[] AllTetriminos() {
-           return _allTetriminos.ToArray();
+        public Tetrimino[] AllTetriminos()
+        {
+            return _allTetriminos.ToArray();
         }
 
         public void AddTetriminoAt(Tetrimino tetrimino, Point atPoint)
@@ -79,7 +80,7 @@ namespace Tetris
         {
             ValidateTetriminoAdded(tetrimino);
 
-            switch(rotation)
+            switch (rotation)
             {
                 case Rotation.CLOCKWISE:
                     RotateDir(tetrimino, tetrimino.ClockwiseRotation());
@@ -169,7 +170,8 @@ namespace Tetris
         {
             if (!IsInsideBoard(atPoint)) return true;
 
-            if (!IsEmptySpot(atPoint)) {
+            if (!IsEmptySpot(atPoint))
+            {
                 Block blockAtPoint = BlockAt(atPoint);
                 if (!tetrimino.ContainsBlock(blockAtPoint)) return true;
             }

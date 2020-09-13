@@ -40,14 +40,16 @@ namespace Tetris
             CalculateDropDelay();
         }
 
-        public void ScoreLines(int lines) {
+        public void ScoreLines(int lines)
+        {
             Lines += lines;
             CalculateScore(lines);
             CalculateLevel();
             CalculateDropDelay();
         }
 
-        public void RegisterTetrimino(Tetriminos.Type type) {
+        public void RegisterTetrimino(Tetriminos.Type type)
+        {
             Shapes += 1;
             _history.Add(type);
         }
@@ -57,9 +59,10 @@ namespace Tetris
             return _history.ToArray();
         }
 
-        private void CalculateScore(int lines){
+        private void CalculateScore(int lines)
+        {
             int score = 0;
-            while(lines > 0)
+            while (lines > 0)
             {
                 if (lines >= 4)
                 {
@@ -92,13 +95,15 @@ namespace Tetris
             Score += score;
         }
 
-        private void CalculateLevel() {
+        private void CalculateLevel()
+        {
             Level = StartLevel + (Lines / _linesPerLevel);
             if (Level <= _effectLevelLimit) EffectLevel = Level;
             else EffectLevel = _effectLevelLimit;
         }
 
-        private void CalculateDropDelay() {
+        private void CalculateDropDelay()
+        {
             DropDelay = MaxDropDelay - EffectLevel * _speedIncreasePerEffectLevel;
         }
     }

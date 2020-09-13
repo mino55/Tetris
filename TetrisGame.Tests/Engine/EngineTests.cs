@@ -3,21 +3,21 @@ using Xunit;
 
 namespace Tetris
 {
-   public class EngineTests
-   {
-       private readonly KeyReceiver _keyReceiver;
-       private readonly Engine _engine;
-       private readonly Mock<IScreen> _screenMock;
-       private readonly int _FPS = 30;
+    public class EngineTests
+    {
+        private readonly KeyReceiver _keyReceiver;
+        private readonly Engine _engine;
+        private readonly Mock<IScreen> _screenMock;
+        private readonly int _fps = 30;
 
-       public EngineTests()
-       {
+        public EngineTests()
+        {
             _screenMock = new Mock<IScreen>();
 
             _keyReceiver = new KeyReceiver();
 
-            _engine = new Engine(_FPS, _screenMock.Object, _keyReceiver);
-       }
+            _engine = new Engine(_fps, _screenMock.Object, _keyReceiver);
+        }
 
         [Fact]
         public void Constructor_MountScreenWithEngine()
@@ -44,7 +44,7 @@ namespace Tetris
         public void Loop_NoReceivedKey_CallScreenInputWithNull()
         {
             _engine.Loop();
-            int dTime = 1000 / _FPS;
+            int dTime = 1000 / _fps;
             _screenMock.Verify(screen => screen.Input(null, dTime), Times.Once());
         }
 
@@ -53,7 +53,7 @@ namespace Tetris
         {
             _keyReceiver.ReceiveKey("Any key");
             _engine.Loop();
-            int dTime = 1000 / _FPS;
+            int dTime = 1000 / _fps;
             _screenMock.Verify(screen => screen.Input("Any key", dTime), Times.Once());
         }
 
@@ -81,5 +81,5 @@ namespace Tetris
 
             Assert.False(_engine.Started);
         }
-   }
+    }
 }

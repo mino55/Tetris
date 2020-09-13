@@ -81,7 +81,7 @@ namespace Tetris
         private string GetKeyInput()
         {
             string key = null;
-            if (_keyReceiver.isNewKey)
+            if (_keyReceiver.IsNewKey)
             {
                 key = _keyReceiver.Key();
             }

@@ -27,10 +27,13 @@ namespace Tetris
 
         public string SelectedSettingCurrentState()
         {
-        if (CurrentSelectionType() == Type.PICK) return null;
+            if (CurrentSelectionType() == Type.SETTING)
+            {
+                int stateIndex = _currentSettingStateIndex[CurrentSelection()];
+                return _settingStates[CurrentSelection()][stateIndex];
+            }
 
-        int stateIndex = _currentSettingStateIndex[CurrentSelection()];
-        return _settingStates[CurrentSelection()][stateIndex];
+            return null;
         }
 
         public string CurrentSelection()

@@ -66,7 +66,8 @@ namespace Tetris
         {
             Drop();
 
-            try {
+            try
+            {
                 string[] lines = System.IO.File.ReadAllLines(_path);
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -76,7 +77,8 @@ namespace Tetris
                     _keys.Add(key);
                     _values.Add(value);
                 }
-            } catch(System.IO.FileNotFoundException) {}
+            }
+            catch (System.IO.FileNotFoundException) { }
         }
 
         private void ValidateKeyValuePairs(string[] keys, string[] values)

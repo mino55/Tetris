@@ -66,13 +66,13 @@ namespace Tetris
             }
         }
 
-        protected override void UnhandledInput(string input, int dTime, Engine engine) {}
+        protected override void UnhandledInput(string input, int dTime, Engine engine) { }
 
         protected override void OnSetting(string name, string state, Engine engine)
-        {}
+        { }
 
         protected override void OnLeave(Engine engine)
-        {}
+        { }
 
         private void RenderComplexTitle(MenuLine[] menuPrint)
         {
